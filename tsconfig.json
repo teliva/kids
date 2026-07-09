@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "es2020",
+    "module": "esnext",
+    "lib": ["ES2020", "DOM"],
+    "skipLibCheck": true,
+
+    "moduleResolution": "bundler",
+
+    /* Lit decorators */
+    "experimentalDecorators": true,
+    "useDefineForClassFields": false,
+
+    /* Linting */
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true
+  },
+  "include": ["src"]
+}

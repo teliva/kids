@@ -1,0 +1,27 @@
+@font-face {
+  font-family: 'FKGroteskNeue';
+  src: url('FKGroteskNeue-Regular.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --kd-primary-color: #ADEBB3;
+  /* --kd-primary-color: purple; */
+  --kd-font-family: 'FKGroteskNeue', sans-serif;
+
+  /* Fallback before main.ts picks a lighten/darken direction based on luminance. */
+  --kd-primary-hover: color-mix(in srgb, var(--kd-primary-color), #fff 20%);
+  --kd-box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  --kd-box-shadow-sm: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  --kd-box-shadow-lg: 0 1rem 3rem rgba(0, 0, 0, 0.175);
+}
+
+body {
+  font-family: var(--kd-font-family);
+}
+
+kd-button:not(:defined) {
+  visibility: hidden;
+}
