@@ -8,6 +8,7 @@ export class KdButton extends LitElement {
   static styles = css`
     :host {
       display: inline-block;
+      vertical-align: middle;
     }
 
     button {

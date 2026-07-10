@@ -3,7 +3,7 @@ import { customElement, property } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 
 @customElement("kd-loader")
-export class KdLoader extends LitElement {
+export class KdProgressBar extends LitElement {
   static styles = css`
     :host {
       display: block;
@@ -15,7 +15,6 @@ export class KdLoader extends LitElement {
       overflow: hidden;
       width: 100%;
       height: var(--kd-loader-height, 8px);
-      border-radius: 9999px;
       background-color: var(--kd-loader-track-color, rgba(0, 0, 0, 0.08));
     }
 
@@ -23,7 +22,6 @@ export class KdLoader extends LitElement {
       position: absolute;
       top: 0;
       bottom: 0;
-      border-radius: 9999px;
       background-color: var(--kd-primary-color);
     }
 
@@ -64,6 +62,6 @@ export class KdLoader extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    "kd-loader": KdLoader;
+    "kd-progress-bar": KdProgressBar;
   }
 }
