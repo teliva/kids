@@ -1,5 +1,7 @@
-import './components/kd-button'
-import './components/kd-progress-bar'
+import './components/kd-button';
+import './components/kd-progress-bar';
+import './components/kd-tooltip';
+
 import { getHoverTintColor } from './utils/tint-color'
 
 const root = document.documentElement
