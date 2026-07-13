@@ -28,21 +28,24 @@ export class KdToast extends LitElement {
 
     .toast {
       position: fixed;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       z-index: var(--kd-toast-z-index, 1100);
       display: none;
-      align-items: flex-start;
       gap: 0.625rem;
       width: max-content;
       max-width: var(--kd-toast-max-width, 22rem);
-      padding: 0.75rem 1rem;
-      border-radius: 10px;
+      padding: 0 1rem;
+      height:44px;
+      border-radius: 4px;
       border-left: 4px solid var(--kd-toast-accent, var(--kd-primary-color));
       background: var(--kd-toast-background, #fff);
       color: var(--kd-toast-color, #1a1a1a);
       font-family: var(--kd-font-family);
       font-size: 0.875rem;
       line-height: 1.4;
-      box-shadow: var(--kd-box-shadow);
+      box-shadow: var(--kd-box-shadow-m);
       opacity: 0;
       scale: 0.95;
       transition:

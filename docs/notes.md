@@ -56,3 +56,13 @@ Given you're mid-way on a kd-progress-bar and starting a loader component — do
 - select component
 - switch input
 - text area
+
+
+
+## Notes on shadows
+- kd-shadow-s	Small shadow for subtle elevation (e.g., cards, inputs)	
+- kd-shadow-m	Medium shadow for moderate elevation (e.g., dropdowns, popovers)	
+- kd-shadow-l	Large shadow for high elevation (e.g., dialogs, drawers)
+
+# notes on headers
+headers will always be 64 pixels for us

@@ -18,9 +18,9 @@ export class KdButton extends LitElement {
       gap: 0.5rem;
       font: inherit;
       font-family: var(--kd-font-family);
-      font-weight: 500;
+      font-weight: 400;
       font-size: 1rem;
-      height: 40px;
+      height: 44px;
       padding: 0 1rem;
       border: 2px solid transparent;
       cursor: pointer;
@@ -37,7 +37,7 @@ export class KdButton extends LitElement {
 
     button:hover {
       background-color: var(--kd-primary-hover);
-      box-shadow: var(--kd-box-shadow-sm);
+      box-shadow: var(--kd-box-shadow-s);
     }
 
     button:active {
