@@ -20,7 +20,7 @@ export class KdButton extends LitElement {
       font-family: var(--kd-font-family);
       font-weight: 400;
       font-size: 1rem;
-      height: 44px;
+      height: 48px;
       padding: 0 1rem;
       border: 2px solid transparent;
       cursor: pointer;

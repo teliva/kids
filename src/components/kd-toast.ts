@@ -37,7 +37,7 @@ export class KdToast extends LitElement {
       width: max-content;
       max-width: var(--kd-toast-max-width, 22rem);
       padding: 0 1rem;
-      height:44px;
+      height:48px;
       border-radius: 4px;
       border-left: 4px solid var(--kd-toast-accent, var(--kd-primary-color));
       background: var(--kd-toast-background, #fff);
