@@ -8,8 +8,8 @@
 
 :root {
   --kd-primary-color: #ADEBB3;
-  /* --kd-primary-color: purple; */
   --kd-font-family: 'FKGroteskNeue', sans-serif;
+  --kd-neutral-color: #e7e5e8;
 
   /* Fallback before main.ts picks a lighten/darken direction based on luminance. */
   --kd-primary-hover: color-mix(in srgb, var(--kd-primary-color), #fff 20%);
@@ -17,6 +17,7 @@
   --kd-box-shadow-sm: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
   --kd-box-shadow-lg: 0 1rem 3rem rgba(0, 0, 0, 0.175);
   --kd-loader-height: 4px;
+  
 }
 
 body {

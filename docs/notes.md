@@ -43,3 +43,16 @@ Minimum display time guard is worth adding if load can be very fast — a cover 
 Typical duration: 200-400ms ease-out for the fade itself.
 
 Given you're mid-way on a kd-progress-bar and starting a loader component — do you want this loader to be a full-screen "cover" (splash-style, blocks the whole app) or a component-scoped loading state? That changes whether pointer-events/z-index/unmount logic needs to live at the app-shell level or can be local to the component.
+
+
+
+# Components left to maked:
+- Toast
+- text input
+- slider input
+- color picker
+- copy button
+- progress buttons
+- select component
+- switch input
+- text area

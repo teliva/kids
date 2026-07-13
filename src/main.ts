@@ -1,6 +1,8 @@
 import './components/kd-button';
 import './components/kd-progress-bar';
 import './components/kd-tooltip';
+import './components/kd-spinner';
+import './components/kd-toast';
 
 import { getHoverTintColor } from './utils/tint-color'
 

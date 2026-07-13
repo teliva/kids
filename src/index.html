@@ -55,6 +55,17 @@
   <kd-tooltip for="details-btn" placement="bottom">
     <span slot="content">Rich <strong>HTML</strong> content works too</span>
   </kd-tooltip>
+  <kd-spinner label="Loading data" style="font-size:50px; --track-width: 4px;"></kd-spinner>
+
+  <kd-button id="toast-btn" appearance="outline">Show toast</kd-button>
+  <kd-toast id="demo-toast" variant="success" placement="bottom" duration="4000">
+    Changes saved successfully
+  </kd-toast>
+  <script type="module">
+    document.getElementById('toast-btn').addEventListener('click', () => {
+      document.getElementById('demo-toast').show();
+    });
+  </script>
   </div>
 </body>
 
