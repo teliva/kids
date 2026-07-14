@@ -15,13 +15,12 @@ export class KdButton extends LitElement {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 0.5rem;
       font: inherit;
       font-family: var(--kd-font-family);
       font-weight: 400;
       font-size: 1rem;
-      height: 48px;
-      padding: 0 1rem;
+      line-height: 1.5;
+      padding: 0.625rem 1rem;
       border: 2px solid transparent;
       cursor: pointer;
       background-color: var(--kd-primary-color);
@@ -57,34 +56,56 @@ export class KdButton extends LitElement {
       box-shadow: none;
     }
 
-    ::slotted(svg) {
-      width: 16px;
-      height: 16px;
+    .icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .icon[hidden] {
+      display: none;
+    }
+
+    ::slotted([slot="icon"]) {
+      width: 1.25rem;
+      height: 1.25rem;
       fill: var(--kd-icon-color, rgba(91, 88, 93));
     }
   `;
-  @property() label = "Click me";
-
   @property({ reflect: true }) appearance: "solid" | "outline" = "solid";
 
   @state() private textColor = "#000000";
 
+  @state() private hasIcon = false;
+
+  @state() private hasLabel = false;
+
   @query("button") private buttonEl!: HTMLButtonElement;
 
-  render() {
-    const styles =
-      this.appearance === "solid" ? { color: this.textColor } : {};
+  @query('slot[name="icon"]') private iconSlotEl!: HTMLSlotElement;
 
-    return html`<button
-      type="button"
-      style=${styleMap(styles)}
-    >
-      <slot></slot>
+  @query('slot[name="label"]') private labelSlotEl!: HTMLSlotElement;
+
+  render() {
+    const styles = {
+      ...(this.appearance === "solid" ? { color: this.textColor } : {}),
+      gap: this.hasIcon && this.hasLabel ? "0.5rem" : "0rem",
+    };
+
+    return html`<button type="button" style=${styleMap(styles)}>
+      <span class="icon" part="icon" ?hidden=${!this.hasIcon}>
+        <slot name="icon" @slotchange=${this.handleIconSlotChange}></slot>
+      </span>
+      <span class="label" part="label">
+        <slot name="label" @slotchange=${this.handleLabelSlotChange}></slot>
+      </span>
     </button>`;
   }
 
   firstUpdated() {
     this.updateContrastColor();
+    this.handleIconSlotChange();
+    this.handleLabelSlotChange();
   }
 
   updated(changedProperties: PropertyValues<this>) {
@@ -103,6 +124,14 @@ export class KdButton extends LitElement {
     this.textColor = getContrastTextColor(backgroundColor);
     this.style.setProperty("--kd-icon-color", this.textColor);
   }
+
+  private handleIconSlotChange = () => {
+    this.hasIcon = this.iconSlotEl.assignedNodes({ flatten: true }).length > 0;
+  };
+
+  private handleLabelSlotChange = () => {
+    this.hasLabel = this.labelSlotEl.assignedNodes({ flatten: true }).length > 0;
+  };
 
 }
 
