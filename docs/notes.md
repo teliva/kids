@@ -56,6 +56,7 @@ Given you're mid-way on a kd-progress-bar and starting a loader component — do
 - select component
 - switch input
 - text area
+- buttons need to be based on rem for height
 
 
 
