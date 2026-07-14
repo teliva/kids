@@ -47,7 +47,7 @@ Given you're mid-way on a kd-progress-bar and starting a loader component — do
 
 
 # Components left to maked:
-- Toast
+- Toast -> finalize the closing as a button of a vector graphic instead of an x
 - text input
 - slider input
 - color picker

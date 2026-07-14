@@ -8,7 +8,7 @@ import { getRelativeLuminance } from "./color";
 export function getHoverTintColor(
   baseColor: string,
   baseColorVar: string,
-  { lightenAmount = 20, darkenAmount = 15 } = {},
+  { lightenAmount = 10, darkenAmount = 10 } = {},
 ): string {
   const luminance = getRelativeLuminance(baseColor);
 

@@ -6,6 +6,8 @@ export class KdSpinner extends LitElement {
   static styles = css`
   :host {
     box-sizing: border-box;
+    display: inline-block;
+    vertical-align: middle;
   }
 
   :host *,

@@ -1,5 +1,5 @@
 import './components/kd-button';
-import './components/kd-progress-bar';
+import './components/kd-loader';
 import './components/kd-tooltip';
 import './components/kd-spinner';
 import './components/kd-toast';

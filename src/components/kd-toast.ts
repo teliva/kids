@@ -1,7 +1,7 @@
 import { LitElement, css, html, type PropertyValues } from "lit";
 import { customElement, property, query, state } from "lit/decorators.js";
 
-export type ToastVariant = "info" | "success" | "warning" | "error";
+export type ToastVariant = "info" | "success" | "warning" | "danger";
 
 export type ToastPlacement =
   | "top-start"
@@ -37,8 +37,8 @@ export class KdToast extends LitElement {
       width: max-content;
       max-width: var(--kd-toast-max-width, 22rem);
       padding: 0 1rem;
-      height:48px;
-      border-radius: 4px;
+      height: 48px;
+      border-radius: 8px;
       border-left: 4px solid var(--kd-toast-accent, var(--kd-primary-color));
       background: var(--kd-toast-background, #fff);
       color: var(--kd-toast-color, #1a1a1a);
@@ -85,15 +85,15 @@ export class KdToast extends LitElement {
     }
 
     :host([variant="success"]) .toast {
-      --kd-toast-accent: #2e7d32;
+      --kd-toast-accent: #4f8051;
     }
 
     :host([variant="warning"]) .toast {
       --kd-toast-accent: #f9a825;
     }
 
-    :host([variant="error"]) .toast {
-      --kd-toast-accent: #d32f2f;
+    :host([variant="danger"]) .toast {
+      --kd-toast-accent: #b40c12;
     }
 
     .icon {
@@ -101,30 +101,18 @@ export class KdToast extends LitElement {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 1.25rem;
-      height: 1.25rem;
+      width: 24px;
+      height: 24px;
       margin-top: 0.0625rem;
-      border-radius: 50%;
-      background: var(--kd-toast-accent, var(--kd-primary-color));
-      color: #fff;
       font-size: 0.75rem;
       font-weight: 700;
+      color: var(--kd-toast-accent, var(--kd-primary-color));
     }
 
-    .icon::before {
-      content: "i";
-    }
-
-    :host([variant="success"]) .icon::before {
-      content: "✓";
-    }
-
-    :host([variant="warning"]) .icon::before {
-      content: "!";
-    }
-
-    :host([variant="error"]) .icon::before {
-      content: "✕";
+    .icon svg {
+      width: 100%;
+      height: 100%;
+      fill: currentColor;
     }
 
     .message {
@@ -174,12 +162,36 @@ export class KdToast extends LitElement {
 
   @query(".toast") private toastEl?: HTMLDivElement;
 
+  private static readonly successIcon = html`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+      <path
+        d="M530.8 134.1C545.1 144.5 548.3 164.5 537.9 178.8L281.9 530.8C276.4 538.4 267.9 543.1 258.5 543.9C249.1 544.7 240 541.2 233.4 534.6L105.4 406.6C92.9 394.1 92.9 373.8 105.4 361.3C117.9 348.8 138.2 348.8 150.7 361.3L252.2 462.8L486.2 141.1C496.6 126.8 516.6 123.6 530.9 134z"
+      />
+    </svg>
+  `;
+
+  private static readonly infoIcon = html`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+      <path
+        d="M320 576C461.4 576 576 461.4 576 320C576 178.6 461.4 64 320 64C178.6 64 64 178.6 64 320C64 461.4 178.6 576 320 576zM288 224C288 206.3 302.3 192 320 192C337.7 192 352 206.3 352 224C352 241.7 337.7 256 320 256C302.3 256 288 241.7 288 224zM280 288L328 288C341.3 288 352 298.7 352 312L352 400L360 400C373.3 400 384 410.7 384 424C384 437.3 373.3 448 360 448L280 448C266.7 448 256 437.3 256 424C256 410.7 266.7 400 280 400L304 400L304 336L280 336C266.7 336 256 325.3 256 312C256 298.7 266.7 288 280 288z"
+      />
+    </svg>
+  `;
+
+  private static readonly dangerIcon = html`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+      <path
+        d="M320 64C334.7 64 348.2 72.1 355.2 85L571.2 485C577.9 497.4 577.6 512.4 570.4 524.5C563.2 536.6 550.1 544 536 544L104 544C89.9 544 76.8 536.6 69.6 524.5C62.4 512.4 62.1 497.4 68.8 485L284.8 85C291.8 72.1 305.3 64 320 64zM320 416C302.3 416 288 430.3 288 448C288 465.7 302.3 480 320 480C337.7 480 352 465.7 352 448C352 430.3 337.7 416 320 416zM320 224C301.8 224 287.3 239.5 288.6 257.7L296 361.7C296.9 374.2 307.4 384 319.9 384C332.5 384 342.9 374.3 343.8 361.7L351.2 257.7C352.5 239.5 338.1 224 319.8 224z"
+      />
+    </svg>
+  `;
+
   private dismissTimer?: ReturnType<typeof setTimeout>;
   private remaining = 0;
   private startedAt = 0;
 
   render() {
-    const assertive = this.variant === "error" || this.variant === "warning";
+    const assertive = this.variant === "danger" || this.variant === "warning";
 
     return html`
       <div
@@ -190,7 +202,12 @@ export class KdToast extends LitElement {
         @mouseenter=${this.pause}
         @mouseleave=${this.resume}
       >
-        <span class="icon" part="icon" aria-hidden="true"></span>
+        <span class="icon" part="icon" aria-hidden="true">
+          ${this.variant === "info" ? KdToast.infoIcon : null}
+          ${this.variant === "success" ? KdToast.successIcon : null}
+          ${this.variant === "warning" ? KdToast.infoIcon : null}
+          ${this.variant === "danger" ? KdToast.dangerIcon : null}
+        </span>
         <div class="message" part="message"><slot>${this.message}</slot></div>
         ${this.closable
           ? html`<button
@@ -235,7 +252,9 @@ export class KdToast extends LitElement {
       this.toastEl?.removeEventListener("transitionend", onTransitionEnd);
       this.open = false;
       this.closing = false;
-      this.dispatchEvent(new CustomEvent("kd-close", { bubbles: true, composed: true }));
+      this.dispatchEvent(
+        new CustomEvent("kd-close", { bubbles: true, composed: true }),
+      );
     };
 
     this.toastEl?.addEventListener("transitionend", onTransitionEnd);
@@ -267,7 +286,10 @@ export class KdToast extends LitElement {
   private resume = () => {
     if (!this.open || this.closing || this.duration <= 0) return;
     this.startedAt = Date.now();
-    this.dismissTimer = setTimeout(() => this.hide(), Math.max(this.remaining, 0));
+    this.dismissTimer = setTimeout(
+      () => this.hide(),
+      Math.max(this.remaining, 0),
+    );
   };
 }
 
