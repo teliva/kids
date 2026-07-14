@@ -7,18 +7,17 @@
 }
 
 :root {
-  --kd-primary-color: #ADEBB3;
+  /* --kd-primary-color: #ADEBB3; */
+  --kd-primary-color: #004739;
   --kd-font-family: 'FKGroteskNeue', sans-serif;
   --kd-neutral-color: #e7e5e8;
 
   /* Fallback before main.ts picks a lighten/darken direction based on luminance. */
-  --kd-primary-hover: color-mix(in srgb, var(--kd-primary-color), #fff 20%);
+  --kd-primary-hover: color-mix(in srgb, var(--kd-primary-color), #fff 70%);
   --kd-box-shadow-m: calc(0 * 0.25rem) calc(0.5 * 0.25rem) calc(1.25 * 0.25rem) calc(0 * 0.25rem) rgb(0 0 0 / 0.3);
   --kd-box-shadow-s: calc(0 * 0.125rem) calc(0.5 * 0.125rem) calc(1.25 * 0.125rem) calc(0 * 0.125rem) rgb(0 0 0 / 0.3);
   --kd-box-shadow-l: calc(0 * 0.5rem) calc(0.5 * 0.5rem) calc(1.25 * 0.5rem) calc(0 * 0.5rem) rgb(0 0 0 / 0.3);
   --kd-loader-height: 4px;
-
-
 }
 
 body {
