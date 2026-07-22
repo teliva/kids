@@ -67,3 +67,56 @@ Given you're mid-way on a kd-progress-bar and starting a loader component — do
 
 # notes on headers
 headers will always be 64 pixels for us
+
+
+# Note on color scheming
+The minimal requirements at this time:
+- brand color (primary)
+- neutral color - #33302e
+- danger
+- success
+- warning
+
+
+background: oklch(from var(--color-primary) calc(l - 0.08) c h);
+
+The primary rule of a design system is that your primary button (primary-bg) must have at least a 4.5:1 contrast ratio against its text.
+
+
+card border radius is 12px or 0.75rem -> 
+border radius (0.0625rem)
+colors for luminescence use normal quiet loud
+normal font weight is 400
+
+
+for example 
+
+:root {
+  /* 1. Primary Palette & States */
+  --color-primary: #2563eb;
+  --color-primary-hover: #1d4ed8;
+  --color-primary-subtle: #eff6ff;
+  --color-on-primary: #ffffff;
+
+  /* 2. Neutral Palette */
+  --color-bg-app: #f8fafc;
+  --color-bg-surface: #ffffff;
+  --color-border: #e2e8f0;
+  --color-text-main: #0f172a;
+  --color-text-muted: #64748b;
+
+  /* 3. Semantic / Feedback Palette */
+  --color-success: #16a34a;
+  --color-success-subtle: #f0fdf4;
+  
+  --color-warning: #d97706;
+  --color-warning-subtle: #fffbeb;
+  
+  --color-error: #dc2626;
+  --color-error-subtle: #fef2f2;
+}
+
+
+The 2 Core Tests to Decide Between 300 and 400To place your color accurately, evaluate it against two technical standards:Test 1: The WCAG Contrast Rule (3:1 vs. 4.5:1)This is the most objective test. Calculate the contrast ratio of your color against a white background (#FFFFFF):If contrast is between 2.0:1 and 3.0:1 It belongs at brand-300UI Role: Too light for solid text or primary buttons. It is used for decorative graphics, subtle borders, card outlines, or disabled/passive states.If contrast is between 3.0:1 and 4.5:1 It belongs at brand-400UI Role: Meets WCAG AA for large UI elements and graphical components (like input borders, active toggles, icons, or primary buttons that use black text).
+
+The next thing you learn is that all the dynanic logic part exists during theme creation not during theme interpretation

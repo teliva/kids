@@ -59,14 +59,27 @@ export class KdSwitch extends LitElement {
 
     .thumb {
       position: absolute;
-      top: 1px;
+      top: 50%;
       left: 1px;
       width: 1.125rem;
       height: 1.125rem;
       border-radius: 50%;
       background: var(--kd-switch-thumb-color, #fff);
       box-shadow: var(--kd-box-shadow-s);
-      transition: translate 0.15s ease;
+      translate: 0 -50%;
+      transition:
+        translate 0.15s ease,
+        box-shadow 0.15s ease;
+    }
+
+    .control:hover .thumb {
+      box-shadow:
+        0 0 0 4px color-mix(in srgb, var(--kd-neutral-color) 80%, transparent),
+        var(--kd-box-shadow-s);
+    }
+
+    :host([disabled]) .control:hover .thumb {
+      box-shadow: var(--kd-box-shadow-s);
     }
 
     :host([checked]) .track {
@@ -74,8 +87,14 @@ export class KdSwitch extends LitElement {
       background: var(--kd-primary-color);
     }
 
+    :host([checked]) .control:hover .thumb {
+      box-shadow:
+        0 0 0 4px color-mix(in srgb, var(--kd-primary-color) 25%, transparent),
+        var(--kd-box-shadow-s);
+    }
+
     :host([checked]) .thumb {
-      translate: 1.25rem 0;
+      translate: 1.25rem -50%;
     }
 
     .input:focus-visible ~ .track {
@@ -121,7 +140,7 @@ export class KdSwitch extends LitElement {
     }
 
     :host([size="small"][checked]) .thumb {
-      translate: 1rem 0;
+      translate: 1rem -50%;
     }
 
     :host([size="small"]) .label {
@@ -140,7 +159,7 @@ export class KdSwitch extends LitElement {
     }
 
     :host([size="large"][checked]) .thumb {
-      translate: 1.5rem 0;
+      translate: 1.5rem -50%;
     }
 
     :host([size="large"]) .label {

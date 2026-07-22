@@ -9,14 +9,8 @@
 
   <style>
     body {
-      opacity: 0;
       padding: 0;
       margin: 0;
-    }
-
-    body.kd-ready {
-      opacity: 1;
-      transition: opacity 0.25s ease;
     }
 
     .app {
@@ -25,21 +19,6 @@
       margin: 1rem;
     }
   </style>
-  <script type="module">
-    const pendingTags = [...new Set(
-      Array.from(document.querySelectorAll(':not(:defined)'))
-        .map((el) => el.tagName.toLowerCase())
-    )];
-
-    const whenAllDefined = Promise.allSettled(
-      pendingTags.map((tag) => customElements.whenDefined(tag))
-    );
-    const timeout = new Promise((resolve) => setTimeout(resolve, 2000));
-
-    await Promise.race([whenAllDefined, timeout]);
-
-    document.body.classList.add('kd-ready');
-  </script>
 
   <title>kids</title>
 </head>
@@ -47,8 +26,7 @@
 <body>
   <kd-loader value="70"></kd-loader>
   <div id="app" class="app">
-    
-    <kd-button appearance="solid" id="render-btn">
+    <!-- <kd-button appearance="solid" id="render-btn">
       <svg slot="icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
         fill="#e3e3e3">
         <path
@@ -73,7 +51,7 @@
           d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm40-80h480L570-480 450-320l-90-120-120 160Zm-40 80v-560 560Z" />
       </svg>
     </kd-button>
-    <kd-tooltip for="render-btn3" content="Render an image" placement="bottom"></kd-tooltip>
+    <kd-tooltip for="render-btn3" content="Render an image" placement="bottom"></kd-tooltip> -->
     <!-- <kd-button appearance="solid">
       <svg slot="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-image"
         viewBox="0 0 16 16">
@@ -90,10 +68,10 @@
     <!-- <kd-input label="Email" type="email" placeholder="you@example.com" help-text="We'll never share your email." clearable required></kd-input>
     <kd-input label="Password" type="password" placeholder="Enter your password" appearance="filled" size="small"></kd-input> -->
 
-    <!-- <kd-switch label="Enable notifications" checked></kd-switch>
+    <kd-switch label="Enable notifications" checked></kd-switch>
     <kd-switch label="Small" size="small"></kd-switch>
     <kd-switch label="Large" size="large" help-text="Applies to this device only."></kd-switch>
-    <kd-switch label="Disabled" disabled></kd-switch> -->
+    <kd-switch label="Disabled" disabled></kd-switch>
 
     <!-- <kd-button id="toast-btn" appearance="outline">Show toast</kd-button> -->
     <!-- <kd-toast id="demo-toast" variant="warning" placement="bottom" duration="4000">

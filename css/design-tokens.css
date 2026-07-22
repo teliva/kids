@@ -11,6 +11,7 @@
   --kd-primary-color: #004739;
   --kd-font-family: 'FKGroteskNeue', sans-serif;
   --kd-neutral-color: #e7e5e8;
+  font-size: 16px;
 
   /* Fallback before main.ts picks a lighten/darken direction based on luminance. */
   --kd-primary-hover: color-mix(in srgb, var(--kd-primary-color), #fff 70%);
@@ -24,6 +25,12 @@ body {
   font-family: var(--kd-font-family);
 }
 
-kd-button:not(:defined) {
+kd-button:not(:defined),
+kd-switch:not(:defined),
+kd-tooltip:not(:defined),
+kd-spinner:not(:defined),
+kd-loader:not(:defined),
+kd-toast:not(:defined),
+kd-input:not(:defined) {
   visibility: hidden;
 }
