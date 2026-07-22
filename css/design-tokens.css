@@ -7,22 +7,43 @@
 }
 
 :root {
-  /* --kd-primary-color: #ADEBB3; */
-  --kd-primary-color: #004739;
-  --kd-font-family: 'FKGroteskNeue', sans-serif;
-  --kd-neutral-color: #e7e5e8;
-  font-size: 16px;
-
-  /* Fallback before main.ts picks a lighten/darken direction based on luminance. */
-  --kd-primary-hover: color-mix(in srgb, var(--kd-primary-color), #fff 70%);
+  /* --kd-brand-color: #ADEBB3; */
+  --kd-brand-color: #004739;
+  --kd-font-family: 'FKGroteskNeue', sans-serif; 
+  --kd-primary-hover: color-mix(in srgb, var(--kd-brand-color), #fff 70%);
   --kd-box-shadow-m: calc(0 * 0.25rem) calc(0.5 * 0.25rem) calc(1.25 * 0.25rem) calc(0 * 0.25rem) rgb(0 0 0 / 0.3);
   --kd-box-shadow-s: calc(0 * 0.125rem) calc(0.5 * 0.125rem) calc(1.25 * 0.125rem) calc(0 * 0.125rem) rgb(0 0 0 / 0.3);
   --kd-box-shadow-l: calc(0 * 0.5rem) calc(0.5 * 0.5rem) calc(1.25 * 0.5rem) calc(0 * 0.5rem) rgb(0 0 0 / 0.3);
-  --kd-loader-height: 4px;
+  --kd-loader-height: 12px;
+/* Neutral colors area */
+  --kd-neutral-50:  oklch(from var(--kd-brand-color) 0.98 0.01 h); /* Off-white surface */
+  --kd-neutral-100: oklch(from var(--kd-brand-color) 0.94 0.02 h); /* Card background */
+  --kd-neutral-200: oklch(from var(--kd-brand-color) 0.88 0.02 h); /* Subtle borders */
+  --kd-neutral-700: oklch(from var(--kd-brand-color) 0.35 0.03 h); /* Muted body text */
+  --kd-neutral-900: oklch(from var(--kd-brand-color) 0.15 0.04 h); /* High-contrast text */
+  /* success colors area */
+  --kd-success : var(--kd-success-700);
+  --kd-success-50: #edfff4;
+  --kd-success-100: #d6ffe8;
+  --kd-success-200: #afffd3;
+  --kd-success-300: #71ffb2;
+  --kd-success-400: #2dfb8c;
+  --kd-success-500: #02e56c;
+  --kd-success-600: #00bf59;
+  --kd-success-700: #008e43;
+  --kd-success-800: #06753b;
+  --kd-success-900: #085f33;
+  --kd-success-950: #00361c;
+}
+
+
+
+
 }
 
 body {
   font-family: var(--kd-font-family);
+  font-size: 16px;
 }
 
 kd-button:not(:defined),
