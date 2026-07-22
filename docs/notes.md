@@ -103,6 +103,7 @@ for example
   --color-bg-surface: #ffffff;
   --color-border: #e2e8f0;
   --color-text-main: #0f172a;
+  --color-text-main2: #1f2328;
   --color-text-muted: #64748b;
 
   /* 3. Semantic / Feedback Palette */
