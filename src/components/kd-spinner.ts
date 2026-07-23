@@ -24,7 +24,7 @@ export class KdSpinner extends LitElement {
   :host {
     --track-width: 2px;
     --track-color: var(--kd-neutral-color);
-    --indicator-color: var(--kd-brand-color);
+    --indicator-color: var(--kd-color-brand);
     --speed: 2s;
     --size: 1em;
 

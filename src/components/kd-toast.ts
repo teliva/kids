@@ -39,7 +39,7 @@ export class KdToast extends LitElement {
       padding: 0 1rem;
       height: 48px;
       border-radius: 8px;
-      border-left: 4px solid var(--kd-toast-accent, var(--kd-brand-color));
+      border-left: 4px solid var(--kd-toast-accent, var(--kd-color-brand));
       background: var(--kd-toast-background, #fff);
       color: var(--kd-toast-color, #1a1a1a);
       font-family: var(--kd-font-family);
@@ -106,7 +106,7 @@ export class KdToast extends LitElement {
       margin-top: 0.0625rem;
       font-size: 0.75rem;
       font-weight: 700;
-      color: var(--kd-toast-accent, var(--kd-brand-color));
+      color: var(--kd-toast-accent, var(--kd-color-brand));
     }
 
     .icon svg {

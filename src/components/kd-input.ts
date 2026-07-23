@@ -64,13 +64,13 @@ export class KdInput extends LitElement {
     }
 
     .base:hover {
-      border-color: var(--kd-input-border-color-hover, var(--kd-brand-color));
+      border-color: var(--kd-input-border-color-hover, var(--kd-color-brand));
     }
 
     .base.focused {
-      border-color: var(--kd-brand-color);
+      border-color: var(--kd-color-brand);
       box-shadow: 0 0 0 3px
-        color-mix(in srgb, var(--kd-brand-color) 35%, transparent);
+        color-mix(in srgb, var(--kd-color-brand) 35%, transparent);
     }
 
     :host([appearance="filled"]) .base {
@@ -83,7 +83,7 @@ export class KdInput extends LitElement {
     }
 
     :host([appearance="filled"]) .base.focused {
-      border-color: var(--kd-brand-color);
+      border-color: var(--kd-color-brand);
       background: var(--kd-input-background, #fff);
     }
 

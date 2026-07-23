@@ -15,14 +15,14 @@ export class KdProgressBar extends LitElement {
       overflow: hidden;
       width: 100%;
       height: var(--kd-loader-height, 8px);
-      background-color: var(--kd-neutral-200);
+      background-color: var(--kd-color-neutral);
     }
 
     .bar {
       position: absolute;
       top: 0;
       bottom: 0;
-      background-color: var(--kd-brand-color);
+      background-color: var(--kd-color-brand);
     }
 
     :host([indeterminate]) .bar {

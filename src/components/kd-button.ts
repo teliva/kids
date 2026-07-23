@@ -23,7 +23,7 @@ export class KdButton extends LitElement {
       padding: 0.625rem 1rem;
       border: 2px solid transparent;
       cursor: pointer;
-      background-color: var(--kd-brand-color);
+      background-color: var(--kd-color-brand);
       border-radius: 9999px;
       user-select: none;
       white-space: nowrap;
@@ -45,8 +45,8 @@ export class KdButton extends LitElement {
 
     :host([appearance="outline"]) button {
       background-color: transparent;
-      border-color: var(--kd-brand-color);
-      color: var(--kd-brand-color);
+      border-color: var(--kd-color-brand);
+      color: var(--kd-color-brand);
     }
 
     :host([appearance="outline"]) button:hover {
