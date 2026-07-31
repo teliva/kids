@@ -1,5 +1,6 @@
 # Project Todo
-1. Fix the background of the loading bar component
-2. Fix the switches to use the neutral and brand colors and have the right animations
-3. Look into dynamically generating colors with the correct LCH by entering a single color - this is a long term tooling
-4. Finalize the switch components.
+1. Look into dynamically generating colors with the correct LCH by entering a single color - this is a long term tooling
+2. Have to be able to generate a palette from a brand color in order to generate the on-color text/highlight
+3. the button uses the -05 brand color
+4. Like the same goes for button text and etc
+5. 

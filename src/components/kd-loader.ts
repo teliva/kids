@@ -15,7 +15,7 @@ export class KdProgressBar extends LitElement {
       overflow: hidden;
       width: 100%;
       height: var(--kd-loader-height, 8px);
-      background-color: var(--kd-color-neutral);
+      background-color: var(--kd-color-gray-10);
     }
 
     .bar {

@@ -15,6 +15,9 @@ export class KdSwitch extends LitElement {
     :host {
       display: inline-block;
       font-family: var(--kd-font-family);
+      --height: 2em;
+      --width: calc(var(--height) * 1.625);
+      --thumb-size: 1.5em;
     }
 
     .control {
@@ -46,11 +49,11 @@ export class KdSwitch extends LitElement {
       position: relative;
       display: inline-flex;
       align-items: center;
-      width: 2.75rem;
-      height: 1.5rem;
-      border: 2px solid var(--kd-switch-border-color, var(--kd-neutral-color));
+      width: var(--width);
+      height: var(--height);
+      border: 2px solid var(--kd-color-gray-50);
       border-radius: 9999px;
-      background: var(--kd-switch-background, var(--kd-neutral-color));
+      background: var(--kd-color-gray-10);
       transition:
         background-color 0.15s ease,
         border-color 0.15s ease,
@@ -61,12 +64,11 @@ export class KdSwitch extends LitElement {
       position: absolute;
       top: 50%;
       left: 1px;
-      width: 1.125rem;
-      height: 1.125rem;
+      width: var(--thumb-size);
+      height: var(--thumb-size);
       border-radius: 50%;
-      background: var(--kd-switch-thumb-color, #fff);
-      box-shadow: var(--kd-box-shadow-s);
-      translate: 0 -50%;
+      background: var(--kd-color-gray-50);
+      translate: 10% -50%;
       transition:
         translate 0.15s ease,
         box-shadow 0.15s ease;
@@ -94,7 +96,8 @@ export class KdSwitch extends LitElement {
     }
 
     :host([checked]) .thumb {
-      translate: 1.25rem -50%;
+      translate: 100% -50%;
+      background: contrast-color(var(--kd-color-brand));
     }
 
     .input:focus-visible ~ .track {
@@ -124,46 +127,8 @@ export class KdSwitch extends LitElement {
     .help-text {
       margin-top: 0.375rem;
       margin-left: 3.375rem;
-      font-size: 0.75rem;
+      font-size: 5rem;
       color: var(--kd-switch-help-text-color, rgba(0, 0, 0, 0.6));
-    }
-
-    /* size: small */
-    :host([size="small"]) .track {
-      width: 2.25rem;
-      height: 1.25rem;
-    }
-
-    :host([size="small"]) .thumb {
-      width: 0.875rem;
-      height: 0.875rem;
-    }
-
-    :host([size="small"][checked]) .thumb {
-      translate: 1rem -50%;
-    }
-
-    :host([size="small"]) .label {
-      font-size: 0.8125rem;
-    }
-
-    /* size: large */
-    :host([size="large"]) .track {
-      width: 3.25rem;
-      height: 1.75rem;
-    }
-
-    :host([size="large"]) .thumb {
-      width: 1.375rem;
-      height: 1.375rem;
-    }
-
-    :host([size="large"][checked]) .thumb {
-      translate: 1.5rem -50%;
-    }
-
-    :host([size="large"]) .label {
-      font-size: 1rem;
     }
   `;
 
