@@ -72,11 +72,12 @@
 
 <body>
   <div class="top-container">
-    <kd-loader style="position:absolute; top:0;" value="90"></kd-loader>
+    <kd-loader style="position:fixed; top:0; left:0; right:0; --kd-loader-height:4px;" value="90"></kd-loader>
     <div class="app-container">
       <div id="app" class="app">
         <div class="toc-navigation">
-          <svg data-v-39ea7f52="" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+          <kd-button appearance="plain" id="render-btn">
+          <svg slot="icon" data-v-39ea7f52="" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
             class="lucide lucide-table-of-contents-icon lucide-table-of-contents lucide-icon customizable">
             <path d="M16 5H3"></path>
@@ -86,6 +87,7 @@
             <path d="M21 12h.01"></path>
             <path d="M21 19h.01"></path>
           </svg>
+          </kd-button>
         </div>
         <div class="calls-to-action">
           <kd-button appearance="solid" id="render-btn">

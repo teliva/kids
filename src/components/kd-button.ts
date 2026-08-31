@@ -56,6 +56,22 @@ export class KdButton extends LitElement {
       box-shadow: none;
     }
 
+    :host([appearance="plain"]) button {
+      background-color: transparent;
+      border-color: transparent;
+      padding: 0.5rem;
+      border-radius: 9999px;
+    }
+
+    :host([appearance="plain"]) button:hover {
+      background-color: var(--kd-plain-hover, rgba(0, 0, 0, 0.06));
+      box-shadow: none;
+    }
+
+    :host([appearance="plain"]) button:active {
+      background-color: var(--kd-plain-active, rgba(0, 0, 0, 0.1));
+    }
+
     .icon {
       display: inline-flex;
       align-items: center;
@@ -72,7 +88,7 @@ export class KdButton extends LitElement {
       fill: var(--kd-icon-color, rgba(91, 88, 93));
     }
   `;
-  @property({ reflect: true }) appearance: "solid" | "outline" = "solid";
+  @property({ reflect: true }) appearance: "solid" | "outline" | "plain" = "solid";
 
   @state() private textColor = "#000000";
 
