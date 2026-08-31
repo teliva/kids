@@ -10,6 +10,19 @@
   --kd-color-brand: #ADEBB3;
   --kd-font-family: 'FKGroteskNeue', sans-serif;
 
+  --kd-font-size-xs: 0.75rem;
+  /* 12px - captions, timestamps, badges */
+  --kd-font-size-s: 0.875rem;
+  /* 14px - helper/secondary text */
+  --kd-font-size-m: 1rem;
+  /* 16px - base body text */
+  --kd-font-size-l: 1.25rem;
+  /* 20px - h3 / subsection titles */
+  --kd-font-size-xl: 1.5625rem;
+  /* 25px - h2 / section titles */
+  --kd-font-size-xxl: 1.953rem;
+  /* 31px - h1 / page titles */
+
   --kd-box-shadow-m: calc(0 * 0.25rem) calc(0.5 * 0.25rem) calc(1.25 * 0.25rem) calc(0 * 0.25rem) rgb(0 0 0 / 0.3);
   --kd-box-shadow-s: calc(0 * 0.125rem) calc(0.5 * 0.125rem) calc(1.25 * 0.125rem) calc(0 * 0.125rem) rgb(0 0 0 / 0.3);
   --kd-box-shadow-l: calc(0 * 0.5rem) calc(0.5 * 0.5rem) calc(1.25 * 0.5rem) calc(0 * 0.5rem) rgb(0 0 0 / 0.3);
