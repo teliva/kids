@@ -121,3 +121,9 @@ for example
 The 2 Core Tests to Decide Between 300 and 400To place your color accurately, evaluate it against two technical standards:Test 1: The WCAG Contrast Rule (3:1 vs. 4.5:1)This is the most objective test. Calculate the contrast ratio of your color against a white background (#FFFFFF):If contrast is between 2.0:1 and 3.0:1 It belongs at brand-300UI Role: Too light for solid text or primary buttons. It is used for decorative graphics, subtle borders, card outlines, or disabled/passive states.If contrast is between 3.0:1 and 4.5:1 It belongs at brand-400UI Role: Meets WCAG AA for large UI elements and graphical components (like input borders, active toggles, icons, or primary buttons that use black text).
 
 The next thing you learn is that all the dynanic logic part exists during theme creation not during theme interpretation
+
+
+
+
+for controls rad = 0.375 * 1rem
+for panels rad = 0.75 * 1 rem
