@@ -13,3 +13,11 @@ To fire up development environment
 ```
 npm run dev
 ```
+
+
+## Added node script to generate a color palette
+```
+node scripts/generate-color-scale.js "#ADEBB3" brand --mode=muted --write
+```
+
+Generates and patches the tokens.css for colors
