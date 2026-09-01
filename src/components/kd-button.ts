@@ -85,7 +85,7 @@ export class KdButton extends LitElement {
     ::slotted([slot="icon"]) {
       width: 1.25rem;
       height: 1.25rem;
-      fill: var(--kd-icon-color, rgba(91, 88, 93));
+      color: var(--kd-icon-color, var(--kd-color-gray-60));
     }
   `;
   @property({ reflect: true }) appearance: "solid" | "outline" | "plain" = "solid";
@@ -122,6 +122,8 @@ export class KdButton extends LitElement {
     this.updateContrastColor();
     this.handleIconSlotChange();
     this.handleLabelSlotChange();
+    this.buttonEl.addEventListener("pointerenter", this.updateContrastColor);
+    this.buttonEl.addEventListener("pointerleave", this.updateContrastColor);
   }
 
   updated(changedProperties: PropertyValues<this>) {
@@ -130,7 +132,7 @@ export class KdButton extends LitElement {
     }
   }
 
-  private updateContrastColor() {
+  private updateContrastColor = () => {
     if (this.appearance !== "solid") {
       this.style.removeProperty("--kd-icon-color");
       return;
@@ -139,7 +141,7 @@ export class KdButton extends LitElement {
     const backgroundColor = getComputedStyle(this.buttonEl).backgroundColor;
     this.textColor = getContrastTextColor(backgroundColor);
     this.style.setProperty("--kd-icon-color", this.textColor);
-  }
+  };
 
   private handleIconSlotChange = () => {
     this.hasIcon = this.iconSlotEl.assignedNodes({ flatten: true }).length > 0;

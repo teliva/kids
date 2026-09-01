@@ -8,6 +8,7 @@
 
 :root {
   --kd-color-brand: #ADEBB3;
+  --kd-primary-hover: color-mix(in srgb, var(--kd-color-brand) 85%, black 15%);
   --kd-font-family: 'FKGroteskNeue', sans-serif;
 
   --kd-font-size-xs: 0.75rem;

@@ -90,6 +90,7 @@
     }
 
     .grid {
+      align-self: center;
       padding: 1rem;
       display: grid;
       grid-template-columns: repeat(4, 60px);
@@ -124,7 +125,7 @@
         <div class="calls-to-action">
           <kd-button appearance="solid" id="render-btn">
             <svg slot="icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
-              fill="#e3e3e3">
+              fill="currentColor">
               <path
                 d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm40-80h480L570-480 450-320l-90-120-120 160Zm-40 80v-560 560Z" />
             </svg>
@@ -168,13 +169,11 @@
   <script>
     const sidePanel = document.querySelector('.side-panel');
     const panelToggleBtn = document.getElementById('panel-toggle-btn');
-    const panelToggleIcon = document.getElementById('panel-toggle-icon');
 
     panelToggleBtn.addEventListener('click', () => {
       const collapsed = sidePanel.classList.toggle('collapsed');
       panelToggleBtn.setAttribute('aria-expanded', String(!collapsed));
       panelToggleBtn.setAttribute('aria-label', collapsed ? 'Expand Fabric panel' : 'Collapse Fabric panel');
-      panelToggleIcon.querySelector('path').setAttribute('d', collapsed ? 'm15 18-6-6 6-6' : 'm9 18 6-6-6-6');
     });
   </script>
 </body>
