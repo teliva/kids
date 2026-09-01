@@ -5,3 +5,5 @@ import './components/kd-spinner';
 import './components/kd-toast';
 import './components/kd-input';
 import './components/kd-switch';
+import './components/kd-swatch';
+import './components/kd-swatch-group';

@@ -5,6 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <link rel="stylesheet" href="css/normalize.css" />
   <link rel="stylesheet" href="css/design-tokens.css" />
 
   <style>
@@ -38,7 +39,7 @@
       display: flex;
       align-items: flex-start;
       flex-direction: column;
-      width: 350px;
+      width: 400px;
       border-left: 1px solid var(--kd-color-gray-30);
       overflow: visible;
       transition: width 0.2s ease;
@@ -73,7 +74,7 @@
       display: none;
     }
 
-    .side-panel.collapsed .grid {
+    .side-panel.collapsed kd-swatch-group {
       display: none;
     }
 
@@ -89,13 +90,10 @@
       padding: 1rem;
     }
 
-    .grid {
+    kd-swatch-group {
       align-self: center;
       padding: 1rem;
-      display: grid;
-      grid-template-columns: repeat(4, 60px);
-      /* Scales fluidly from 0.75rem (12px) on small screens to 1.5rem (24px) on large screens */
-      gap: 1rem;
+      --kd-swatch-group-item-size: 60px;
     }
   </style>
 
@@ -142,26 +140,20 @@
           </kd-button>
           <h2>Fabric</h2>
         </div>
-        <div class="grid">
-          <div style="height:60px; width:60px; border-radius:0.375rem; overflow:hidden;"><img
-              src="https://kits.kisp.com/swatch/kfi_1504/BB(U)-sm.jpg"
-              style="width:100%; height:100%; object-fit:cover; display:block;" /></div>
-          <div style="height:60px; width:60px; border-radius:0.375rem; overflow:hidden;"><img
-              src="https://kits.kisp.com/swatch/kfi_1504/BB(U)-sm.jpg"
-              style="width:100%; height:100%; object-fit:cover; display:block;" /></div>
-          <div style="height:60px; width:60px; border-radius:0.375rem; overflow:hidden;"><img
-              src="https://kits.kisp.com/swatch/kfi_1504/BB(U)-sm.jpg"
-              style="width:100%; height:100%; object-fit:cover; display:block;" /></div>
-          <div style="height:60px; width:60px; border-radius:0.375rem; overflow:hidden;"><img
-              src="https://kits.kisp.com/swatch/kfi_1504/BB(U)-sm.jpg"
-              style="width:100%; height:100%; object-fit:cover; display:block;" /></div>
-          <div style="height:60px; width:60px; border-radius:0.375rem; overflow:hidden;"><img
-              src="https://kits.kisp.com/swatch/kfi_1504/BB(U)-sm.jpg"
-              style="width:100%; height:100%; object-fit:cover; display:block;" /></div>
-          <div style="height:60px; width:60px; border-radius:0.375rem; overflow:hidden;"><img
-              src="https://kits.kisp.com/swatch/kfi_1504/BB(U)-sm.jpg"
-              style="width:100%; height:100%; object-fit:cover; display:block;" /></div>
-        </div>
+        <kd-swatch-group label="Fabric finish" name="fabric" value="kfi_1504" columns="4">
+          <kd-swatch value="kfi_1504" label="Ballistic Blue"
+            src="https://kits.kisp.com/swatch/kfi_1504/BB(U)-sm.jpg"></kd-swatch>
+          <kd-swatch value="kfi_1505" label="Forest Green"
+            src="https://kits.kisp.com/swatch/kfi_1504/FG(U)-sm.jpg"></kd-swatch>
+          <kd-swatch value="kfi_1506" label="Slate Gray"
+            src="https://kits.kisp.com/swatch/kfi_1504/SG(U)-sm.jpg"></kd-swatch>
+          <kd-swatch value="kfi_1507" label="Charcoal"
+            src="https://kits.kisp.com/swatch/kfi_1504/CH(U)-sm.jpg"></kd-swatch>
+          <kd-swatch value="kfi_1508" label="Sandstone"
+            src="https://kits.kisp.com/swatch/kfi_1504/SS(U)-sm.jpg"></kd-swatch>
+          <kd-swatch value="kfi_1509" label="Broken link demo" src="https://kits.kisp.com/does-not-exist.jpg">
+          </kd-swatch>
+        </kd-swatch-group>
       </div>
     </div>
   </div>

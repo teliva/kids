@@ -127,3 +127,32 @@ The next thing you learn is that all the dynanic logic part exists during theme 
 
 for controls rad = 0.375 * 1rem
 for panels rad = 0.75 * 1 rem
+
+
+## Notes on Padding
+
+3. Spatial Layout Systems (The 8pt Grid)
+Modern UI design systems enforce consistent internal padding and spacing using an 8pt (or 4pt) spatial grid system. All padding, margin, and control dimensions should be multiples of 8 (or 4 for smaller components):
+
+Internal Control Padding (Inside a button or input):
+
+Compact: 4px vertical / 8px horizontal
+
+Standard: 8px vertical / 16px horizontal
+
+Large/Touch: 12px vertical / 24px horizontal
+
+External Control Spacing (Between adjacent buttons/inputs):
+
+Tight (Related items, e.g., icon + text): 4px – 8px
+
+Standard (Sibling controls, e.g., Cancel vs. Save): 12px – 16px
+
+Loose (Distinct form sections or button groups): 24px – 32px
+
+4. Gestalt Law of Proximity
+The spacing between controls conveys their functional relationship:
+
+Padding within a group (e.g., between "Submit" and "Cancel") should always be significantly smaller than the padding between separate groups (e.g., between the form fields and the action buttons).
+
+Always keep space between control groups at least 1.5× to 2× larger than the space between controls within the same group.

@@ -27,7 +27,10 @@ module.exports = (env, argv) => ({
       template: './src/index.html',
     }),
     new CopyWebpackPlugin({
-      patterns: [{ from: 'css', to: 'css' }],
+      patterns: [
+        { from: 'css', to: 'css' },
+        { from: 'node_modules/normalize.css/normalize.css', to: 'css/normalize.css' },
+      ],
     }),
   ],
   devServer: {
