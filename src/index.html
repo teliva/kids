@@ -42,9 +42,12 @@
       align-items: flex-start;
       flex-direction: column;
       width: 350px;
-      border-left: 1px solid var(--kd-color-gray-30);
+      /* border-left: 1px solid var(--kd-color-gray-30); */
       overflow: visible;
       transition: width 0.2s ease;
+      padding: var(--kd-space-layout-gap-md);
+      position: relative;
+      background-color: var(--kd-color-gray-05);
     }
 
     .side-panel.collapsed {
@@ -60,7 +63,6 @@
     .side-panel-header {
       display: flex;
       align-items: center;
-      padding: var(--kd-space-layout-gap-md);
       flex-shrink: 0;
       position: relative;
     }
@@ -90,7 +92,6 @@
 
     kd-swatch-group {
       align-self: center;
-      padding: var(--kd-space-layout-gap-md);
       --kd-swatch-group-item-size: 60px;
     }
   </style>
@@ -123,10 +124,11 @@
         </div>
       </div>
       <div class="side-panel">
-        <div class="side-panel-header">
-          <kd-button appearance="plain" id="panel-toggle-btn" aria-expanded="true" aria-label="Collapse panel">
+        <kd-button appearance="plain" id="panel-toggle-btn" aria-expanded="true" aria-label="Collapse panel">
               <svg slot="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M15 3v18"/><path d="m8 9 3 3-3 3"/></svg>
           </kd-button>
+        <div class="side-panel-header">
+          
           <h2>Fabric</h2>
         </div>
         <kd-swatch-group label="Fabric finish" name="fabric" value="kfi_1504" columns="4">

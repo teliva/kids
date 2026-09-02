@@ -51,7 +51,7 @@ export class KdSwatchGroup extends LitElement {
         var(--kd-swatch-group-columns, auto-fill),
         minmax(var(--kd-swatch-group-item-size, 60px), 1fr)
       );
-      gap: var(--kd-space-4);
+      gap: var(--kd-space-2);
     }
 
     .grid slot {
