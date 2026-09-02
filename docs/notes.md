@@ -1,18 +1,12 @@
 XS: 2px (Checkboxes, badges)
-
 S: 4px (Small buttons, input fields)
-
 M: 8px (Standard cards, dropdown menus)
-
 L: 16px (Modals, large containers)
-
 Full: 9999px (Pill-shaped tags or profile circles
 
 $$\text{Inner Radius} = \text{Outer Radius} - \text{Padding}$$If a large promo card has a border radius of 24px and an internal padding of 16px, any button nestled flush against that corner needs a radius of exactly 8px to look visually perfect.
 
 web components have a flash of unstyled content and that issue needs to be solved with a script at the very beginning of the page load
-
-
 
 Tailwind Token,rem Value,Pixel Equivalent (at 16px root),Common Use Case
 p-1,0.25rem,4px,"Tight spacing, badge padding"
@@ -20,9 +14,6 @@ p-2,0.5rem,8px,"Small buttons, card item spacing"
 p-4,1rem,16px,"Standard button padding, list items"
 p-6,1.5rem,24px,"Card padding, small container padding"
 p-8,2rem,32px,"Main section padding, large hero layout"
-
-
-
 
 This is more of a design question than something to dig through code for, so here's the short answer:
 
@@ -82,12 +73,10 @@ background: oklch(from var(--color-primary) calc(l - 0.08) c h);
 
 The primary rule of a design system is that your primary button (primary-bg) must have at least a 4.5:1 contrast ratio against its text.
 
-
 card border radius is 12px or 0.75rem -> 
 border radius (0.0625rem)
 colors for luminescence use normal quiet loud
 normal font weight is 400
-
 
 for example 
 
@@ -118,12 +107,10 @@ for example
 }
 
 
-The 2 Core Tests to Decide Between 300 and 400To place your color accurately, evaluate it against two technical standards:Test 1: The WCAG Contrast Rule (3:1 vs. 4.5:1)This is the most objective test. Calculate the contrast ratio of your color against a white background (#FFFFFF):If contrast is between 2.0:1 and 3.0:1 It belongs at brand-300UI Role: Too light for solid text or primary buttons. It is used for decorative graphics, subtle borders, card outlines, or disabled/passive states.If contrast is between 3.0:1 and 4.5:1 It belongs at brand-400UI Role: Meets WCAG AA for large UI elements and graphical components (like input borders, active toggles, icons, or primary buttons that use black text).
+The 2 Core Tests to Decide Between 300 and 400
+To place your color accurately, evaluate it against two technical standards:Test 1: The WCAG Contrast Rule (3:1 vs. 4.5:1)This is the most objective test. Calculate the contrast ratio of your color against a white background (#FFFFFF):If contrast is between 2.0:1 and 3.0:1 It belongs at brand-300UI Role: Too light for solid text or primary buttons. It is used for decorative graphics, subtle borders, card outlines, or disabled/passive states.If contrast is between 3.0:1 and 4.5:1 It belongs at brand-400UI Role: Meets WCAG AA for large UI elements and graphical components (like input borders, active toggles, icons, or primary buttons that use black text).
 
 The next thing you learn is that all the dynanic logic part exists during theme creation not during theme interpretation
-
-
-
 
 for controls rad = 0.375 * 1rem
 for panels rad = 0.75 * 1 rem
@@ -157,10 +144,13 @@ Padding within a group (e.g., between "Submit" and "Cancel") should always be si
 
 Always keep space between control groups at least 1.5× to 2× larger than the space between controls within the same group.
 
-buttons have 6 staetes:
+buttons have 6 states:
 default 
 hover
 focus state
 pressed state
 loading state
 disabled state
+
+## WIP
+- Missing font-sizing most applications need no more than 2 fonts I need to standardize typography
