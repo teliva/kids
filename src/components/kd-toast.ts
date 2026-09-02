@@ -38,7 +38,7 @@ export class KdToast extends LitElement {
       max-width: var(--kd-toast-max-width, 22rem);
       padding: 0 var(--kd-space-component-padding-md-x);
       height: 48px;
-      border-radius: 8px;
+      border-radius: var(--kd-radius-md);
       border-left: 4px solid var(--kd-toast-accent, var(--kd-color-brand));
       background: var(--kd-toast-background, #fff);
       color: var(--kd-toast-color, #1a1a1a);
@@ -131,7 +131,7 @@ export class KdToast extends LitElement {
       height: 1.5rem;
       margin: calc(var(--kd-space-1) * -1) calc(var(--kd-space-1) * -1) calc(var(--kd-space-1) * -1) 0;
       border: none;
-      border-radius: 6px;
+      border-radius: var(--kd-radius-sm);
       background: transparent;
       color: inherit;
       font: inherit;

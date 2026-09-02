@@ -50,7 +50,7 @@ export class KdSwatch extends LitElement {
       position: relative;
       width: var(--size);
       height: var(--size);
-      border-radius: 0.375rem;
+      border-radius: var(--kd-radius-sm);
       overflow: hidden;
       background: var(--kd-color-gray-10);
       outline: 2px solid transparent;
@@ -114,7 +114,7 @@ export class KdSwatch extends LitElement {
       bottom: 3px;
       width: 1rem;
       height: 1rem;
-      border-radius: 50%;
+      border-radius: var(--kd-radius-full);
       background: var(--kd-color-brand);
       color: contrast-color(var(--kd-color-brand));
       display: flex;

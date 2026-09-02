@@ -52,7 +52,7 @@ export class KdSwitch extends LitElement {
       width: var(--width);
       height: var(--height);
       border: 2px solid var(--kd-color-gray-50);
-      border-radius: 9999px;
+      border-radius: var(--kd-radius-pill);
       background: var(--kd-color-gray-10);
       transition:
         background-color 0.15s ease,
@@ -66,7 +66,7 @@ export class KdSwitch extends LitElement {
       left: 1px;
       width: var(--thumb-size);
       height: var(--thumb-size);
-      border-radius: 50%;
+      border-radius: var(--kd-radius-full);
       background: var(--kd-color-gray-50);
       translate: 10% -50%;
       transition:

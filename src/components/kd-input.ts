@@ -54,7 +54,7 @@ export class KdInput extends LitElement {
       gap: var(--kd-space-component-gap-sm);
       width: 100%;
       border: 1px solid var(--kd-input-border-color, var(--kd-neutral-color));
-      border-radius: 8px;
+      border-radius: var(--kd-radius-md);
       background: var(--kd-input-background, #fff);
       color: var(--kd-input-color, #1a1a1a);
       transition:
@@ -114,7 +114,7 @@ export class KdInput extends LitElement {
     :host([size="small"]) .base {
       height: 36px;
       padding: 0 var(--kd-space-3);
-      border-radius: 6px;
+      border-radius: var(--kd-radius-sm);
     }
 
     :host([size="small"]) .input {
@@ -124,7 +124,7 @@ export class KdInput extends LitElement {
     :host([size="large"]) .base {
       height: 56px;
       padding: 0 var(--kd-space-6);
-      border-radius: 10px;
+      border-radius: var(--kd-radius-lg);
     }
 
     :host([size="large"]) .input {

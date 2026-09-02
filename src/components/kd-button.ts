@@ -41,7 +41,7 @@ export class KdButton extends LitElement {
       border: 1px solid transparent;
       cursor: pointer;
       background-color: var(--kd-button-color);
-      border-radius: 0.375rem;
+      border-radius: var(--kd-radius-md);
       user-select: none;
       white-space: nowrap;
       transition:
@@ -61,7 +61,7 @@ export class KdButton extends LitElement {
     }
 
     :host([pill]) button {
-      border-radius: 9999px;
+      border-radius: var(--kd-radius-pill);
     }
 
     :host([appearance="outline"]) button {
@@ -80,7 +80,7 @@ export class KdButton extends LitElement {
       background-color: transparent;
       border-color: transparent;
       padding: var(--kd-space-component-padding-md-y);
-      border-radius: 9999px;
+      border-radius: var(--kd-radius-pill);
     }
 
     :host([appearance="plain"]) button:hover {

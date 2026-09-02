@@ -51,7 +51,7 @@ export class KdTooltip extends LitElement {
       z-index: var(--kd-tooltip-z-index, 1000);
       max-width: var(--kd-tooltip-max-width, 20rem);
       padding: var(--kd-space-component-padding-sm-y) var(--kd-space-component-padding-sm-x);
-      border-radius: 8px;
+      border-radius: var(--kd-radius-md);
       background: var(--kd-tooltip-background, #222);
       color: var(--kd-tooltip-color, #fff);
       font-family: var(--kd-font-family);

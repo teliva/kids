@@ -28,6 +28,17 @@
   --kd-box-shadow-s: calc(0 * 0.125rem) calc(0.5 * 0.125rem) calc(1.25 * 0.125rem) calc(0 * 0.125rem) rgb(0 0 0 / 0.3);
   --kd-box-shadow-l: calc(0 * 0.5rem) calc(0.5 * 0.5rem) calc(1.25 * 0.5rem) calc(0 * 0.5rem) rgb(0 0 0 / 0.3);
 
+  --kd-radius-sm: 0.375rem;
+  /* 6px - small controls (input small, toast icon button) */
+  --kd-radius-md: 0.5rem;
+  /* 8px - default controls (button, input base, toast, tooltip) */
+  --kd-radius-lg: 0.625rem;
+  /* 10px - large controls (input large) */
+  --kd-radius-pill: 9999px;
+  /* fully rounded ends (pill button, switch track) */
+  --kd-radius-full: 50%;
+  /* circular (avatar/swatch check, switch thumb) */
+
   --kd-loader-height: var(--kd-space-2);
 
   --kd-color-red-95: #fff0ef
