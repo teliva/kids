@@ -50,7 +50,7 @@ export class KdTooltip extends LitElement {
       left: 0;
       z-index: var(--kd-tooltip-z-index, 1000);
       max-width: var(--kd-tooltip-max-width, 20rem);
-      padding: 0.375rem 0.625rem;
+      padding: var(--kd-space-component-padding-sm-y) var(--kd-space-component-padding-sm-x);
       border-radius: 8px;
       background: var(--kd-tooltip-background, #222);
       color: var(--kd-tooltip-color, #fff);
@@ -76,8 +76,8 @@ export class KdTooltip extends LitElement {
 
     .arrow {
       position: absolute;
-      width: 8px;
-      height: 8px;
+      width: var(--kd-space-2);
+      height: var(--kd-space-2);
       background: var(--kd-tooltip-background, #222);
       transform: rotate(45deg);
     }

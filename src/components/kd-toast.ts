@@ -33,10 +33,10 @@ export class KdToast extends LitElement {
       justify-content: center;
       z-index: var(--kd-toast-z-index, 1100);
       display: none;
-      gap: 0.625rem;
+      gap: var(--kd-space-component-gap-sm);
       width: max-content;
       max-width: var(--kd-toast-max-width, 22rem);
-      padding: 0 1rem;
+      padding: 0 var(--kd-space-component-padding-md-x);
       height: 48px;
       border-radius: 8px;
       border-left: 4px solid var(--kd-toast-accent, var(--kd-color-brand));
@@ -63,19 +63,19 @@ export class KdToast extends LitElement {
     }
 
     :host([placement^="top"]) .toast {
-      top: 1rem;
+      top: var(--kd-space-layout-gap-md);
     }
 
     :host([placement^="bottom"]) .toast {
-      bottom: 1rem;
+      bottom: var(--kd-space-layout-gap-md);
     }
 
     :host([placement$="start"]) .toast {
-      left: 1rem;
+      left: var(--kd-space-layout-gap-md);
     }
 
     :host([placement$="end"]) .toast {
-      right: 1rem;
+      right: var(--kd-space-layout-gap-md);
     }
 
     :host([placement="top"]) .toast,
@@ -129,7 +129,7 @@ export class KdToast extends LitElement {
       justify-content: center;
       width: 1.5rem;
       height: 1.5rem;
-      margin: -0.25rem -0.25rem -0.25rem 0;
+      margin: calc(var(--kd-space-1) * -1) calc(var(--kd-space-1) * -1) calc(var(--kd-space-1) * -1) 0;
       border: none;
       border-radius: 6px;
       background: transparent;

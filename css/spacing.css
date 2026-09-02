@@ -1,0 +1,60 @@
+:root {
+  /* Primitive spacing scale (base-4/8, rem-authored) */
+  --kd-space-1: 0.25rem;   /* 4px */
+  --kd-space-2: 0.5rem;    /* 8px */
+  --kd-space-3: 0.75rem;   /* 12px */
+  --kd-space-4: 1rem;      /* 16px */
+  --kd-space-6: 1.5rem;    /* 24px */
+  --kd-space-8: 2rem;      /* 32px */
+  --kd-space-12: 3rem;     /* 48px */
+  --kd-space-16: 4rem;     /* 64px */
+  --kd-space-24: 6rem;     /* 96px */
+
+  /* Semantic - component (control-internal) spacing */
+  --kd-space-component-padding-sm-y: var(--kd-space-1);
+  --kd-space-component-padding-sm-x: var(--kd-space-2);
+  --kd-space-component-padding-md-y: var(--kd-space-2);
+  --kd-space-component-padding-md-x: var(--kd-space-4);
+  --kd-space-component-padding-lg-y: var(--kd-space-3);
+  --kd-space-component-padding-lg-x: var(--kd-space-6);
+  --kd-space-component-gap-sm: var(--kd-space-2);
+
+  /* Semantic - layout (between controls/sections) spacing */
+  --kd-space-layout-gap-sm: var(--kd-space-2);
+  --kd-space-layout-gap-md: var(--kd-space-4);
+  --kd-space-layout-gap-lg: var(--kd-space-8);
+  --kd-space-layout-section-gap: var(--kd-space-12);
+
+  /* Breakpoints (reference only - custom properties don't work in
+     @media conditions; copy these literal values by hand when needed) */
+  --kd-breakpoint-narrow: 0px;
+  --kd-breakpoint-mid: 768px;
+  --kd-breakpoint-wide: 1024px;
+  --kd-breakpoint-ultrawide: 1440px;
+
+  /* Column grid reference tokens */
+  --kd-grid-columns-narrow: 4;
+  --kd-grid-columns-mid: 8;
+  --kd-grid-columns-wide: 12;
+  --kd-grid-gutter-narrow: var(--kd-space-4);
+  --kd-grid-gutter-mid: var(--kd-space-6);
+  --kd-grid-gutter-wide: var(--kd-space-6);
+  --kd-grid-margin-narrow: var(--kd-space-4);
+  --kd-grid-margin-mid: var(--kd-space-8);
+  --kd-grid-margin-wide: var(--kd-space-12);
+
+  /* Reserved layout constants */
+  --kd-layout-header-height: 4rem; /* 64px, per docs/notes.md */
+}
+
+/* Density variants: :root above = comfortable (default) */
+:root[data-density="compact"] {
+  --kd-space-component-padding-md-y: var(--kd-space-1);
+  --kd-space-component-padding-md-x: var(--kd-space-3);
+  --kd-space-component-padding-lg-y: var(--kd-space-2);
+  --kd-space-component-padding-lg-x: var(--kd-space-4);
+  --kd-space-component-gap-sm: var(--kd-space-1);
+  --kd-space-layout-gap-sm: var(--kd-space-1);
+  --kd-space-layout-gap-md: var(--kd-space-3);
+  --kd-space-layout-gap-lg: var(--kd-space-6);
+}

@@ -23,7 +23,7 @@ export class KdSwitch extends LitElement {
     .control {
       display: inline-flex;
       align-items: center;
-      gap: 0.625rem;
+      gap: var(--kd-space-component-gap-sm);
       cursor: pointer;
     }
 
@@ -125,9 +125,9 @@ export class KdSwitch extends LitElement {
     }
 
     .help-text {
-      margin-top: 0.375rem;
+      margin-top: var(--kd-space-1);
       margin-left: 3.375rem;
-      font-size: 5rem;
+      font-size: 0.75rem;
       color: var(--kd-switch-help-text-color, rgba(0, 0, 0, 0.6));
     }
   `;

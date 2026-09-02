@@ -20,7 +20,7 @@ export class KdSwatch extends LitElement {
     :host {
       display: inline-block;
       font-family: var(--kd-font-family);
-      --size: 60px;
+      --size: 64px;
     }
 
     .control {

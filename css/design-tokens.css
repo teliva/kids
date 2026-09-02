@@ -28,7 +28,7 @@
   --kd-box-shadow-s: calc(0 * 0.125rem) calc(0.5 * 0.125rem) calc(1.25 * 0.125rem) calc(0 * 0.125rem) rgb(0 0 0 / 0.3);
   --kd-box-shadow-l: calc(0 * 0.5rem) calc(0.5 * 0.5rem) calc(1.25 * 0.5rem) calc(0 * 0.5rem) rgb(0 0 0 / 0.3);
 
-  --kd-loader-height: 5 px;
+  --kd-loader-height: var(--kd-space-2);
 
   --kd-color-red-95: #fff0ef
     /* oklch(96.667% 0.01632 22.08) */
@@ -197,6 +197,12 @@
   /* oklch(0.10 0 0); Dark Mode App Background */
   --kd-color-gray: var(--kd-color-gray-60);
   --kd-color-gray-key: 60;
+
+  /* Semantic aliases */
+  --kd-color-neutral: var(--kd-color-gray);
+  --kd-color-success: var(--kd-color-green);
+  --kd-color-warning: var(--kd-color-yellow);
+  --kd-color-danger: var(--kd-color-red);
 
   body {
     font-family: var(--kd-font-family);

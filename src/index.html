@@ -7,11 +7,13 @@
 
   <link rel="stylesheet" href="css/normalize.css" />
   <link rel="stylesheet" href="css/design-tokens.css" />
+  <link rel="stylesheet" href="css/spacing.css" />
 
   <style>
     body {
       padding: 0;
       margin: 0;
+      font-size:1rem;
     }
 
     .app {
@@ -39,7 +41,7 @@
       display: flex;
       align-items: flex-start;
       flex-direction: column;
-      width: 400px;
+      width: 350px;
       border-left: 1px solid var(--kd-color-gray-30);
       overflow: visible;
       transition: width 0.2s ease;
@@ -58,7 +60,7 @@
     .side-panel-header {
       display: flex;
       align-items: center;
-      padding: 1rem;
+      padding: var(--kd-space-layout-gap-md);
       flex-shrink: 0;
       position: relative;
     }
@@ -78,21 +80,17 @@
       display: none;
     }
 
-    .toc-navigation {
-      position: absolute;
-      top: 0;
-      padding: 1rem;
-    }
-
     .calls-to-action {
       position: absolute;
+      display:flex;
       bottom: 0;
-      padding: 1rem;
+      padding: var(--kd-space-layout-gap-md);
+      gap: var(--kd-space-layout-gap-md);
     }
 
     kd-swatch-group {
       align-self: center;
-      padding: 1rem;
+      padding: var(--kd-space-layout-gap-md);
       --kd-swatch-group-item-size: 60px;
     }
   </style>
@@ -103,34 +101,26 @@
 
 <body>
   <div class="top-container">
-    <kd-loader style="position:fixed; top:0; left:0; right:0; --kd-loader-height:4px;" value="90"></kd-loader>
+    <kd-loader style="position:fixed; top:0; left:0; right:0; --kd-loader-height:var(--kd-space-1);" value="90"></kd-loader>
     <div class="app-container">
       <div id="app" class="app">
-        <div class="toc-navigation">
-          <kd-button appearance="plain" id="render-btn">
-          <svg slot="icon" data-v-39ea7f52="" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-            class="lucide lucide-table-of-contents-icon lucide-table-of-contents lucide-icon customizable">
-            <path d="M16 5H3"></path>
-            <path d="M16 12H3"></path>
-            <path d="M16 19H3"></path>
-            <path d="M21 5h.01"></path>
-            <path d="M21 12h.01"></path>
-            <path d="M21 19h.01"></path>
-          </svg>
-          </kd-button>
-        </div>
         <div class="calls-to-action">
-          <kd-button appearance="solid" id="render-btn">
+          <kd-button appearance="outline" variant="neutral" id="render-btn">
             <svg slot="icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
               fill="currentColor">
               <path
                 d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm40-80h480L570-480 450-320l-90-120-120 160Zm-40 80v-560 560Z" />
             </svg>
-            <span slot="label">Image</span>
+            <span slot="label">Download Image</span>
           </kd-button>
-          <kd-switch label="Enable notifications" checked></kd-switch>
-          <kd-switch label="Disabled" disabled></kd-switch>
+          <kd-button appearance="outline" variant="danger" id="render-btn">
+            <svg slot="icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+              fill="currentColor">
+              <path
+                d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm40-80h480L570-480 450-320l-90-120-120 160Zm-40 80v-560 560Z" />
+            </svg>
+            <span slot="label">Download PDF</span>
+          </kd-button>
         </div>
       </div>
       <div class="side-panel">
@@ -186,6 +176,10 @@
       });
     </script> -->
 
+
+
+    <!-- <kd-switch label="Enable notifications" checked></kd-switch>
+          <kd-switch label="Disabled" disabled></kd-switch> -->
 
 
 <!-- <kd-button appearance="solid" id="render-btn">

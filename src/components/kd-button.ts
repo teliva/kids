@@ -9,6 +9,23 @@ export class KdButton extends LitElement {
     :host {
       display: inline-block;
       vertical-align: middle;
+      --kd-button-color: var(--kd-color-brand);
+    }
+
+    :host([variant="neutral"]) {
+      --kd-button-color: var(--kd-color-neutral);
+    }
+
+    :host([variant="success"]) {
+      --kd-button-color: var(--kd-color-success);
+    }
+
+    :host([variant="warning"]) {
+      --kd-button-color: var(--kd-color-warning);
+    }
+
+    :host([variant="danger"]) {
+      --kd-button-color: var(--kd-color-danger);
     }
 
     button {
@@ -20,11 +37,11 @@ export class KdButton extends LitElement {
       font-weight: 400;
       font-size: 1rem;
       line-height: 1.5;
-      padding: 0.625rem 1rem;
-      border: 2px solid transparent;
+      padding: var(--kd-space-component-padding-md-y) var(--kd-space-component-padding-md-x);
+      border: 1px solid transparent;
       cursor: pointer;
-      background-color: var(--kd-color-brand);
-      border-radius: 9999px;
+      background-color: var(--kd-button-color);
+      border-radius: 0.375rem;
       user-select: none;
       white-space: nowrap;
       transition:
@@ -35,7 +52,7 @@ export class KdButton extends LitElement {
     }
 
     button:hover {
-      background-color: var(--kd-primary-hover);
+      background-color: color-mix(in srgb, var(--kd-button-color) 15%, white 85%);
       box-shadow: var(--kd-box-shadow-s);
     }
 
@@ -43,15 +60,18 @@ export class KdButton extends LitElement {
       transform: scale(0.96);
     }
 
+    :host([pill]) button {
+      border-radius: 9999px;
+    }
+
     :host([appearance="outline"]) button {
       background-color: transparent;
-      border-color: var(--kd-color-brand);
-      color: var(--kd-color-brand);
+      border-color: var(--kd-button-color);
+      color: var(--kd-button-color);
     }
 
     :host([appearance="outline"]) button:hover {
-      background-color: var(--kd-primary-hover);
-      border-color: transparent;
+      background-color: color-mix(in srgb, var(--kd-button-color) 15%, white 85%);
       color: inherit;
       box-shadow: none;
     }
@@ -59,7 +79,7 @@ export class KdButton extends LitElement {
     :host([appearance="plain"]) button {
       background-color: transparent;
       border-color: transparent;
-      padding: 0.5rem;
+      padding: var(--kd-space-component-padding-md-y);
       border-radius: 9999px;
     }
 
@@ -85,10 +105,16 @@ export class KdButton extends LitElement {
     ::slotted([slot="icon"]) {
       width: 1.25rem;
       height: 1.25rem;
-      color: var(--kd-icon-color, var(--kd-color-gray-60));
+      color: var(--kd-icon-color, var(--kd-button-color));
     }
   `;
   @property({ reflect: true }) appearance: "solid" | "outline" | "plain" = "solid";
+
+  ;
+
+  @property({ reflect: true }) variant: "neutral" | "brand" | "success" | "warning" | "danger" = "brand";
+
+  @property({ type: Boolean, reflect: true }) pill = false;
 
   @state() private textColor = "#000000";
 
@@ -127,7 +153,7 @@ export class KdButton extends LitElement {
   }
 
   updated(changedProperties: PropertyValues<this>) {
-    if (changedProperties.has("appearance")) {
+    if (changedProperties.has("appearance") || changedProperties.has("variant")) {
       this.updateContrastColor();
     }
   }
