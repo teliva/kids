@@ -47,7 +47,8 @@ export class KdButton extends LitElement {
       font-weight: 400;
       font-size: 1rem;
       line-height: 1.5;
-      padding: var(--kd-space-component-padding-md-y) var(--kd-space-component-padding-md-x);
+      height: var(--kd-space-component-height-md);
+      padding-inline: var(--kd-space-component-padding-md-x);
       border: 1px solid transparent;
       cursor: pointer;
       background-color: var(--kd-button-color);
@@ -73,6 +74,14 @@ export class KdButton extends LitElement {
 
     :host([pill]) button {
       border-radius: var(--kd-radius-pill);
+    }
+
+    :host([size="sm"]) button {
+      height: var(--kd-space-component-height-sm);
+    }
+
+    :host([size="lg"]) button {
+      height: var(--kd-space-component-height-lg);
     }
 
     :host([appearance="outline"]) button {
@@ -130,6 +139,8 @@ export class KdButton extends LitElement {
   @property({ reflect: true }) variant: "neutral" | "brand" | "success" | "warning" | "danger" = "brand";
 
   @property({ type: Boolean, reflect: true }) pill = false;
+
+  @property({ reflect: true }) size: "sm" | "md" | "lg" = "md";
 
   @state() private textColor = "#000000";
 

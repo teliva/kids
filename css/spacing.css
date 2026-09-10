@@ -6,7 +6,9 @@
   --kd-space-4: 1rem;      /* 16px */
   --kd-space-6: 1.5rem;    /* 24px */
   --kd-space-8: 2rem;      /* 32px */
+  --kd-space-10: 2.5rem;   /* 40px */
   --kd-space-12: 3rem;     /* 48px */
+  --kd-space-14: 3.5rem;   /* 56px */
   --kd-space-16: 4rem;     /* 64px */
   --kd-space-24: 6rem;     /* 96px */
 
@@ -18,6 +20,11 @@
   --kd-space-component-padding-lg-y: var(--kd-space-3);
   --kd-space-component-padding-lg-x: var(--kd-space-6);
   --kd-space-component-gap-sm: var(--kd-space-2);
+
+  /* Semantic - component control height (fixed control sizing, 8px intervals) */
+  --kd-space-component-height-sm: var(--kd-space-10); /* 40px */
+  --kd-space-component-height-md: var(--kd-space-12); /* 48px */
+  --kd-space-component-height-lg: var(--kd-space-14); /* 56px */
 
   /* Semantic - layout (between controls/sections) spacing */
   --kd-space-layout-gap-sm: var(--kd-space-2);
