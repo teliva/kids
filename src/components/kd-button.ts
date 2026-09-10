@@ -10,22 +10,32 @@ export class KdButton extends LitElement {
       display: inline-block;
       vertical-align: middle;
       --kd-button-color: var(--kd-color-brand);
+      --kd-button-hover-color: var(--kd-color-brand-hover);
+      --kd-button-active-color: var(--kd-color-brand-active);
     }
 
     :host([variant="neutral"]) {
       --kd-button-color: var(--kd-color-neutral);
+      --kd-button-hover-color: var(--kd-color-neutral-hover);
+      --kd-button-active-color: var(--kd-color-neutral-active);
     }
 
     :host([variant="success"]) {
       --kd-button-color: var(--kd-color-success);
+      --kd-button-hover-color: var(--kd-color-success-hover);
+      --kd-button-active-color: var(--kd-color-success-active);
     }
 
     :host([variant="warning"]) {
       --kd-button-color: var(--kd-color-warning);
+      --kd-button-hover-color: var(--kd-color-warning-hover);
+      --kd-button-active-color: var(--kd-color-warning-active);
     }
 
     :host([variant="danger"]) {
       --kd-button-color: var(--kd-color-danger);
+      --kd-button-hover-color: var(--kd-color-danger-hover);
+      --kd-button-active-color: var(--kd-color-danger-active);
     }
 
     button {
@@ -52,11 +62,12 @@ export class KdButton extends LitElement {
     }
 
     button:hover {
-      background-color: color-mix(in srgb, var(--kd-button-color) 15%, white 85%);
+      background-color: var(--kd-button-hover-color);
       box-shadow: var(--kd-box-shadow-s);
     }
 
     button:active {
+      background-color: var(--kd-button-active-color);
       transform: scale(0.96);
     }
 
@@ -74,6 +85,10 @@ export class KdButton extends LitElement {
       background-color: color-mix(in srgb, var(--kd-button-color) 15%, white 85%);
       color: inherit;
       box-shadow: none;
+    }
+
+    :host([appearance="outline"]) button:active {
+      background-color: transparent;
     }
 
     :host([appearance="plain"]) button {

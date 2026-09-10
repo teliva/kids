@@ -7,8 +7,7 @@
 }
 
 :root {
-  --kd-color-brand: var(--kd-color-brand-20);
-  --kd-primary-hover: color-mix(in srgb, var(--kd-color-brand) 85%, black 15%);
+  --kd-color-brand: var(--kd-color-brand-40);
   --kd-font-family: 'FKGroteskNeue', sans-serif;
 
   --kd-font-size-xs: 0.75rem;
@@ -76,6 +75,8 @@
   ;
   --kd-color-red: var(--kd-color-red-50);
   --kd-color-red-key: 50;
+  --kd-color-red-hover: var(--kd-color-red-60);
+  --kd-color-red-active: var(--kd-color-red-40);
 
   --kd-color-yellow-95: #fef3cd
     /* oklch(96.322% 0.05069 93.748) */
@@ -112,6 +113,8 @@
   ;
   --kd-color-yellow: var(--kd-color-yellow-80);
   --kd-color-yellow-key: 80;
+  --kd-color-yellow-hover: var(--kd-color-yellow-90);
+  --kd-color-yellow-active: var(--kd-color-yellow-70);
 
   --kd-color-green-95: #e3f9e3
     /* oklch(96.006% 0.03715 145.28) */
@@ -148,41 +151,45 @@
   ;
   --kd-color-green: var(--kd-color-green-60);
   --kd-color-green-key: 60;
+  --kd-color-green-hover: var(--kd-color-green-70);
+  --kd-color-green-active: var(--kd-color-green-50);
 
-  --kd-color-brand-95: #d2fef0
-    /* oklch(96.332% 0.04925 173.93) */
+  --kd-color-brand-95: #edf3fe
+    /* oklch(96.332% 0.01639 264.05) */
   ;
-  --kd-color-brand-90: #b7f5e2
-    /* oklch(92.202% 0.06757 173.93) */
+  --kd-color-brand-90: #d9e6fe
+    /* oklch(92.202% 0.03540 264.05) */
   ;
-  --kd-color-brand-80: #9cd9c6
-    /* oklch(83.811% 0.06757 173.93) */
+  --kd-color-brand-80: #b1cafc
+    /* oklch(83.811% 0.07596 264.05) */
   ;
-  --kd-color-brand-70: #81beac
-    /* oklch(75.435% 0.06757 173.93) */
+  --kd-color-brand-70: #89aefb
+    /* oklch(75.435% 0.11913 264.05) */
   ;
-  --kd-color-brand-60: #68a493
-    /* oklch(67.260% 0.06757 173.93) */
+  --kd-color-brand-60: #6191fa
+    /* oklch(67.260% 0.16392 264.05) */
   ;
-  --kd-color-brand-50: #4a8574
-    /* oklch(57.024% 0.06757 173.93) */
+  --kd-color-brand-50: #2f68f8
+    /* oklch(57.024% 0.22369 264.05) */
   ;
-  --kd-color-brand-40: #2b6758
-    /* oklch(47.020% 0.06757 173.93) */
+  --kd-color-brand-40: #0000ff
+    /* oklch(45.201% 0.31321 264.05) */
   ;
-  --kd-color-brand-30: #135344
-    /* oklch(39.723% 0.06757 173.93) */
+  --kd-color-brand-30: #022bbc
+    /* oklch(39.723% 0.22396 264.05) */
   ;
-  --kd-color-brand-20: #004739
-    /* oklch(35.497% 0.06757 173.93) */
+  --kd-color-brand-20: #011d8f
+    /* oklch(32.230% 0.18351 264.05) */
   ;
-  --kd-color-brand-10: #02251d
-    /* oklch(23.647% 0.04310 173.93) */
+  --kd-color-brand-10: #000566
+    /* oklch(23.647% 0.15615 264.05) */
   ;
-  --kd-color-brand-05: #011711
-    /* oklch(18.480% 0.03398 173.93) */
+  --kd-color-brand-05: #000247
+    /* oklch(18.480% 0.12245 264.05) */
   ;
-  --kd-color-brand-key: 20;
+  --kd-color-brand-key: 40;
+  --kd-color-brand-hover: var(--kd-color-brand-50);
+  --kd-color-brand-active: var(--kd-color-brand-30);
 
   --kd-color-gray-05: #fcfcfc;
   /* oklch(0.99 0 0); */
@@ -208,12 +215,22 @@
   /* oklch(0.10 0 0); Dark Mode App Background */
   --kd-color-gray: var(--kd-color-gray-60);
   --kd-color-gray-key: 60;
+  --kd-color-gray-hover: var(--kd-color-gray-50);
+  --kd-color-gray-active: var(--kd-color-gray-70);
 
   /* Semantic aliases */
   --kd-color-neutral: var(--kd-color-gray);
+  --kd-color-neutral-hover: var(--kd-color-gray-hover);
+  --kd-color-neutral-active: var(--kd-color-gray-active);
   --kd-color-success: var(--kd-color-green);
+  --kd-color-success-hover: var(--kd-color-green-hover);
+  --kd-color-success-active: var(--kd-color-green-active);
   --kd-color-warning: var(--kd-color-yellow);
+  --kd-color-warning-hover: var(--kd-color-yellow-hover);
+  --kd-color-warning-active: var(--kd-color-yellow-active);
   --kd-color-danger: var(--kd-color-red);
+  --kd-color-danger-hover: var(--kd-color-red-hover);
+  --kd-color-danger-active: var(--kd-color-red-active);
 
   body {
     font-family: var(--kd-font-family);
