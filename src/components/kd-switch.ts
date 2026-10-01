@@ -252,4 +252,5 @@ declare global {
   interface HTMLElementTagNameMap {
     "kd-switch": KdSwitch;
   }
+
 }

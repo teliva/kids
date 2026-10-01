@@ -92,7 +92,6 @@ export class KdButton extends LitElement {
 
     :host([appearance="outline"]) button:hover {
       background-color: color-mix(in srgb, var(--kd-button-color) 15%, white 85%);
-      color: inherit;
       box-shadow: none;
     }
 
