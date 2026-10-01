@@ -53,7 +53,7 @@ export class KdInput extends LitElement {
       align-items: center;
       gap: var(--kd-space-component-gap-sm);
       width: 100%;
-      border: 1px solid var(--kd-input-border-color, var(--kd-neutral-color));
+      border: 1px solid var(--kd-input-border-color, var(--kd-color-gray-30));
       border-radius: var(--kd-radius-md);
       background: var(--kd-input-background, #fff);
       color: var(--kd-input-color, #1a1a1a);
@@ -75,7 +75,7 @@ export class KdInput extends LitElement {
 
     :host([appearance="filled"]) .base {
       border-color: transparent;
-      background: var(--kd-input-filled-background, var(--kd-neutral-color));
+      background: var(--kd-input-filled-background, var(--kd-color-gray-10));
     }
 
     :host([appearance="filled"]) .base:hover {

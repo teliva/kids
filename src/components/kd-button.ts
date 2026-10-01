@@ -2,6 +2,7 @@ import { LitElement, css, html, type PropertyValues } from "lit";
 import { customElement, property, query, state } from "lit/decorators.js";
 import { styleMap } from "lit/directives/style-map.js";
 import { getContrastTextColor } from "../utils/contrast-color";
+import "./kd-spinner";
 
 @customElement("kd-button")
 export class KdButton extends LitElement {
@@ -62,12 +63,12 @@ export class KdButton extends LitElement {
         transform 0.1s ease;
     }
 
-    button:hover {
+    button:not(:disabled):hover {
       background-color: var(--kd-button-hover-color);
       box-shadow: var(--kd-box-shadow-s);
     }
 
-    button:active {
+    button:not(:disabled):active {
       background-color: var(--kd-button-active-color);
       transform: scale(0.96);
     }
@@ -90,12 +91,12 @@ export class KdButton extends LitElement {
       color: var(--kd-button-color);
     }
 
-    :host([appearance="outline"]) button:hover {
+    :host([appearance="outline"]) button:not(:disabled):hover {
       background-color: color-mix(in srgb, var(--kd-button-color) 15%, white 85%);
       box-shadow: none;
     }
 
-    :host([appearance="outline"]) button:active {
+    :host([appearance="outline"]) button:not(:disabled):active {
       background-color: transparent;
     }
 
@@ -106,12 +107,12 @@ export class KdButton extends LitElement {
       border-radius: var(--kd-radius-pill);
     }
 
-    :host([appearance="plain"]) button:hover {
+    :host([appearance="plain"]) button:not(:disabled):hover {
       background-color: var(--kd-plain-hover, rgba(0, 0, 0, 0.06));
       box-shadow: none;
     }
 
-    :host([appearance="plain"]) button:active {
+    :host([appearance="plain"]) button:not(:disabled):active {
       background-color: var(--kd-plain-active, rgba(0, 0, 0, 0.1));
     }
 
@@ -130,6 +131,38 @@ export class KdButton extends LitElement {
       height: 1.25rem;
       color: var(--kd-icon-color, var(--kd-button-color));
     }
+
+    /* Loading: hide content (keeping its width) and overlay the spinner */
+    button {
+      position: relative;
+    }
+
+    kd-spinner {
+      position: absolute;
+      inset: 0;
+      margin: auto;
+      --size: 1.25rem;
+      --indicator-color: currentColor;
+      --track-color: color-mix(in srgb, currentColor 30%, transparent);
+    }
+
+    :host([loading]) button {
+      cursor: progress;
+    }
+
+    :host([loading]) button:active {
+      transform: none;
+    }
+
+    :host([loading]) .icon,
+    :host([loading]) .label {
+      visibility: hidden;
+    }
+
+    :host([disabled]) button {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
   `;
   @property({ reflect: true }) appearance: "solid" | "outline" | "plain" = "solid";
 
@@ -140,6 +173,10 @@ export class KdButton extends LitElement {
   @property({ type: Boolean, reflect: true }) pill = false;
 
   @property({ reflect: true }) size: "sm" | "md" | "lg" = "md";
+
+  @property({ type: Boolean, reflect: true }) loading = false;
+
+  @property({ type: Boolean, reflect: true }) disabled = false;
 
   @state() private textColor = "#000000";
 
@@ -159,7 +196,17 @@ export class KdButton extends LitElement {
       gap: this.hasIcon && this.hasLabel ? "0.5rem" : "0rem",
     };
 
-    return html`<button type="button" style=${styleMap(styles)}>
+    return html`<button
+      type="button"
+      style=${styleMap(styles)}
+      ?disabled=${this.disabled}
+      aria-busy=${this.loading ? "true" : "false"}
+      aria-disabled=${this.loading ? "true" : "false"}
+      @click=${this.handleClick}
+    >
+      ${this.loading
+        ? html`<kd-spinner part="spinner" aria-hidden="true"></kd-spinner>`
+        : null}
       <span class="icon" part="icon" ?hidden=${!this.hasIcon}>
         <slot name="icon" @slotchange=${this.handleIconSlotChange}></slot>
       </span>
@@ -192,6 +239,15 @@ export class KdButton extends LitElement {
     const backgroundColor = getComputedStyle(this.buttonEl).backgroundColor;
     this.textColor = getContrastTextColor(backgroundColor);
     this.style.setProperty("--kd-icon-color", this.textColor);
+  };
+
+  // Block activation while loading without using `disabled`, so the
+  // button keeps keyboard focus. Also guards disabled, in case a click on
+  // slotted content still reaches the inner button.
+  private handleClick = (e: MouseEvent) => {
+    if (!this.loading && !this.disabled) return;
+    e.preventDefault();
+    e.stopPropagation();
   };
 
   private handleIconSlotChange = () => {

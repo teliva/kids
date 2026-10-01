@@ -95,7 +95,6 @@ Loose (Distinct form sections or button groups): 24px – 32px
 The spacing between controls conveys their functional relationship:
 
 Padding within a group (e.g., between "Submit" and "Cancel") should always be significantly smaller than the padding between separate groups (e.g., between the form fields and the action buttons).
-
 Always keep space between control groups at least 1.5× to 2× larger than the space between controls within the same group.
 
 buttons have 6 states:

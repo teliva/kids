@@ -17,7 +17,6 @@
       font-size: var(--kd-font-size-md);
     }
 
-
     body {
       /* Prevent default browser margins */
       margin: 0;
@@ -61,7 +60,6 @@
       align-items: flex-start;
       flex-direction: column;
       width: 350px;
-      /* border-left: 1px solid var(--kd-color-gray-30); */
       overflow: visible;
       transition: width 0.2s ease;
       padding: var(--kd-space-layout-gap-md);
@@ -125,6 +123,9 @@
 <body>
   <div class="top-container">
     <div class="app-container">
+      <kd-button varian="icon" size="md">
+        <svg slot="icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M120-280v-80h560v80H120Zm0-160v-80h560v80H120Zm0-160v-80h560v80H120Zm680 320q-17 0-28.5-11.5T760-320q0-17 11.5-28.5T800-360q17 0 28.5 11.5T840-320q0 17-11.5 28.5T800-280Zm0-160q-17 0-28.5-11.5T760-480q0-17 11.5-28.5T800-520q17 0 28.5 11.5T840-480q0 17-11.5 28.5T800-440Zm0-160q-17 0-28.5-11.5T760-640q0-17 11.5-28.5T800-680q17 0 28.5 11.5T840-640q0 17-11.5 28.5T800-600Z"/></svg>
+      </kd-button>
       <div id="app" class="app">
         <div class="calls-to-action">
           <kd-tooltip for="download-png" content="Download Image" placement="top"></kd-tooltip>
@@ -249,7 +250,7 @@
     </kd-button> -->
 <!-- <kd-button appearance="outline">Render</kd-button> -->
 <!-- <kd-button id="details-btn" appearance="outline">Details</kd-button> -->
-<!-- <kd-spinner label="Loading data" style="font-size:50px; --track-width: 4px;"></kd-spinner> -->
+
 
 <!-- <kd-input label="Email" type="email" placeholder="you@example.com" help-text="We'll never share your email." clearable required></kd-input>
     <kd-input label="Password" type="password" placeholder="Enter your password" appearance="filled" size="small"></kd-input> -->
