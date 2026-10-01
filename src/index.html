@@ -7,13 +7,14 @@
 
   <link rel="stylesheet" href="css/normalize.css" />
   <link rel="stylesheet" href="css/design-tokens.css" />
+  <link rel="stylesheet" href="css/fonts.css" />
   <link rel="stylesheet" href="css/spacing.css" />
 
   <style>
     body {
       padding: 0;
       margin: 0;
-      font-size: 1rem;
+      font-size: var(--kd-font-size-md);
     }
 
 
@@ -45,7 +46,7 @@
     }
 
     h2 {
-      font-size: var(--kd-font-size-xl);
+      font-size: var(--kd-font-size-2xl);
     }
 
     .top-container {
@@ -126,7 +127,8 @@
     <div class="app-container">
       <div id="app" class="app">
         <div class="calls-to-action">
-          <kd-button appearance="solid" variant="brand" pill id="render-btn" size="sm">
+          <kd-tooltip for="download-png" content="Download Image" placement="top"></kd-tooltip>
+          <kd-button appearance="solid" variant="brand" pill id="download-png" size="sm">
             <svg slot="icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
               fill="currentColor">
               <path
@@ -134,7 +136,8 @@
             </svg>
             <span slot="label">Download Image</span>
           </kd-button>
-          <kd-button appearance="outline" variant="danger" id="render-btn">
+          <kd-tooltip for="download-pdf" content="Download PDF" placement="top"></kd-tooltip>
+          <kd-button appearance="outline" variant="danger" id="download-pdf">
             <svg slot="icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
               fill="currentColor">
               <path

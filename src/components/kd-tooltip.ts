@@ -50,28 +50,22 @@ export class KdTooltip extends LitElement {
       left: 0;
       z-index: var(--kd-tooltip-z-index, 1000);
       max-width: var(--kd-tooltip-max-width, 20rem);
-      padding: var(--kd-space-component-padding-sm-y) var(--kd-space-component-padding-sm-x);
+      padding: var(--kd-space-component-padding-md-y) var(--kd-space-component-padding-md-x);
       border-radius: var(--kd-radius-md);
       background: var(--kd-tooltip-background, #222);
       color: var(--kd-tooltip-color, #fff);
       font-family: var(--kd-font-family);
-      font-size: 0.8125rem;
-      line-height: 1.4;
+      font-size: var(--kd-font-size-sm);
+      line-height: var(--kd-line-height-snug);
       text-align: start;
       box-shadow: var(--kd-box-shadow-s);
       opacity: 0;
       pointer-events: none;
-      transform-origin: center;
-      scale: 0.9;
-      transition:
-        opacity 0.1s ease,
-        scale 0.1s ease,
-        transform 0s;
+      transition: opacity 100ms ease;
     }
 
     .tooltip.visible {
       opacity: 1;
-      scale: 1;
     }
 
     .arrow {
@@ -99,8 +93,6 @@ export class KdTooltip extends LitElement {
 
   @query(".tooltip") private tooltipEl!: HTMLDivElement;
 
-  @query(".arrow") private arrowEl!: HTMLDivElement;
-
   @state() private contentId = `kd-tooltip-${idCounter++}`;
 
   private anchorEl: HTMLElement | null = null;
@@ -117,7 +109,6 @@ export class KdTooltip extends LitElement {
         aria-hidden=${this.open ? "false" : "true"}
       >
         <slot name="content">${this.content}</slot>
-        <div class="arrow" part="arrow"></div>
       </div>
     `;
   }
@@ -270,14 +261,13 @@ export class KdTooltip extends LitElement {
   }
 
   private updatePosition() {
-    if (!this.anchorEl || !this.tooltipEl || !this.arrowEl) return;
+    if (!this.anchorEl || !this.tooltipEl) return;
 
     const anchorRect = this.anchorEl.getBoundingClientRect();
     const tooltipRect = this.tooltipEl.getBoundingClientRect();
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
     const margin = 8;
-    const arrowSize = 8;
 
     const [rawSide, alignment] = this.placement.split("-") as [
       TooltipSide,
@@ -342,31 +332,6 @@ export class KdTooltip extends LitElement {
     );
 
     this.tooltipEl.style.transform = `translate(${Math.round(x)}px, ${Math.round(y)}px)`;
-
-    this.arrowEl.style.top = "";
-    this.arrowEl.style.bottom = "";
-    this.arrowEl.style.left = "";
-    this.arrowEl.style.right = "";
-
-    if (side === "top" || side === "bottom") {
-      const anchorCenterX = anchorRect.left + anchorRect.width / 2;
-      const arrowX = Math.min(
-        Math.max(anchorCenterX - x - arrowSize / 2, 6),
-        Math.max(6, tooltipRect.width - arrowSize - 6),
-      );
-      this.arrowEl.style.left = `${arrowX}px`;
-      this.arrowEl.style[side === "top" ? "bottom" : "top"] =
-        `-${arrowSize / 2}px`;
-    } else {
-      const anchorCenterY = anchorRect.top + anchorRect.height / 2;
-      const arrowY = Math.min(
-        Math.max(anchorCenterY - y - arrowSize / 2, 6),
-        Math.max(6, tooltipRect.height - arrowSize - 6),
-      );
-      this.arrowEl.style.top = `${arrowY}px`;
-      this.arrowEl.style[side === "left" ? "right" : "left"] =
-        `-${arrowSize / 2}px`;
-    }
   }
 }
 

@@ -43,8 +43,8 @@ export class KdToast extends LitElement {
       background: var(--kd-toast-background, #fff);
       color: var(--kd-toast-color, #1a1a1a);
       font-family: var(--kd-font-family);
-      font-size: 0.875rem;
-      line-height: 1.4;
+      font-size: var(--kd-font-size-sm);
+      line-height: var(--kd-line-height-snug);
       box-shadow: var(--kd-box-shadow-m);
       opacity: 0;
       scale: 0.95;
@@ -104,7 +104,7 @@ export class KdToast extends LitElement {
       width: 24px;
       height: 24px;
       margin-top: 0.0625rem;
-      font-size: 0.75rem;
+      font-size: var(--kd-font-size-xs);
       font-weight: 700;
       color: var(--kd-toast-accent, var(--kd-color-brand));
     }

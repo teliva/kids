@@ -115,7 +115,7 @@ export class KdSwitch extends LitElement {
     }
 
     .label {
-      font-size: 0.875rem;
+      font-size: var(--kd-font-size-sm);
       color: var(--kd-switch-label-color, inherit);
     }
 
@@ -127,7 +127,7 @@ export class KdSwitch extends LitElement {
     .help-text {
       margin-top: var(--kd-space-1);
       margin-left: 3.375rem;
-      font-size: 0.75rem;
+      font-size: var(--kd-font-size-xs);
       color: var(--kd-switch-help-text-color, rgba(0, 0, 0, 0.6));
     }
   `;

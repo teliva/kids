@@ -38,7 +38,7 @@ export class KdInput extends LitElement {
     .label {
       display: block;
       margin-bottom: var(--kd-space-1);
-      font-size: 0.8125rem;
+      font-size: var(--kd-font-size-sm);
       font-weight: 600;
       color: var(--kd-input-label-color, inherit);
     }
@@ -108,7 +108,7 @@ export class KdInput extends LitElement {
     }
 
     .input {
-      font-size: 0.875rem;
+      font-size: var(--kd-font-size-md);
     }
 
     :host([size="small"]) .base {
@@ -118,7 +118,7 @@ export class KdInput extends LitElement {
     }
 
     :host([size="small"]) .input {
-      font-size: 0.8125rem;
+      font-size: var(--kd-font-size-sm);
     }
 
     :host([size="large"]) .base {
@@ -128,7 +128,7 @@ export class KdInput extends LitElement {
     }
 
     :host([size="large"]) .input {
-      font-size: 1rem;
+      font-size: var(--kd-font-size-lg);
     }
 
     .input {
@@ -190,7 +190,7 @@ export class KdInput extends LitElement {
 
     .help-text {
       margin-top: var(--kd-space-1);
-      font-size: 0.75rem;
+      font-size: var(--kd-font-size-xs);
       color: var(--kd-input-help-text-color, rgba(0, 0, 0, 0.6));
     }
   `;
