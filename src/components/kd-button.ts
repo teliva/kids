@@ -40,6 +40,7 @@ export class KdButton extends LitElement {
     }
 
     button {
+      box-sizing: border-box;
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -104,16 +105,21 @@ export class KdButton extends LitElement {
       background-color: transparent;
       border-color: transparent;
       padding: var(--kd-space-component-padding-md-y);
-      border-radius: var(--kd-radius-pill);
     }
 
     :host([appearance="plain"]) button:not(:disabled):hover {
-      background-color: var(--kd-plain-hover, rgba(0, 0, 0, 0.06));
+      background-color: var(--kd-plain-hover, var(--kd-color-gray-20));
       box-shadow: none;
     }
 
     :host([appearance="plain"]) button:not(:disabled):active {
-      background-color: var(--kd-plain-active, rgba(0, 0, 0, 0.1));
+      background-color: var(--kd-plain-active, var(--kd-color-gray-30));
+    }
+
+    /* Icon-only: rounded square (circle with pill), sized by control height */
+    button.icon-only {
+      aspect-ratio: 1;
+      padding: 0;
     }
 
     .icon {
@@ -166,8 +172,6 @@ export class KdButton extends LitElement {
   `;
   @property({ reflect: true }) appearance: "solid" | "outline" | "plain" = "solid";
 
-  ;
-
   @property({ reflect: true }) variant: "neutral" | "brand" | "success" | "warning" | "danger" = "brand";
 
   @property({ type: Boolean, reflect: true }) pill = false;
@@ -198,6 +202,7 @@ export class KdButton extends LitElement {
 
     return html`<button
       type="button"
+      class=${this.hasIcon && !this.hasLabel ? "icon-only" : ""}
       style=${styleMap(styles)}
       ?disabled=${this.disabled}
       aria-busy=${this.loading ? "true" : "false"}
