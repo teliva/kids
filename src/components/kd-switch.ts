@@ -55,9 +55,9 @@ export class KdSwitch extends LitElement {
       border-radius: var(--kd-radius-pill);
       background: var(--kd-color-gray-10);
       transition:
-        background-color 0.15s ease,
-        border-color 0.15s ease,
-        box-shadow 0.15s ease;
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
     }
 
     .thumb {
@@ -70,8 +70,8 @@ export class KdSwitch extends LitElement {
       background: var(--kd-color-gray-50);
       translate: 10% -50%;
       transition:
-        translate 0.15s ease,
-        box-shadow 0.15s ease;
+        translate 0.2s ease,
+        box-shadow 0.2s ease;
     }
 
     .control:hover .thumb {

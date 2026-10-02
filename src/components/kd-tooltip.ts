@@ -61,7 +61,7 @@ export class KdTooltip extends LitElement {
       box-shadow: var(--kd-box-shadow-s);
       opacity: 0;
       pointer-events: none;
-      transition: opacity 100ms ease;
+      transition: opacity 0.1s ease;
     }
 
     .tooltip.visible {

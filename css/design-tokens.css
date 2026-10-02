@@ -209,22 +209,15 @@
   --kd-color-danger: var(--kd-color-red);
   --kd-color-danger-hover: var(--kd-color-red-hover);
   --kd-color-danger-active: var(--kd-color-red-active);
-
-  body {
-    font-family: var(--kd-font-family);
-    font-size: 16px;
-    background-color: #f4f3f0;
-    height: 100%;
-    width: 100%;
-  }
-
+  
   kd-button:not(:defined),
   kd-switch:not(:defined),
   kd-tooltip:not(:defined),
   kd-spinner:not(:defined),
   kd-loader:not(:defined),
   kd-toast:not(:defined),
-  kd-input:not(:defined) {
+  kd-input:not(:defined),
+  kd-tab:not(:defined) {
     visibility: hidden;
   }
 }

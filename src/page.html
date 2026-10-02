@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="stylesheet" href="css/normalize.css" />
+  <link rel="stylesheet" href="css/design-tokens.css" />
+  <link rel="stylesheet" href="css/fonts.css" />
+  <link rel="stylesheet" href="css/spacing.css" />
+
+  <style>
+  body {
+      margin: 0;
+      min-height: 100vh;
+      background-attachment: fixed;
+      background-size: cover;
+      font-family: var(--kd-font-family);
+      font-size: 16px;
+      background-color: #f4f3f0;
+      height: 100%;
+      width: 100%;
+    } 
+    
+    h2 {
+      font-size: var(--kd-font-size-2xl);
+    }
+
+    /* Narrow (base): page margins from the grid reference tokens */
+    .page {
+      padding: var(--kd-grid-margin-narrow);
+    }
+
+    /* Breakpoints - mirror --kd-breakpoint-* in css/spacing.css
+       (custom properties can't be used in @media conditions) */
+
+    /* Mid: 768px+ (--kd-breakpoint-mid) */
+    @media (min-width: 48em) {
+      .page {
+        padding: var(--kd-grid-margin-mid);
+      }
+    }
+
+    /* Wide: 1024px+ (--kd-breakpoint-wide) */
+    @media (min-width: 64em) {
+      .page {
+        padding: var(--kd-grid-margin-wide);
+      }
+    }
+
+    /* Ultrawide: 1440px+ (--kd-breakpoint-ultrawide) - cap line length */
+    @media (min-width: 90em) {
+      .page {
+        max-width: 1440px;
+        margin-inline: auto;
+      }
+    }
+  </style>
+
+  <title>kids - page</title>
+</head>
+
+<body>
+  <main class="page">
+  <kd-button id="toast-btn" appearance="outline" appearance="outline" variant="warning" size="sm">
+    <span slot="label">Warning</span>
+  </kd-button>
+  <kd-toast id="demo-toast" variant="warning" placement="bottom" duration="4000">
+    Changes saved successfully
+  </kd-toast>
+  </main>
+
+
+  <!-- <kd-switch label="Enable notifications" checked></kd-switch>
+          <kd-switch label="Disabled" disabled></kd-switch> -->
+
+  <!-- <kd-input label="Email" type="email" placeholder="you@example.com" help-text="We'll never share your email." clearable required></kd-input>
+    <kd-input label="Password" type="password" placeholder="Enter your password" appearance="filled" size="small"></kd-input> -->
+
+
+  <script type="module">
+    document.getElementById('toast-btn').addEventListener('click', () => {
+      document.getElementById('demo-toast').show();
+    });
+  </script>
+</body>
+
+</html>

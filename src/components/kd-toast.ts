@@ -49,8 +49,8 @@ export class KdToast extends LitElement {
       opacity: 0;
       scale: 0.95;
       transition:
-        opacity 0.18s ease,
-        scale 0.18s ease;
+        opacity 0.2s ease,
+        scale 0.2s ease;
     }
 
     :host([open]) .toast {

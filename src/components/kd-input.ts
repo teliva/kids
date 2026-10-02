@@ -58,9 +58,9 @@ export class KdInput extends LitElement {
       background: var(--kd-input-background, #fff);
       color: var(--kd-input-color, #1a1a1a);
       transition:
-        border-color 0.15s ease,
-        box-shadow 0.15s ease,
-        background-color 0.15s ease;
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background-color 0.2s ease;
     }
 
     .base:hover {

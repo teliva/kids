@@ -24,7 +24,12 @@ module.exports = (env, argv) => ({
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './src/index.html',
+      template: './src/configurator.html',
+      filename: 'configurator.html',
+    }),
+    new HtmlWebpackPlugin({
+      template: './src/page.html',
+      filename: 'page.html',
     }),
     new CopyWebpackPlugin({
       patterns: [

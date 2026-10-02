@@ -56,8 +56,8 @@ export class KdSwatch extends LitElement {
       outline: 2px solid transparent;
       outline-offset: 1px;
       transition:
-        outline-color 0.15s ease,
-        box-shadow 0.15s ease;
+        outline-color 0.2s ease,
+        box-shadow 0.2s ease;
     }
 
     .control:hover .swatch {
@@ -79,7 +79,7 @@ export class KdSwatch extends LitElement {
       height: 100%;
       object-fit: cover;
       opacity: 0;
-      transition: opacity 0.15s ease;
+      transition: opacity 0.2s ease;
     }
 
     .image.loaded {

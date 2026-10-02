@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="stylesheet" href="css/normalize.css" />
+  <link rel="stylesheet" href="css/design-tokens.css" />
+  <link rel="stylesheet" href="css/fonts.css" />
+  <link rel="stylesheet" href="css/spacing.css" />
+
+  <style>
+    body {
+      padding: 0;
+      margin: 0;
+      font-size: var(--kd-font-size-md);
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background-attachment: fixed;
+      background-size: cover;
+      font-family: var(--kd-font-family);
+      font-size: 16px;
+      background-color: #f4f3f0;
+      height: 100%;
+      width: 100%;
+    }
+
+
+    .app {
+      flex: 1;
+      position: relative;
+      /* Stacked layout (narrow): give the viewer real height, since its only
+         child (.calls-to-action) is absolutely positioned */
+      min-height: 60vh;
+    }
+
+    html {
+      height: 100%;
+      width: 100%;
+    }
+
+    h2 {
+      font-size: var(--kd-font-size-2xl);
+    }
+
+    .top-container {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      min-height: 100%;
+    }
+
+    /* Outer box only animates width and clips; padding lives on
+       .drawer-content so it can reach 0 and content doesn't reflow mid-slide */
+    .drawer {
+      --drawer-width: 300px;
+      position: relative;
+      flex-shrink: 0;
+      overflow: hidden;
+      transition: width 0.2s ease;
+      background-color: var(--kd-color-gray-05);
+    }
+
+    .drawer-content {
+      box-sizing: border-box;
+      display: flex;
+      align-items: flex-start;
+      flex-direction: column;
+      padding: var(--kd-space-layout-gap-md);
+      /* Stays visible until the collapse finishes; keeps hidden swatches out of tab order */
+      transition: visibility 0.2s;
+    }
+
+    .drawer.collapsed .drawer-content {
+      visibility: hidden;
+    }
+
+    /* Narrow (base): viewer on top, panel full-width underneath */
+    .app-container {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .drawer-header {
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .calls-to-action {
+      position: absolute;
+      display: flex;
+      bottom: 0;
+      padding: var(--kd-space-layout-gap-md);
+      gap: var(--kd-space-layout-gap-md);
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    /* Fill the panel width: as many fixed-size columns as fit, with leftover
+       space spread between them so both edges line up with the padding.
+       300px desktop panel -> 4 columns; phones get more. */
+    kd-swatch-group {
+      --swatch-size: 60px;
+      --kd-swatch-group-item-size: var(--swatch-size);
+      align-self: stretch;
+    }
+
+    kd-swatch-group kd-swatch {
+      --size: var(--swatch-size);
+    }
+
+    kd-swatch-group::part(grid) {
+      grid-template-columns: repeat(auto-fill, var(--swatch-size));
+      justify-content: space-between;
+    }
+
+    /* Narrow (base): rail runs as a row between viewer and panel */
+    .panel-rail,
+    .panel-rail-tabs {
+      display: flex;
+      flex-direction: row;
+      flex-shrink: 0;
+      gap: var(--kd-space-layout-gap-sm);
+    }
+
+    /* Collapse only applies side-by-side; hidden when stacked */
+    .panel-rail-toggle {
+      display: none;
+    }
+
+    .panel-rail-toggle svg[hidden] {
+      display: none;
+    }
+
+    /* Mid: 768px+ (--kd-breakpoint-mid) - side-by-side layout */
+    @media (min-width: 48em) {
+      .app-container {
+        flex-direction: row;
+      }
+
+      .app {
+        min-height: 0;
+      }
+
+      .drawer {
+        width: var(--drawer-width);
+      }
+
+      .drawer.collapsed {
+        width: 0;
+      }
+
+      .drawer-content {
+        width: var(--drawer-width);
+      }
+
+      .calls-to-action {
+        flex-wrap: nowrap;
+      }
+
+      .panel-rail,
+      .panel-rail-tabs {
+        flex-direction: column;
+      }
+
+      /* Top of the rail, divided from the tabs below it */
+      .panel-rail-toggle {
+        display: inline-block;
+        padding-bottom: var(--kd-space-layout-gap-sm);
+        border-bottom: 1px solid var(--kd-color-gray-20);
+      }
+    }
+
+    @media (min-width: 64em) {
+      .drawer {
+        --drawer-width: 300px;
+      }
+    }
+  </style>
+
+  <title>kids</title>
+</head>
+
+<body>
+  <div class="top-container">
+    <div class="app-container">
+      <kd-button variant="neutral" size="sm" appearance="plain" style="position: absolute; top:0; left:0; z-index: 1;">
+        <svg slot="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+          class="lucide lucide-table-of-contents preview-icon" aria-hidden="true" data-size="1000%" data-v-280fd610="">
+          <path d="M16 5H3"></path>
+          <path d="M16 12H3"></path>
+          <path d="M16 19H3"></path>
+          <path d="M21 5h.01"></path>
+          <path d="M21 12h.01"></path>
+          <path d="M21 19h.01"></path>
+        </svg>
+      </kd-button>
+      <div id="app" class="app">
+        <div class="calls-to-action">
+          <kd-tooltip for="download-png" content="Download Image" placement="top"></kd-tooltip>
+          <kd-button appearance="solid" variant="neutral" id="download-png" size="sm">
+            <svg slot="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-image lucide-icon customizable" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect><circle cx="9" cy="9" r="2"></circle><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path></svg>
+            <span slot="label">Download Image</span>
+          </kd-button>
+          <kd-tooltip for="download-pdf" content="Download PDF" placement="top"></kd-tooltip>
+          <kd-button appearance="solid" variant="neutral" id="download-pdf" size="sm">
+            <svg slot="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-text lucide-icon customizable" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"></path><path d="M14 2v5a1 1 0 0 0 1 1h5"></path><path d="M10 9H8"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg>
+            <span slot="label">Download PDF</span>
+          </kd-button>
+          <kd-tooltip for="ar-experience" content="Generate AR Experience" placement="top"></kd-tooltip>
+          <kd-button appearance="outline" variant="neutral" id="ar-experience" size="sm">
+            <svg slot="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-scan-box lucide-icon customizable" aria-hidden="true"><path d="M12 12v5.5"></path><path d="M17 3h2a2 2 0 012 2v2"></path><path d="M21 17v2a2 2 0 01-2 2h-2"></path><path d="M3 7V5a2 2 0 012-2h2"></path><path d="M7 21H5a2 2 0 01-2-2v-2"></path><path d="M7.264 9.252 12 12l4.737-2.748"></path><path d="M7.995 8.514A2 2 0 007 10.244v3.516a2 2 0 00.996 1.73l3 1.74a2 2 0 002.008 0l3-1.74A2 2 0 0017 13.76v-3.517a2 2 0 00-.995-1.73l-3-1.742a2 2 0 00-1.892-.064z"></path></svg>
+            <span slot="label">Augmented Reality</span>
+          </kd-button>
+        </div>
+      </div>
+      <div class="panel-rail">
+        <kd-button class="panel-rail-toggle" appearance="plain" size="sm" id="panel-toggle-btn" variant="neutral"
+          aria-expanded="true" aria-controls="drawer" aria-label="Collapse panel">
+          <!-- Expanded: arrow points toward the panel's edge (collapse) -->
+          <svg slot="icon" class="icon-collapse" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round" aria-hidden="true">
+            <path d="M17 12H3"></path>
+            <path d="m11 18 6-6-6-6"></path>
+            <path d="M21 5v14"></path>
+          </svg>
+          <!-- Collapsed: arrow points back out (expand) -->
+          <svg slot="icon" class="icon-expand" hidden xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round" aria-hidden="true">
+            <path d="M7 12h14"></path>
+            <path d="m13 6-6 6 6 6"></path>
+            <path d="M3 5v14"></path>
+          </svg>
+        </kd-button>
+        <div class="panel-rail-tabs" role="tablist" aria-label="Option groups">
+          <kd-tab size="sm" value="1">1</kd-tab>
+          <kd-tab size="sm" value="2" selected>2</kd-tab>
+          <kd-tab size="sm" value="3">3</kd-tab>
+          <kd-tab size="sm" value="4">4</kd-tab>
+        </div>
+      </div>
+      <div class="drawer" id="drawer">
+        <div class="drawer-content">
+        <div class="drawer-header">
+          <h2>Fabric</h2>
+        </div>
+        <kd-swatch-group label="Fabric finish" name="fabric" value="kfi_1504">
+          <kd-swatch value="kfi_1504" label="Ballistic Blue"
+            src="https://kits.kisp.com/swatch/kfi_1504/BB(U)-sm.jpg"></kd-swatch>
+          <kd-swatch value="kfi_1505" label="Forest Green"
+            src="https://kits.kisp.com/swatch/kfi_1504/FG(U)-sm.jpg"></kd-swatch>
+          <kd-swatch value="kfi_1506" label="Slate Gray"
+            src="https://kits.kisp.com/swatch/kfi_1504/SG(U)-sm.jpg"></kd-swatch>
+          <kd-swatch value="kfi_1507" label="Charcoal"
+            src="https://kits.kisp.com/swatch/kfi_1504/CH(U)-sm.jpg"></kd-swatch>
+          <kd-swatch value="kfi_1508" label="Sandstone"
+            src="https://kits.kisp.com/swatch/kfi_1504/SS(U)-sm.jpg"></kd-swatch>
+          <kd-swatch value="kfi_1509" label="Broken link demo" src="https://kits.kisp.com/does-not-exist.jpg">
+          </kd-swatch>
+        </kd-swatch-group>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const sidePanel = document.querySelector('.drawer');
+    const panelToggleBtn = document.getElementById('panel-toggle-btn');
+
+    function setCollapsed(collapsed) {
+      sidePanel.classList.toggle('collapsed', collapsed);
+      panelToggleBtn.setAttribute('aria-expanded', String(!collapsed));
+      panelToggleBtn.setAttribute('aria-label', collapsed ? 'Expand panel' : 'Collapse panel');
+      // SVG elements have no .hidden property, so toggle the attribute
+      panelToggleBtn.querySelector('.icon-collapse').toggleAttribute('hidden', collapsed);
+      panelToggleBtn.querySelector('.icon-expand').toggleAttribute('hidden', !collapsed);
+    }
+
+    panelToggleBtn.addEventListener('click', () => {
+      setCollapsed(!sidePanel.classList.contains('collapsed'));
+    });
+
+    // Exclusive selection across the rail's tabs; picking one reopens the panel
+    const panelTabs = document.querySelector('.panel-rail-tabs');
+
+    panelTabs.addEventListener('kd-select', (event) => {
+      panelTabs.querySelectorAll('kd-tab').forEach((tab) => {
+        tab.selected = tab === event.target;
+      });
+      setCollapsed(false);
+    });
+  </script>
+</body>
+
+</html>
