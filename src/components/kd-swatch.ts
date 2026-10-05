@@ -7,8 +7,9 @@ import "./kd-spinner";
 export type SwatchStatus = "loading" | "loaded" | "error";
 
 /**
- * A single selectable finish/fabric swatch. Meant to be used inside a
- * `<kd-swatch-group>`, which manages exclusive selection across swatches.
+ * A single selectable finish/fabric swatch. The radio input lives in this
+ * element's shadow root, so `name` does not group swatches natively — the
+ * host page must enforce exclusive selection (listen for `kd-change`).
  *
  * ```html
  * <kd-swatch value="kfi_1504" label="Ballistic Blue" src="https://.../BB(U)-sm.jpg"></kd-swatch>
