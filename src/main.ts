@@ -1,3 +1,4 @@
+import './components/kd-badge';
 import './components/kd-button';
 import './components/kd-loader';
 import './components/kd-tooltip';

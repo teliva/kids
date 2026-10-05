@@ -34,6 +34,7 @@ module.exports = (env, argv) => ({
     new CopyWebpackPlugin({
       patterns: [
         { from: 'css', to: 'css' },
+        { from: 'src/favicon.svg', to: 'favicon.svg' },
         { from: 'node_modules/normalize.css/normalize.css', to: 'css/normalize.css' },
       ],
     }),

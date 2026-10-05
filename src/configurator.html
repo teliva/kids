@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/normalize.css" />
   <link rel="stylesheet" href="css/design-tokens.css" />
   <link rel="stylesheet" href="css/fonts.css" />
@@ -96,11 +96,12 @@
       position: absolute;
       display: flex;
       bottom: 0;
-      padding: var(--kd-space-layout-gap-md);
-      gap: var(--kd-space-layout-gap-md);
+      padding: var(--kd-space-layout-gap-sm);
+      gap: var(--kd-space-layout-gap-sm);
       flex-direction: row;
       flex-wrap: wrap;
       align-items: center;
+      border:1px solid pink;
     }
 
     /* Fill the panel width: as many fixed-size columns as fit, with leftover
@@ -186,7 +187,7 @@
       }
     }
   </style>
-  <title>kids</title>
+  <title>KIDS</title>
 </head>
 
 <body>
@@ -261,16 +262,23 @@
           <kd-tooltip for="project" content="View project" placement="top"></kd-tooltip>
           <kd-button appearance="outline" variant="neutral" id="project" size="sm">
             <svg slot="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-folder-open lucide-icon customizable" aria-hidden="true"><path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"></path></svg>
+            <kd-badge slot="badge" variant="brand" pill>4</kd-badge>
           </kd-button>
           <kd-tooltip for="add-project" content="Add product to project" placement="top"></kd-tooltip>
           <kd-button appearance="solid" variant="brand" id="add-project" size="sm" pill>
             <svg slot="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus lucide-icon customizable" aria-hidden="true"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
           </kd-button>
+          <kd-button appearance="solid" variant="brand" id="get-quote" size="sm" pill>
+            <span slot="label">Get Quote</span>
+          </kd-button>
         </div>
       </div>
       <div class="drawer-container">
         <kd-accordion>
-          <kd-accordion-item heading="Fabric" open>
+          <kd-accordion-item open>
+            <span slot="header" style="display:flex; width:100%">
+              Fabric <kd-badge variant="warning" pill style="margin-inline-start:auto">Incomplete</kd-badge>
+            </span>
             <div class="drawer" id="drawer">
               <div class="drawer-content">
                 <div class="drawer-header">
@@ -293,7 +301,13 @@
               </div>
             </div>
           </kd-accordion-item>
-          <kd-accordion-item heading="Frame">…</kd-accordion-item>
+          <kd-accordion-item>
+            <span slot="header">Frame
+              <kd-badge variant="success" size="sm" pill style="margin-inline-start:auto">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>
+              </kd-badge>
+            </span>
+          </kd-accordion-item>
         </kd-accordion>
       </div>
     </div>
@@ -312,20 +326,6 @@
       panelToggleBtn.querySelector('.icon-collapse').toggleAttribute('hidden', collapsed);
       panelToggleBtn.querySelector('.icon-expand').toggleAttribute('hidden', !collapsed);
     }
-
-    panelToggleBtn.addEventListener('click', () => {
-      setCollapsed(!sidePanel.classList.contains('collapsed'));
-    });
-
-    // Exclusive selection across the rail's tabs; picking one reopens the panel
-    const panelTabs = document.querySelector('.panel-rail-tabs');
-
-    panelTabs.addEventListener('kd-select', (event) => {
-      panelTabs.querySelectorAll('kd-tab').forEach((tab) => {
-        tab.selected = tab === event.target;
-      });
-      setCollapsed(false);
-    });
 
     // Swatch radios live in separate shadow roots, so enforce exclusive selection here
     const swatchGrid = document.querySelector('.swatch-grid');

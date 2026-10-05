@@ -7,12 +7,11 @@ import { customElement, property, query } from "lit/decorators.js";
  * single-open behavior and arrow-key navigation between headers.
  *
  * ```html
- * <kd-accordion-item heading="Fabric" open>
+ * <kd-accordion-item open>
+ *   <span slot="header">Fabric <kd-badge variant="warning">Incomplete</kd-badge></span>
  *   ...content...
  * </kd-accordion-item>
  * ```
- *
- * Use `slot="heading"` instead of the `heading` attribute for rich headings.
  *
  * @fires kd-toggle - When the user opens or closes the item. `detail: { open }`.
  */
@@ -85,9 +84,17 @@ export class KdAccordionItem extends LitElement {
       color: var(--kd-color-gray-40);
     }
 
-    .heading {
+    .label {
       flex: 1;
       min-width: 0;
+    }
+
+    /* Rich header: lay out text and trailing extras (e.g. a badge) in a row */
+    ::slotted([slot="header"]) {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--kd-space-component-gap-sm);
+      max-width: 100%;
     }
 
     .chevron {
@@ -145,9 +152,6 @@ export class KdAccordionItem extends LitElement {
     }
   `;
 
-  /** Header text. Ignored when content is slotted into `slot="heading"`. */
-  @property() heading = "";
-
   @property({ type: Boolean, reflect: true }) open = false;
 
   @property({ type: Boolean, reflect: true }) disabled = false;
@@ -169,8 +173,8 @@ export class KdAccordionItem extends LitElement {
           ?disabled=${this.disabled}
           @click=${this.handleClick}
         >
-          <span class="heading" part="heading">
-            <slot name="heading">${this.heading}</slot>
+          <span class="label" part="label">
+            <slot name="header"></slot>
           </span>
           <span class="chevron" part="chevron" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"

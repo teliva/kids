@@ -138,6 +138,26 @@ export class KdButton extends LitElement {
       color: var(--kd-icon-color, var(--kd-button-color));
     }
 
+    /* Badge: pinned to the top-right corner, centered on the edge */
+    .badge {
+      position: absolute;
+      top: 0;
+      right: 0;
+      transform: translate(50%, -50%);
+      display: inline-flex;
+      pointer-events: none;
+    }
+
+    /* Pull in from the bounding-box corner so it sits on the rounded edge */
+    :host([pill]) .badge {
+      top: 0.375rem;
+      right: 0.375rem;
+    }
+
+    .badge[hidden] {
+      display: none;
+    }
+
     /* Loading: hide content (keeping its width) and overlay the spinner */
     button {
       position: relative;
@@ -188,11 +208,15 @@ export class KdButton extends LitElement {
 
   @state() private hasLabel = false;
 
+  @state() private hasBadge = false;
+
   @query("button") private buttonEl!: HTMLButtonElement;
 
   @query('slot[name="icon"]') private iconSlotEl!: HTMLSlotElement;
 
   @query('slot[name="label"]') private labelSlotEl!: HTMLSlotElement;
+
+  @query('slot[name="badge"]') private badgeSlotEl!: HTMLSlotElement;
 
   render() {
     const styles = {
@@ -218,6 +242,9 @@ export class KdButton extends LitElement {
       <span class="label" part="label">
         <slot name="label" @slotchange=${this.handleLabelSlotChange}></slot>
       </span>
+      <span class="badge" part="badge" ?hidden=${!this.hasBadge}>
+        <slot name="badge" @slotchange=${this.handleBadgeSlotChange}></slot>
+      </span>
     </button>`;
   }
 
@@ -225,6 +252,7 @@ export class KdButton extends LitElement {
     this.updateContrastColor();
     this.handleIconSlotChange();
     this.handleLabelSlotChange();
+    this.handleBadgeSlotChange();
     this.buttonEl.addEventListener("pointerenter", this.updateContrastColor);
     this.buttonEl.addEventListener("pointerleave", this.updateContrastColor);
   }
@@ -261,6 +289,10 @@ export class KdButton extends LitElement {
 
   private handleLabelSlotChange = () => {
     this.hasLabel = this.labelSlotEl.assignedNodes({ flatten: true }).length > 0;
+  };
+
+  private handleBadgeSlotChange = () => {
+    this.hasBadge = this.badgeSlotEl.assignedNodes({ flatten: true }).length > 0;
   };
 
 }

@@ -4,6 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
 
   <link rel="stylesheet" href="css/normalize.css" />
   <link rel="stylesheet" href="css/design-tokens.css" />
@@ -66,6 +67,29 @@
   <kd-button id="toast-btn" appearance="outline" appearance="outline" variant="warning" size="sm">
     <span slot="label">Warning</span>
   </kd-button>
+
+  <h2>Badges</h2>
+  <p>
+    <kd-badge variant="neutral">Neutral</kd-badge>
+    <kd-badge variant="brand">Brand</kd-badge>
+    <kd-badge variant="success" appearance="outline">Success</kd-badge>
+    <kd-badge variant="warning" appearance="plain">Warning</kd-badge>
+    <kd-badge variant="danger" pill>12</kd-badge>
+    <kd-badge variant="danger" size="sm" pill>3</kd-badge>
+    <kd-badge variant="brand" size="lg" appearance="plain" pill>New</kd-badge>
+    <kd-badge variant="success" dot></kd-badge>
+  </p>
+  <p style="display: flex; gap: 1.5rem;">
+    <kd-button variant="neutral" appearance="outline">
+      <span slot="label">Inbox</span>
+      <kd-badge slot="badge" variant="danger" pill>4</kd-badge>
+    </kd-button>
+    <kd-button variant="brand" pill>
+      <span slot="label">Updates</span>
+      <kd-badge slot="badge" variant="success" dot></kd-badge>
+    </kd-button>
+  </p>
+
   <kd-toast id="demo-toast" variant="warning" placement="bottom" duration="4000">
     Changes saved successfully
   </kd-toast>

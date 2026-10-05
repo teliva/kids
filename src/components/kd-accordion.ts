@@ -10,8 +10,8 @@ import "./kd-accordion-item";
  *
  * ```html
  * <kd-accordion>
- *   <kd-accordion-item heading="Fabric" open>...</kd-accordion-item>
- *   <kd-accordion-item heading="Frame">...</kd-accordion-item>
+ *   <kd-accordion-item open><span slot="header">Fabric</span>...</kd-accordion-item>
+ *   <kd-accordion-item><span slot="header">Frame</span>...</kd-accordion-item>
  * </kd-accordion>
  * ```
  */
