@@ -69,10 +69,6 @@ export class KdAccordionItem extends LitElement {
       font-size: var(--kd-font-size-lg);
     }
 
-    .header:not(:disabled):hover {
-      background-color: var(--kd-color-gray-10);
-    }
-
     .header:focus-visible {
       outline: none;
       box-shadow: 0 0 0 3px

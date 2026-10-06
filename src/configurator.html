@@ -93,15 +93,15 @@
     }
 
     .calls-to-action {
-      position: absolute;
       display: flex;
-      bottom: 0;
       padding: var(--kd-space-layout-gap-sm);
       gap: var(--kd-space-layout-gap-sm);
       flex-direction: row;
       flex-wrap: wrap;
       align-items: center;
-      border:1px solid pink;
+      border-top: 1px solid var(--kd-color-gray-30);
+      background-color: var(--kd-color-gray-05);
+      box-shadow: var(--kd-box-shadow-s);
     }
 
     /* Fill the panel width: as many fixed-size columns as fit, with leftover
@@ -192,6 +192,12 @@
 
 <body>
   <div class="top-container">
+
+
+
+
+
+
     <div class="app-container">
       <kd-button variant="neutral" size="sm" appearance="plain" style="position: absolute; top:0; left:0; z-index: 1;">
         <svg slot="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -205,7 +211,60 @@
           <path d="M21 19h.01"></path>
         </svg>
       </kd-button>
+
+
+
+      
+
+
       <div id="app" class="app">
+      
+        
+
+
+
+      </div>
+      <div class="drawer-container">
+        <kd-accordion>
+          <kd-accordion-item open>
+            <span slot="header" style="display:flex; width:100%">
+              Fabric <kd-badge variant="warning" pill style="margin-inline-start:auto">Incomplete</kd-badge>
+            </span>
+            <div class="drawer" id="drawer">
+              <div class="drawer-content">
+                <div class="drawer-header">
+                  <h2>Fabric</h2>
+                </div>
+                <div class="swatch-grid" role="radiogroup" aria-label="Fabric finish">
+                  <kd-swatch value="kfi_1504" label="Ballistic Blue" checked
+                    src="https://kits.kisp.com/swatch/kfi_1504/BB(U)-sm.jpg"></kd-swatch>
+                  <kd-swatch value="kfi_1505" label="Forest Green"
+                    src="https://kits.kisp.com/swatch/kfi_1504/FG(U)-sm.jpg"></kd-swatch>
+                  <kd-swatch value="kfi_1506" label="Slate Gray"
+                    src="https://kits.kisp.com/swatch/kfi_1504/SG(U)-sm.jpg"></kd-swatch>
+                  <kd-swatch value="kfi_1507" label="Charcoal"
+                    src="https://kits.kisp.com/swatch/kfi_1504/CH(U)-sm.jpg"></kd-swatch>
+                  <kd-swatch value="kfi_1508" label="Sandstone"
+                    src="https://kits.kisp.com/swatch/kfi_1504/SS(U)-sm.jpg"></kd-swatch>
+                  <kd-swatch value="kfi_1509" label="Broken link demo" src="https://kits.kisp.com/does-not-exist.jpg">
+                  </kd-swatch>
+                </div>
+              </div>
+            </div>
+          </kd-accordion-item>
+          <kd-accordion-item>
+            <span slot="header">Frame
+              <kd-badge variant="success" size="sm" pill style="margin-inline-start:auto">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>
+              </kd-badge>
+            </span>
+          </kd-accordion-item>
+        </kd-accordion>
+      </div>
+    </div>
+
+
+    <!-- CTAs -->
         <div class="calls-to-action">
           <kd-tooltip for="download-png" content="Download Image" placement="top"></kd-tooltip>
           <kd-button appearance="outline" variant="neutral" id="download-png" size="sm">
@@ -272,45 +331,8 @@
             <span slot="label">Get Quote</span>
           </kd-button>
         </div>
-      </div>
-      <div class="drawer-container">
-        <kd-accordion>
-          <kd-accordion-item open>
-            <span slot="header" style="display:flex; width:100%">
-              Fabric <kd-badge variant="warning" pill style="margin-inline-start:auto">Incomplete</kd-badge>
-            </span>
-            <div class="drawer" id="drawer">
-              <div class="drawer-content">
-                <div class="drawer-header">
-                  <h2>Fabric</h2>
-                </div>
-                <div class="swatch-grid" role="radiogroup" aria-label="Fabric finish">
-                  <kd-swatch value="kfi_1504" label="Ballistic Blue" checked
-                    src="https://kits.kisp.com/swatch/kfi_1504/BB(U)-sm.jpg"></kd-swatch>
-                  <kd-swatch value="kfi_1505" label="Forest Green"
-                    src="https://kits.kisp.com/swatch/kfi_1504/FG(U)-sm.jpg"></kd-swatch>
-                  <kd-swatch value="kfi_1506" label="Slate Gray"
-                    src="https://kits.kisp.com/swatch/kfi_1504/SG(U)-sm.jpg"></kd-swatch>
-                  <kd-swatch value="kfi_1507" label="Charcoal"
-                    src="https://kits.kisp.com/swatch/kfi_1504/CH(U)-sm.jpg"></kd-swatch>
-                  <kd-swatch value="kfi_1508" label="Sandstone"
-                    src="https://kits.kisp.com/swatch/kfi_1504/SS(U)-sm.jpg"></kd-swatch>
-                  <kd-swatch value="kfi_1509" label="Broken link demo" src="https://kits.kisp.com/does-not-exist.jpg">
-                  </kd-swatch>
-                </div>
-              </div>
-            </div>
-          </kd-accordion-item>
-          <kd-accordion-item>
-            <span slot="header">Frame
-              <kd-badge variant="success" size="sm" pill style="margin-inline-start:auto">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>
-              </kd-badge>
-            </span>
-          </kd-accordion-item>
-        </kd-accordion>
-      </div>
-    </div>
+
+
   </div>
   </div>
 
