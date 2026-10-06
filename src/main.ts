@@ -1,5 +1,6 @@
 import './components/kd-badge';
 import './components/kd-button';
+import './components/kd-divider';
 import './components/kd-loader';
 import './components/kd-tooltip';
 import './components/kd-spinner';

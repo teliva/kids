@@ -90,6 +90,19 @@
     </kd-button>
   </p>
 
+  <h2>Dividers</h2>
+  <p>Content above</p>
+  <kd-divider></kd-divider>
+  <p>Content below</p>
+  <kd-divider style="--kd-divider-color: var(--kd-color-brand); --kd-divider-width: 3px; --kd-divider-spacing: var(--kd-space-8);"></kd-divider>
+  <div style="display: flex; align-items: center; height: 1.5rem;">
+    <span>Home</span>
+    <kd-divider orientation="vertical"></kd-divider>
+    <span>Products</span>
+    <kd-divider orientation="vertical"></kd-divider>
+    <span>Settings</span>
+  </div>
+
   <kd-toast id="demo-toast" variant="warning" placement="bottom" duration="4000">
     Changes saved successfully
   </kd-toast>
