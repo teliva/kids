@@ -77,11 +77,11 @@ export class KdSwitch extends LitElement {
     .control:hover .thumb {
       box-shadow:
         0 0 0 4px color-mix(in srgb, var(--kd-neutral-color) 80%, transparent),
-        var(--kd-box-shadow-s);
+        var(--kd-box-shadow-sm);
     }
 
     :host([disabled]) .control:hover .thumb {
-      box-shadow: var(--kd-box-shadow-s);
+      box-shadow: var(--kd-box-shadow-sm);
     }
 
     :host([checked]) .track {
@@ -92,7 +92,7 @@ export class KdSwitch extends LitElement {
     :host([checked]) .control:hover .thumb {
       box-shadow:
         0 0 0 4px color-mix(in srgb, var(--kd-color-brand) 25%, transparent),
-        var(--kd-box-shadow-s);
+        var(--kd-box-shadow-sm);
     }
 
     :host([checked]) .thumb {

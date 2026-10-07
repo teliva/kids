@@ -106,4 +106,5 @@ loading state
 disabled state
 
 ## WIP
-- Missing font-sizing most applications need no more than 2 fonts I need to standardize typography
+- colors are not finalized for example warning color badges do not have the appropriate amount of context with it's background
+- I am missing 2 button variants filled and outlined-filled and my color systems needs more depth for to handle contrast appropriately

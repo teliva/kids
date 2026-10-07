@@ -66,7 +66,7 @@ export class KdButton extends LitElement {
 
     button:not(:disabled):hover {
       background-color: var(--kd-button-hover-color);
-      box-shadow: var(--kd-box-shadow-s);
+      box-shadow: var(--kd-box-shadow-sm);
     }
 
     button:not(:disabled):active {

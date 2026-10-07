@@ -11,6 +11,56 @@ export type ToastPlacement =
   | "bottom"
   | "bottom-end";
 
+export interface ToastOptions {
+  variant?: ToastVariant;
+  placement?: ToastPlacement;
+  duration?: number;
+  closable?: boolean;
+}
+
+/** Max toasts visible per placement; the oldest is dismissed past this. */
+const MAX_STACKED_TOASTS = 3;
+
+/** Returns the fixed container for a placement, creating it on first use. */
+function getToastStack(placement: ToastPlacement): HTMLElement {
+  const existing = document.querySelector<HTMLElement>(
+    `.kd-toast-stack[data-placement="${placement}"]`,
+  );
+  if (existing) return existing;
+
+  const [vertical, horizontal = "center"] = placement.split("-");
+  const offset = "var(--kd-space-layout-gap-md)";
+  const stack = document.createElement("div");
+  stack.className = "kd-toast-stack";
+  stack.dataset.placement = placement;
+  Object.assign(stack.style, {
+    position: "fixed",
+    zIndex: "var(--kd-toast-z-index, 1100)",
+    display: "flex",
+    // New toasts are appended; keep the newest nearest the screen edge
+    flexDirection: vertical === "top" ? "column-reverse" : "column",
+    alignItems:
+      horizontal === "start" ? "flex-start" : horizontal === "end" ? "flex-end" : "center",
+    gap: "var(--kd-space-layout-gap-sm)",
+    // Gaps between toasts shouldn't block clicks on the page beneath
+    pointerEvents: "none",
+    // Pages can raise the stack above fixed UI such as a footer
+    [vertical]: `var(--kd-toast-offset-${vertical}, ${offset})`,
+  });
+
+  if (horizontal === "start") {
+    stack.style.left = offset;
+  } else if (horizontal === "end") {
+    stack.style.right = offset;
+  } else {
+    stack.style.left = "50%";
+    stack.style.translate = "-50% 0";
+  }
+
+  document.body.append(stack);
+  return stack;
+}
+
 /**
  * A dismissible notification pinned to a corner of the viewport.
  *
@@ -45,7 +95,7 @@ export class KdToast extends LitElement {
       font-family: var(--kd-font-family);
       font-size: var(--kd-font-size-sm);
       line-height: var(--kd-line-height-snug);
-      box-shadow: var(--kd-box-shadow-m);
+      box-shadow: var(--kd-box-shadow-md);
       opacity: 0;
       scale: 0.95;
       transition:
@@ -62,12 +112,21 @@ export class KdToast extends LitElement {
       scale: 1;
     }
 
+    /* Switching display from none in the same frame skips the transition;
+       this gives the fade-in a first-frame state to animate from */
+    @starting-style {
+      :host([open]) .toast:not(.closing) {
+        opacity: 0;
+        scale: 0.95;
+      }
+    }
+
     :host([placement^="top"]) .toast {
-      top: var(--kd-space-layout-gap-md);
+      top: var(--kd-toast-offset-top, var(--kd-space-layout-gap-md));
     }
 
     :host([placement^="bottom"]) .toast {
-      bottom: var(--kd-space-layout-gap-md);
+      bottom: var(--kd-toast-offset-bottom, var(--kd-space-layout-gap-md));
     }
 
     :host([placement$="start"]) .toast {
@@ -82,6 +141,15 @@ export class KdToast extends LitElement {
     :host([placement="bottom"]) .toast {
       left: 50%;
       translate: -50% 0;
+    }
+
+    /* In a stack the container does the positioning; must follow the
+       placement rules above to override them */
+    :host([stacked]) .toast {
+      position: relative;
+      inset: auto;
+      translate: none;
+      pointer-events: auto;
     }
 
     :host([variant="success"]) .toast {
@@ -112,7 +180,6 @@ export class KdToast extends LitElement {
     .icon svg {
       width: 100%;
       height: 100%;
-      fill: currentColor;
     }
 
     .message {
@@ -158,20 +225,70 @@ export class KdToast extends LitElement {
 
   @property({ type: Boolean, reflect: true }) open = false;
 
+  /** Laid out by a toast stack (see `KdToast.toast()`) instead of positioning itself. */
+  @property({ type: Boolean, reflect: true }) stacked = false;
+
   @state() private closing = false;
+
+  /** True while the toast is fading out after `hide()`. */
+  get isClosing(): boolean {
+    return this.closing;
+  }
+
+  /**
+   * Creates a toast, shows it in a shared stack for its placement, and
+   * removes it once dismissed. Use this when several toasts may be open.
+   *
+   * ```js
+   * customElements.get("kd-toast").toast("Saved", { variant: "success" });
+   * ```
+   */
+  static toast(message: string, options: ToastOptions = {}): KdToast {
+    const { placement = "bottom-end", ...rest } = options;
+    const el = document.createElement("kd-toast");
+    Object.assign(el, rest, { message, placement, stacked: true });
+
+    const stack = getToastStack(placement);
+    stack.append(el);
+    el.addEventListener(
+      "kd-close",
+      () => {
+        el.remove();
+        if (!stack.childElementCount) stack.remove();
+      },
+      { once: true },
+    );
+    el.show();
+
+    // Oldest toasts are first in the stack; dismiss any beyond the limit.
+    // Skip ones already fading out, or a quick burst hides too many.
+    const toasts = Array.from(stack.querySelectorAll("kd-toast")).filter(
+      (toast) => !toast.isClosing,
+    );
+    for (let i = 0; i < toasts.length - MAX_STACKED_TOASTS; i++) {
+      toasts[i].hide();
+    }
+
+    return el;
+  }
 
   @query(".toast") private toastEl?: HTMLDivElement;
 
   private static readonly successIcon = html`
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
-      <path
-        d="M530.8 134.1C545.1 144.5 548.3 164.5 537.9 178.8L281.9 530.8C276.4 538.4 267.9 543.1 258.5 543.9C249.1 544.7 240 541.2 233.4 534.6L105.4 406.6C92.9 394.1 92.9 373.8 105.4 361.3C117.9 348.8 138.2 348.8 150.7 361.3L252.2 462.8L486.2 141.1C496.6 126.8 516.6 123.6 530.9 134z"
-      />
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <!-- Lucide circle-check, filled: the check is cut out of the circle so
+           whatever is behind the toast shows through -->
+      <mask id="check-cutout">
+        <rect width="24" height="24" fill="#fff" />
+        <path d="m16 9-5.5 5.5L8 12" fill="none" stroke="#000" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round" />
+      </mask>
+      <circle cx="12" cy="12" r="10" fill="currentColor" mask="url(#check-cutout)" />
     </svg>
   `;
 
   private static readonly infoIcon = html`
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" fill="currentColor">
       <path
         d="M320 576C461.4 576 576 461.4 576 320C576 178.6 461.4 64 320 64C178.6 64 64 178.6 64 320C64 461.4 178.6 576 320 576zM288 224C288 206.3 302.3 192 320 192C337.7 192 352 206.3 352 224C352 241.7 337.7 256 320 256C302.3 256 288 241.7 288 224zM280 288L328 288C341.3 288 352 298.7 352 312L352 400L360 400C373.3 400 384 410.7 384 424C384 437.3 373.3 448 360 448L280 448C266.7 448 256 437.3 256 424C256 410.7 266.7 400 280 400L304 400L304 336L280 336C266.7 336 256 325.3 256 312C256 298.7 266.7 288 280 288z"
       />
@@ -179,7 +296,7 @@ export class KdToast extends LitElement {
   `;
 
   private static readonly dangerIcon = html`
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" fill="currentColor">
       <path
         d="M320 64C334.7 64 348.2 72.1 355.2 85L571.2 485C577.9 497.4 577.6 512.4 570.4 524.5C563.2 536.6 550.1 544 536 544L104 544C89.9 544 76.8 536.6 69.6 524.5C62.4 512.4 62.1 497.4 68.8 485L284.8 85C291.8 72.1 305.3 64 320 64zM320 416C302.3 416 288 430.3 288 448C288 465.7 302.3 480 320 480C337.7 480 352 465.7 352 448C352 430.3 337.7 416 320 416zM320 224C301.8 224 287.3 239.5 288.6 257.7L296 361.7C296.9 374.2 307.4 384 319.9 384C332.5 384 342.9 374.3 343.8 361.7L351.2 257.7C352.5 239.5 338.1 224 319.8 224z"
       />
@@ -248,8 +365,12 @@ export class KdToast extends LitElement {
     clearTimeout(this.dismissTimer);
     this.closing = true;
 
-    const onTransitionEnd = () => {
-      this.toastEl?.removeEventListener("transitionend", onTransitionEnd);
+    let finished = false;
+    const finish = () => {
+      if (finished) return;
+      finished = true;
+      clearTimeout(fallback);
+      this.toastEl?.removeEventListener("transitionend", finish);
       this.open = false;
       this.closing = false;
       this.dispatchEvent(
@@ -257,7 +378,10 @@ export class KdToast extends LitElement {
       );
     };
 
-    this.toastEl?.addEventListener("transitionend", onTransitionEnd);
+    // In case the fade never runs (e.g. transitions disabled), so kd-close
+    // still fires; a little longer than the 0.2s fade
+    const fallback = setTimeout(finish, 300);
+    this.toastEl?.addEventListener("transitionend", finish);
   }
 
   toggle() {

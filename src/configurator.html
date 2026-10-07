@@ -32,9 +32,6 @@
     .app {
       flex: 1;
       position: relative;
-      /* Stacked layout (narrow): give the viewer real height, since its only
-         child (.calls-to-action) is absolutely positioned */
-      min-height: 60vh;
     }
 
     html {
@@ -53,24 +50,53 @@
       min-height: 100%;
     }
 
-    /* Outer box only animates width and clips; padding lives on
-       .drawer-content so it can reach 0 and content doesn't reflow mid-slide */
-    .drawer {
-      --drawer-width: 300px;
-      position: relative;
+    /* Toggle strip + drawer. Narrow (base): floats over the viewer's right
+       edge so an open drawer doesn't squeeze the viewer on phones */
+    .drawer-dock {
+      --drawer-width: min(300px, calc(100vw - 4rem));
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 2;
+      display: flex;
+    }
+
+    .drawer-container {
+      display: flex;
+      flex-direction: column;
       flex-shrink: 0;
+      background-color: var(--kd-color-gray-05);
+      border-left: 1px solid var(--kd-color-gray-30);
+    }
+
+    /* Outer box only animates width and clips; .drawer-content keeps a fixed
+       width so the accordion doesn't reflow mid-slide */
+    .drawer {
+      /* Fill the column so the open-drawer shadow runs full height */
+      flex: 1 0 auto;
+      position: relative;
+      width: var(--drawer-width);
       overflow: hidden;
       transition: width 0.2s ease;
+    }
 
+    .drawer.collapsed {
+      width: 0;
+    }
+
+    /* Lift the open drawer off the viewer it overlaps; only while open, so a
+       collapsed (0-width) drawer doesn't leave a shadow line at the edge */
+    .drawer:not(.collapsed) {
+      box-shadow: var(--kd-box-shadow-lg);
+      /* Clip the shadow on top/right/bottom; the -2rem lets it spill out on the left only */
+      clip-path: inset(0 0 0 -2rem);
     }
 
     .drawer-content {
       box-sizing: border-box;
-      display: flex;
-      align-items: flex-start;
-      flex-direction: column;
-      padding: var(--kd-space-layout-gap-md);
-      /* Stays visible until the collapse finishes; keeps hidden swatches out of tab order */
+      width: var(--drawer-width);
+      /* Stays visible until the collapse finishes; keeps hidden controls out of tab order */
       transition: visibility 0.2s;
     }
 
@@ -78,10 +104,36 @@
       visibility: hidden;
     }
 
-    /* Narrow (base): viewer on top, panel full-width underneath */
-    .app-container {
+    .option-panel {
+      box-sizing: border-box;
       display: flex;
+      align-items: flex-start;
       flex-direction: column;
+      padding: var(--kd-space-layout-gap-md);
+    }
+
+    .drawer-toolbar {
+      display: flex;
+      padding: var(--kd-space-layout-gap-sm);
+    }
+
+    /* Radius matches kd-button's inner button so the shadow follows its corners */
+    .drawer-toggle {
+      /* Center in the full-height toolbar; not stretch, or the shadow outlines the whole strip */
+      align-self: center;
+      border-radius: var(--kd-radius-md);
+      box-shadow: var(--kd-box-shadow-sm);
+    }
+
+    .drawer-toggle svg[hidden] {
+      display: none;
+    }
+
+    /* Viewer and drawer side by side at every width */
+    .app-container {
+      position: relative;
+      display: flex;
+      flex-direction: row;
       flex: 1;
     }
 
@@ -101,12 +153,11 @@
       align-items: center;
       border-top: 1px solid var(--kd-color-gray-30);
       background-color: var(--kd-color-gray-05);
-      box-shadow: var(--kd-box-shadow-s);
     }
 
     /* Fill the panel width: as many fixed-size columns as fit, with leftover
        space spread between them so both edges line up with the padding.
-       300px desktop panel -> 4 columns; phones get more. */
+       Narrower phone drawers get fewer columns. */
     .swatch-grid {
       --swatch-size: 60px;
       align-self: stretch;
@@ -129,39 +180,16 @@
       gap: var(--kd-space-layout-gap-sm);
     }
 
-    /* Collapse only applies side-by-side; hidden when stacked */
-    .panel-rail-toggle {
-      display: none;
-    }
-
-    .panel-rail-toggle svg[hidden] {
-      display: none;
-    }
-
-    /* Mid: 768px+ (--kd-breakpoint-mid) - side-by-side layout */
+    /* Mid: 768px+ (--kd-breakpoint-mid) - drawer docks beside the viewer */
     @media (min-width: 48em) {
-      .app-container {
-        flex-direction: row;
+      .drawer-dock {
+        --drawer-width: 340px;
+        position: static;
+        flex-shrink: 0;
       }
 
-      .app {
-        min-height: 0;
-      }
-
-      .drawer-container {
-        background-color: var(--kd-color-gray-05);
-      }
-
-      .drawer {
-        width: var(--drawer-width);
-      }
-
-      .drawer.collapsed {
-        width: 0;
-      }
-
-      .drawer-content {
-        width: var(--drawer-width);
+      .drawer:not(.collapsed) {
+        box-shadow: none;
       }
 
       .calls-to-action {
@@ -171,19 +199,6 @@
       .panel-rail,
       .panel-rail-tabs {
         flex-direction: column;
-      }
-
-      /* Top of the rail, divided from the tabs below it */
-      .panel-rail-toggle {
-        display: inline-block;
-        padding-bottom: var(--kd-space-layout-gap-sm);
-        border-bottom: 1px solid var(--kd-color-gray-20);
-      }
-    }
-
-    @media (min-width: 64em) {
-      .drawer {
-        --drawer-width: 300px;
       }
     }
   </style>
@@ -214,128 +229,166 @@
 
 
 
-      
+
 
 
       <div id="app" class="app">
-      
-        
+
+
 
 
 
       </div>
-      <div class="drawer-container">
-        <kd-accordion>
-          <kd-accordion-item open>
-            <span slot="header" style="display:flex; width:100%">
-              Fabric <kd-badge variant="warning" pill style="margin-inline-start:auto">Incomplete</kd-badge>
-            </span>
-            <div class="drawer" id="drawer">
-              <div class="drawer-content">
-                <div class="drawer-header">
-                  <h2>Fabric</h2>
-                </div>
-                <div class="swatch-grid" role="radiogroup" aria-label="Fabric finish">
-                  <kd-swatch value="kfi_1504" label="Ballistic Blue" checked
-                    src="https://kits.kisp.com/swatch/kfi_1504/BB(U)-sm.jpg"></kd-swatch>
-                  <kd-swatch value="kfi_1505" label="Forest Green"
-                    src="https://kits.kisp.com/swatch/kfi_1504/FG(U)-sm.jpg"></kd-swatch>
-                  <kd-swatch value="kfi_1506" label="Slate Gray"
-                    src="https://kits.kisp.com/swatch/kfi_1504/SG(U)-sm.jpg"></kd-swatch>
-                  <kd-swatch value="kfi_1507" label="Charcoal"
-                    src="https://kits.kisp.com/swatch/kfi_1504/CH(U)-sm.jpg"></kd-swatch>
-                  <kd-swatch value="kfi_1508" label="Sandstone"
-                    src="https://kits.kisp.com/swatch/kfi_1504/SS(U)-sm.jpg"></kd-swatch>
-                  <kd-swatch value="kfi_1509" label="Broken link demo" src="https://kits.kisp.com/does-not-exist.jpg">
-                  </kd-swatch>
-                </div>
-              </div>
+      <div class="drawer-dock">
+        <div class="drawer-toolbar">
+          <kd-button id="panel-toggle-btn" class="drawer-toggle" variant="neutral" size="sm" appearance="plain"
+            aria-controls="drawer" aria-expanded="true">
+            <svg slot="icon" class="icon-collapse lucide lucide-arrow-right-to-line lucide-icon customizable"
+              xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M17 12H3"></path>
+              <path d="m11 18 6-6-6-6"></path>
+              <path d="M21 5v14"></path>
+            </svg>
+            <svg slot="icon" class="icon-expand lucide lucide-arrow-left-to-line lucide-icon customizable" hidden
+              xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M3 19V5"></path>
+              <path d="m13 6-6 6 6 6"></path>
+              <path d="M7 12h14"></path>
+            </svg>
+          </kd-button>
+        </div>
+        <div class="drawer-container">
+
+          <div class="drawer" id="drawer">
+            <div class="drawer-content">
+              <kd-accordion>
+                <kd-accordion-item open>
+                  <span slot="header" style="display:flex; width:100%">
+                    Fabric <kd-badge variant="warning" pill style="margin-inline-start:auto">Incomplete</kd-badge>
+                  </span>
+                  <div class="option-panel">
+                    <div class="drawer-header">
+                      <h2>Fabric</h2>
+                    </div>
+                    <div class="swatch-grid" role="radiogroup" aria-label="Fabric finish">
+                      <kd-swatch value="kfi_1504" label="Ballistic Blue" checked
+                        src="https://kits.kisp.com/swatch/kfi_1504/BB(U)-sm.jpg"></kd-swatch>
+                      <kd-swatch value="kfi_1505" label="Forest Green"
+                        src="https://kits.kisp.com/swatch/kfi_1504/FG(U)-sm.jpg"></kd-swatch>
+                      <kd-swatch value="kfi_1506" label="Slate Gray"
+                        src="https://kits.kisp.com/swatch/kfi_1504/SG(U)-sm.jpg"></kd-swatch>
+                      <kd-swatch value="kfi_1507" label="Charcoal"
+                        src="https://kits.kisp.com/swatch/kfi_1504/CH(U)-sm.jpg"></kd-swatch>
+                      <kd-swatch value="kfi_1508" label="Sandstone"
+                        src="https://kits.kisp.com/swatch/kfi_1504/SS(U)-sm.jpg"></kd-swatch>
+                      <kd-swatch value="kfi_1509" label="Broken link demo"
+                        src="https://kits.kisp.com/does-not-exist.jpg">
+                      </kd-swatch>
+                    </div>
+                  </div>
+                </kd-accordion-item>
+                <kd-accordion-item>
+                  <span slot="header" style="display:flex; width:100%">
+                    Frame <kd-badge variant="success" size="sm" pill style="margin-inline-start:auto">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        aria-hidden="true">
+                        <path d="M20 6 9 17l-5-5"></path>
+                      </svg>
+                    </kd-badge>
+                  </span>
+                </kd-accordion-item>
+              </kd-accordion>
             </div>
-          </kd-accordion-item>
-          <kd-accordion-item>
-            <span slot="header">Frame
-              <kd-badge variant="success" size="sm" pill style="margin-inline-start:auto">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>
-              </kd-badge>
-            </span>
-          </kd-accordion-item>
-        </kd-accordion>
+          </div>
+        </div>
       </div>
     </div>
 
 
     <!-- CTAs -->
-        <div class="calls-to-action">
-          <kd-tooltip for="download-png" content="Download Image" placement="top"></kd-tooltip>
-          <kd-button appearance="outline" variant="neutral" id="download-png" size="sm">
-            <svg slot="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-              class="lucide lucide-image lucide-icon customizable" aria-hidden="true">
-              <rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect>
-              <circle cx="9" cy="9" r="2"></circle>
-              <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path>
-            </svg>
-          </kd-button>
-          <kd-tooltip for="download-pdf" content="Download PDF" placement="top"></kd-tooltip>
-          <kd-button appearance="outline" variant="neutral" id="download-pdf" size="sm">
-            <svg slot="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-              class="lucide lucide-file-text lucide-icon customizable" aria-hidden="true">
-              <path
-                d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z">
-              </path>
-              <path d="M14 2v5a1 1 0 0 0 1 1h5"></path>
-              <path d="M10 9H8"></path>
-              <path d="M16 13H8"></path>
-              <path d="M16 17H8"></path>
-            </svg>
-          </kd-button>
-          <kd-tooltip for="ar-experience" content="Generate AR Experience" placement="top"></kd-tooltip>
-          <kd-button appearance="outline" variant="neutral" id="ar-experience" size="sm">
-            <svg slot="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-              class="lucide lucide-scan-box lucide-icon customizable" aria-hidden="true">
-              <path d="M12 12v5.5"></path>
-              <path d="M17 3h2a2 2 0 012 2v2"></path>
-              <path d="M21 17v2a2 2 0 01-2 2h-2"></path>  
-              <path d="M3 7V5a2 2 0 012-2h2"></path>
-              <path d="M7 21H5a2 2 0 01-2-2v-2"></path>
-              <path d="M7.264 9.252 12 12l4.737-2.748"></path>
-              <path
-                d="M7.995 8.514A2 2 0 007 10.244v3.516a2 2 0 00.996 1.73l3 1.74a2 2 0 002.008 0l3-1.74A2 2 0 0017 13.76v-3.517a2 2 0 00-.995-1.73l-3-1.742a2 2 0 00-1.892-.064z">
-              </path>
-            </svg>
-          </kd-button>
-          <kd-tooltip for="share" content="Share product" placement="top"></kd-tooltip>
-          <kd-button appearance="outline" variant="neutral" id="share" size="sm">
-            <svg slot="icon" data-v-39ea7f52="" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-              viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-              stroke-linejoin="round" class="lucide lucide-share-2 lucide-icon customizable" aria-hidden="true">
-              <circle cx="18" cy="5" r="3"></circle>
-              <circle cx="6" cy="12" r="3"></circle>
-              <circle cx="18" cy="19" r="3"></circle>
-              <line x1="8.59" x2="15.42" y1="13.51" y2="17.49"></line>
-              <line x1="15.41" x2="8.59" y1="6.51" y2="10.49"></line>
-            </svg>
-          </kd-button>
-          <kd-divider orientation="vertical"></kd-divider>
-          <kd-tooltip for="project" content="View project" placement="top"></kd-tooltip>
-          <kd-button appearance="outline" variant="neutral" id="project" size="sm">
-            <svg slot="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-folder-open lucide-icon customizable" aria-hidden="true"><path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"></path></svg>
-            <kd-badge slot="badge" variant="brand" pill>4</kd-badge>
-          </kd-button>
-          <kd-tooltip for="add-project" content="Add product to project" placement="top"></kd-tooltip>
-          <kd-button appearance="solid" variant="brand" id="add-project" size="sm" pill>
-            <svg slot="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus lucide-icon customizable" aria-hidden="true"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
-          </kd-button>
-          <kd-button appearance="solid" variant="brand" id="get-quote" size="sm" pill>
-            <span slot="label">Get Quote</span>
-          </kd-button>
-        </div>
-
-
+    <div class="calls-to-action">
+      <kd-tooltip for="download-png" content="Download Image" placement="top"></kd-tooltip>
+      <kd-button appearance="outline" variant="neutral" id="download-png" size="sm">
+        <svg slot="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+          class="lucide lucide-image lucide-icon customizable" aria-hidden="true">
+          <rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect>
+          <circle cx="9" cy="9" r="2"></circle>
+          <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path>
+        </svg>
+      </kd-button>
+      <kd-tooltip for="download-pdf" content="Download PDF" placement="top"></kd-tooltip>
+      <kd-button appearance="outline" variant="neutral" id="download-pdf" size="sm">
+        <svg slot="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+          class="lucide lucide-file-text lucide-icon customizable" aria-hidden="true">
+          <path
+            d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z">
+          </path>
+          <path d="M14 2v5a1 1 0 0 0 1 1h5"></path>
+          <path d="M10 9H8"></path>
+          <path d="M16 13H8"></path>
+          <path d="M16 17H8"></path>
+        </svg>
+      </kd-button>
+      <kd-tooltip for="ar-experience" content="Generate AR Experience" placement="top"></kd-tooltip>
+      <kd-button appearance="outline" variant="neutral" id="ar-experience" size="sm">
+        <svg slot="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+          class="lucide lucide-scan-box lucide-icon customizable" aria-hidden="true">
+          <path d="M12 12v5.5"></path>
+          <path d="M17 3h2a2 2 0 012 2v2"></path>
+          <path d="M21 17v2a2 2 0 01-2 2h-2"></path>
+          <path d="M3 7V5a2 2 0 012-2h2"></path>
+          <path d="M7 21H5a2 2 0 01-2-2v-2"></path>
+          <path d="M7.264 9.252 12 12l4.737-2.748"></path>
+          <path
+            d="M7.995 8.514A2 2 0 007 10.244v3.516a2 2 0 00.996 1.73l3 1.74a2 2 0 002.008 0l3-1.74A2 2 0 0017 13.76v-3.517a2 2 0 00-.995-1.73l-3-1.742a2 2 0 00-1.892-.064z">
+          </path>
+        </svg>
+      </kd-button>
+      <kd-tooltip for="share" content="Share product" placement="top"></kd-tooltip>
+      <kd-button appearance="outline" variant="neutral" id="share" size="sm">
+        <svg slot="icon" data-v-39ea7f52="" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+          viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round" class="lucide lucide-share-2 lucide-icon customizable" aria-hidden="true">
+          <circle cx="18" cy="5" r="3"></circle>
+          <circle cx="6" cy="12" r="3"></circle>
+          <circle cx="18" cy="19" r="3"></circle>
+          <line x1="8.59" x2="15.42" y1="13.51" y2="17.49"></line>
+          <line x1="15.41" x2="8.59" y1="6.51" y2="10.49"></line>
+        </svg>
+      </kd-button>
+      <kd-divider orientation="vertical"></kd-divider>
+      <kd-tooltip for="project" content="View project" placement="top"></kd-tooltip>
+      <kd-button appearance="outline" variant="neutral" id="project" size="sm">
+        <svg slot="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+          class="lucide lucide-folder-open lucide-icon customizable" aria-hidden="true">
+          <path
+            d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2">
+          </path>
+        </svg>
+        <kd-badge slot="badge" variant="brand" pill>4</kd-badge>
+      </kd-button>
+      <kd-tooltip for="add-project" content="Add product to project" placement="top"></kd-tooltip>
+      <kd-button appearance="outline" variant="brand" id="add-project" size="sm" pill>
+        <svg slot="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+          class="lucide lucide-plus lucide-icon customizable" aria-hidden="true">
+          <path d="M5 12h14"></path>
+          <path d="M12 5v14"></path>
+        </svg>
+      </kd-button>
+      <kd-button appearance="solid" variant="brand" id="get-quote" size="sm" pill>
+        <span slot="label">Get Quote</span>
+      </kd-button>
+    </div>
   </div>
-  </div>
+
 
   <script>
     const sidePanel = document.querySelector('.drawer');
@@ -344,11 +397,39 @@
     function setCollapsed(collapsed) {
       sidePanel.classList.toggle('collapsed', collapsed);
       panelToggleBtn.setAttribute('aria-expanded', String(!collapsed));
+      // Both icons are aria-hidden, so the button needs an explicit name
       panelToggleBtn.setAttribute('aria-label', collapsed ? 'Expand panel' : 'Collapse panel');
       // SVG elements have no .hidden property, so toggle the attribute
       panelToggleBtn.querySelector('.icon-collapse').toggleAttribute('hidden', collapsed);
       panelToggleBtn.querySelector('.icon-expand').toggleAttribute('hidden', !collapsed);
     }
+
+    // Toasts are created on demand so several can stack; see KdToast.toast()
+    document.getElementById('download-png').addEventListener('click', () => {
+      customElements.get('kd-toast').toast('Image Requested', {
+        variant: 'success',
+        placement: 'bottom',
+      });
+    });
+
+    // Keep bottom toasts above the footer; it wraps on narrow screens, so track its height
+    const footer = document.querySelector('.calls-to-action');
+    new ResizeObserver(() => {
+      document.documentElement.style.setProperty(
+        '--kd-toast-offset-bottom',
+        `calc(${footer.offsetHeight}px + var(--kd-space-layout-gap-md))`,
+      );
+    }).observe(footer);
+
+    panelToggleBtn.addEventListener('click', () => {
+      setCollapsed(!sidePanel.classList.contains('collapsed'));
+    });
+
+    // Narrow screens start collapsed, since the open drawer covers the viewer.
+    // Literal 48em mirrors --kd-breakpoint-mid (custom properties can't be used in media queries)
+    const narrowQuery = window.matchMedia('(max-width: 47.99em)');
+    setCollapsed(narrowQuery.matches);
+    narrowQuery.addEventListener('change', (event) => setCollapsed(event.matches));
 
     // Swatch radios live in separate shadow roots, so enforce exclusive selection here
     const swatchGrid = document.querySelector('.swatch-grid');

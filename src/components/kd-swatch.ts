@@ -62,7 +62,7 @@ export class KdSwatch extends LitElement {
     }
 
     .control:hover .swatch {
-      box-shadow: var(--kd-box-shadow-s);
+      box-shadow: var(--kd-box-shadow-sm);
     }
 
     :host([checked]) .swatch {

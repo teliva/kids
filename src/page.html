@@ -103,6 +103,30 @@
     <span>Settings</span>
   </div>
 
+  <h2>Dialogs</h2>
+  <p style="display: flex; gap: 1rem; flex-wrap: wrap;">
+    <kd-button data-dialog="open demo-dialog" variant="brand">
+      <span slot="label">Open dialog</span>
+    </kd-button>
+    <kd-button data-dialog="open demo-dialog-light" appearance="outline" variant="neutral">
+      <span slot="label">Light dismiss</span>
+    </kd-button>
+  </p>
+
+  <kd-dialog id="demo-dialog" label="Delete project?">
+    This removes the project and all its saved configurations. This can't be undone.
+    <kd-button slot="footer" data-dialog="close" appearance="outline" variant="neutral" size="sm">
+      <span slot="label">Cancel</span>
+    </kd-button>
+    <kd-button slot="footer" data-dialog="close" variant="danger" size="sm">
+      <span slot="label">Delete</span>
+    </kd-button>
+  </kd-dialog>
+
+  <kd-dialog id="demo-dialog-light" label="Light dismiss" light-dismiss style="--kd-dialog-width: 24rem;">
+    Click the backdrop, press Escape, or use the close button.
+  </kd-dialog>
+
   <kd-toast id="demo-toast" variant="warning" placement="bottom" duration="4000">
     Changes saved successfully
   </kd-toast>

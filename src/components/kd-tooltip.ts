@@ -58,7 +58,7 @@ export class KdTooltip extends LitElement {
       font-size: var(--kd-font-size-sm);
       line-height: var(--kd-line-height-snug);
       text-align: start;
-      box-shadow: var(--kd-box-shadow-s);
+      box-shadow: var(--kd-box-shadow-sm);
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.1s ease;
