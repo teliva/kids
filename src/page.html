@@ -19,7 +19,7 @@
       background-size: cover;
       font-family: var(--kd-font-family);
       font-size: 16px;
-      background-color: #f4f3f0;
+      background-color: var(--kd-color-background);
       height: 100%;
       width: 100%;
     } 
@@ -119,7 +119,7 @@
       <span slot="label">Cancel</span>
     </kd-button>
     <kd-button slot="footer" data-dialog="close" variant="danger" size="sm">
-      <span slot="label">Delete</span>
+      <span slot="label">Delete</span>   
     </kd-button>
   </kd-dialog>
 
@@ -136,8 +136,8 @@
   <!-- <kd-switch label="Enable notifications" checked></kd-switch>
           <kd-switch label="Disabled" disabled></kd-switch> -->
 
-  <!-- <kd-input label="Email" type="email" placeholder="you@example.com" help-text="We'll never share your email." clearable required></kd-input>
-    <kd-input label="Password" type="password" placeholder="Enter your password" appearance="filled" size="small"></kd-input> -->
+  <!-- <kd-input label="Email" type="email" placeholder="you@example.com" hint="We'll never share your email." with-clear required></kd-input>
+    <kd-input label="Password" type="password" placeholder="Enter your password" appearance="filled" size="small" password-toggle></kd-input> -->
 
 
   <script type="module">

@@ -185,11 +185,19 @@ export class KdButton extends LitElement {
       visibility: hidden;
     }
 
-    :host([disabled]) button {
+    /* button:disabled also covers a disabled ancestor <fieldset> */
+    :host([disabled]) button,
+    button:disabled {
       opacity: 0.5;
       cursor: not-allowed;
     }
   `;
+
+  // Form-associated so type="submit" / "reset" work, including the `form`
+  // attribute for buttons outside the <form> (e.g. in a dialog footer)
+  static formAssociated = true;
+
+  private readonly internals = this.attachInternals();
   @property({ reflect: true }) appearance: "solid" | "outline" | "plain" = "solid";
 
   @property({ reflect: true }) variant: "neutral" | "brand" | "success" | "warning" | "danger" = "brand";
@@ -201,6 +209,12 @@ export class KdButton extends LitElement {
   @property({ type: Boolean, reflect: true }) loading = false;
 
   @property({ type: Boolean, reflect: true }) disabled = false;
+
+  /** What clicking does to the button's form, like a native button's type. */
+  @property({ reflect: true }) type: "button" | "submit" | "reset" = "button";
+
+  /** Disabled by an ancestor `<fieldset disabled>`. */
+  @state() private formDisabled = false;
 
   @state() private textColor = "#000000";
 
@@ -228,7 +242,7 @@ export class KdButton extends LitElement {
       type="button"
       class=${this.hasIcon && !this.hasLabel ? "icon-only" : ""}
       style=${styleMap(styles)}
-      ?disabled=${this.disabled}
+      ?disabled=${this.disabled || this.formDisabled}
       aria-busy=${this.loading ? "true" : "false"}
       aria-disabled=${this.loading ? "true" : "false"}
       @click=${this.handleClick}
@@ -246,6 +260,20 @@ export class KdButton extends LitElement {
         <slot name="badge" @slotchange=${this.handleBadgeSlotChange}></slot>
       </span>
     </button>`;
+  }
+
+  constructor() {
+    super();
+    // On the host so it also catches host.click(), e.g. from a kd-input's Enter key
+    this.addEventListener("click", this.handleFormAction);
+  }
+
+  formDisabledCallback(disabled: boolean) {
+    this.formDisabled = disabled;
+  }
+
+  get form(): HTMLFormElement | null {
+    return this.internals.form;
   }
 
   firstUpdated() {
@@ -281,6 +309,15 @@ export class KdButton extends LitElement {
     if (!this.loading && !this.disabled) return;
     e.preventDefault();
     e.stopPropagation();
+  };
+
+  private handleFormAction = (e: MouseEvent) => {
+    if (e.defaultPrevented || this.loading || this.disabled || this.formDisabled) return;
+    const form = this.internals.form;
+    if (!form) return;
+    // requestSubmit() still runs validation; a FACE can't be passed as the submitter
+    if (this.type === "submit") form.requestSubmit();
+    else if (this.type === "reset") form.reset();
   };
 
   private handleIconSlotChange = () => {

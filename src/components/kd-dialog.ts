@@ -314,10 +314,24 @@ export class KdDialog extends LitElement {
     } else if (!this.open && this.dialogEl.open && !this.closing) {
       this.closeDialog();
     } else if (this.open && this.closing) {
-      // Reopened mid-close: cancel the fade-out and stay open
-      this.transitionId++;
-      this.closing = false;
+      this.reopenDuringClose();
     }
+  }
+
+  /**
+   * Reopened mid-close: cancel the fade-out and stay open. kd-after-hide won't
+   * fire for that close, so announce the reopen with kd-show / kd-after-show
+   * and listeners waiting on the close can tell it never finished.
+   */
+  private async reopenDuringClose() {
+    const id = ++this.transitionId;
+    this.dispatchEvent(new CustomEvent("kd-show", { bubbles: true, composed: true }));
+    this.closing = false;
+    await this.updateComplete;
+
+    await this.finishTransitions();
+    if (id !== this.transitionId) return;
+    this.dispatchEvent(new CustomEvent("kd-after-show", { bubbles: true, composed: true }));
   }
 
   show() {

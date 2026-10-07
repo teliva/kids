@@ -11,19 +11,58 @@ export type InputType =
   | "password"
   | "search"
   | "tel"
-  | "url";
+  | "url"
+  | "date"
+  | "time"
+  | "datetime-local";
 
 export type InputSize = "small" | "medium" | "large";
 
-export type InputAppearance = "outline" | "filled";
+export type InputAppearance = "outline" | "filled" | "filled-outline";
+
+/** Input types that, like native text fields, stop Enter from submitting a form with several of them and no submit button. */
+const IMPLICIT_SUBMIT_BLOCKING_TYPES = new Set([
+  "text", "search", "url", "tel", "email", "password",
+  "date", "month", "week", "time", "datetime-local", "number",
+]);
 
 /**
+ * A text field that takes part in forms like a native `<input>`: its value is
+ * submitted under `name`, it blocks submission while invalid, and
+ * `form.reset()` restores the `value` attribute.
+ *
+ * Errors only show once the user has changed the field or tried to submit
+ * the form. Style that state with `[invalid]`, `[data-user-invalid]` /
+ * `[data-user-valid]`, or `:state(user-invalid)` / `:state(user-valid)`.
+ *
  * ```html
- * <kd-input label="Email" type="email" placeholder="you@example.com" clearable></kd-input>
+ * <form>
+ *   <kd-input name="email" label="Email" type="email" hint="We'll never share it." with-clear required></kd-input>
+ * </form>
  * ```
+ *
+ * Older names still work: `help-text` (attribute and slot) for `hint`,
+ * `clearable` for `with-clear`, and the `prefix` / `suffix` slots for
+ * `start` / `end`.
+ *
+ * @slot label - Label content; use instead of the `label` attribute for rich content.
+ * @slot hint - Hint content; use instead of the `hint` attribute.
+ * @slot start - Content before the text, such as an icon.
+ * @slot end - Content after the text.
+ *
+ * @fires kd-input / input - The value changed as the user typed. `input` is the native event.
+ * @fires kd-change / change - The user committed a change.
+ * @fires kd-focus / kd-blur - The field gained or lost focus (native `focus` / `blur` reach the host too).
+ * @fires kd-clear - The clear button was used.
+ * @fires kd-invalid - A validity check (form submit, `checkValidity()`, `reportValidity()`) found the value invalid.
  */
 @customElement("kd-input")
 export class KdInput extends LitElement {
+  static formAssociated = true;
+
+  // Focusing the host (labels, form validation, autofocus) moves focus to the inner input
+  static shadowRootOptions = { ...LitElement.shadowRootOptions, delegatesFocus: true };
+
   static styles = css`
     :host {
       display: block;
@@ -43,12 +82,19 @@ export class KdInput extends LitElement {
       color: var(--kd-input-label-color, inherit);
     }
 
+    .label[hidden],
+    .hint[hidden] {
+      display: none;
+    }
+
     :host([required]) .label::after {
       content: " *";
       color: var(--kd-input-invalid-color, #b40c12);
     }
 
     .base {
+      /* Padding and border stay inside the 100% width, so it can't overflow its container */
+      box-sizing: border-box;
       display: inline-flex;
       align-items: center;
       gap: var(--kd-space-component-gap-sm);
@@ -73,30 +119,37 @@ export class KdInput extends LitElement {
         color-mix(in srgb, var(--kd-color-brand) 35%, transparent);
     }
 
+    :host([appearance="filled"]) .base,
+    :host([appearance="filled-outline"]) .base {
+      background: var(--kd-input-filled-background, var(--kd-color-gray-10));
+    }
+
     :host([appearance="filled"]) .base {
       border-color: transparent;
-      background: var(--kd-input-filled-background, var(--kd-color-gray-10));
     }
 
     :host([appearance="filled"]) .base:hover {
       border-color: transparent;
     }
 
-    :host([appearance="filled"]) .base.focused {
+    :host([appearance="filled"]) .base.focused,
+    :host([appearance="filled-outline"]) .base.focused {
       border-color: var(--kd-color-brand);
       background: var(--kd-input-background, #fff);
     }
 
-    :host([invalid]) .base {
+    /* Attribute rather than :state() here: an unknown pseudo-class would drop
+       the whole rule in browsers without custom states */
+    :host([data-user-invalid]) .base {
       border-color: var(--kd-input-invalid-color, #b40c12);
     }
 
-    :host([invalid]) .base.focused {
+    :host([data-user-invalid]) .base.focused {
       box-shadow: 0 0 0 3px
         color-mix(in srgb, var(--kd-input-invalid-color, #b40c12) 30%, transparent);
     }
 
-    :host([disabled]) .base {
+    .base.disabled {
       opacity: 0.5;
       cursor: not-allowed;
     }
@@ -131,6 +184,11 @@ export class KdInput extends LitElement {
       font-size: var(--kd-font-size-lg);
     }
 
+    /* After the size rules so it wins over their radius */
+    :host([pill]) .base {
+      border-radius: var(--kd-radius-pill);
+    }
+
     .input {
       flex: 1;
       min-width: 0;
@@ -143,6 +201,26 @@ export class KdInput extends LitElement {
       font-family: var(--kd-font-family);
     }
 
+    /* Browsers paint autofilled inputs with an !important background that CSS
+       can't override, only delay. Delay it indefinitely so the rectangular
+       input stays clear, and tint the whole rounded .base instead. Separate
+       rules: an unsupported selector would drop the whole list */
+    .input:autofill {
+      transition: background-color 0s 600000s;
+    }
+
+    .input:-webkit-autofill {
+      transition: background-color 0s 600000s;
+    }
+
+    .base:has(.input:autofill) {
+      background: var(--kd-input-autofill-background, color-mix(in srgb, var(--kd-color-brand) 8%, #fff));
+    }
+
+    .base:has(.input:-webkit-autofill) {
+      background: var(--kd-input-autofill-background, color-mix(in srgb, var(--kd-color-brand) 8%, #fff));
+    }
+
     .input::placeholder {
       color: var(--kd-input-placeholder-color, rgba(0, 0, 0, 0.4));
     }
@@ -151,15 +229,27 @@ export class KdInput extends LitElement {
       cursor: not-allowed;
     }
 
-    .prefix,
-    .suffix {
+    :host([without-spin-buttons]) .input::-webkit-outer-spin-button,
+    :host([without-spin-buttons]) .input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    :host([without-spin-buttons]) .input {
+      -moz-appearance: textfield;
+    }
+
+    .start,
+    .end {
       flex: none;
       display: inline-flex;
       align-items: center;
     }
 
-    .prefix:empty,
-    .suffix:empty {
+    /* Hidden via slotchange rather than :empty, since the slot elements
+       themselves keep the span from ever being :empty */
+    .start[hidden],
+    .end[hidden] {
       display: none;
     }
 
@@ -172,14 +262,21 @@ export class KdInput extends LitElement {
       height: 1.25rem;
       padding: 0;
       border: none;
+      border-radius: var(--kd-radius-sm);
       background: transparent;
       color: inherit;
       opacity: 0.6;
       cursor: pointer;
     }
 
-    .icon-button:hover {
+    .icon-button:hover,
+    .icon-button:focus-visible {
       opacity: 1;
+    }
+
+    .icon-button:focus-visible {
+      outline: 2px solid var(--kd-color-brand);
+      outline-offset: 2px;
     }
 
     .icon-button svg {
@@ -188,21 +285,26 @@ export class KdInput extends LitElement {
       fill: currentColor;
     }
 
-    .help-text {
+    .hint {
       margin-top: var(--kd-space-1);
       font-size: var(--kd-font-size-xs);
-      color: var(--kd-input-help-text-color, rgba(0, 0, 0, 0.6));
+      color: var(--kd-input-hint-color, rgba(0, 0, 0, 0.6));
     }
   `;
 
   @property() type: InputType = "text";
 
-  @property() name = "";
+  // Reflected: the form entry is keyed by the host's name attribute
+  @property({ reflect: true }) name = "";
 
-  @property() value = "";
+  /** The initial value, restored by `form.reset()`. Set with the `value` attribute. */
+  @property({ attribute: "value" }) defaultValue = "";
 
   @property() label = "";
 
+  @property() hint = "";
+
+  /** Older name for `hint`. */
   @property({ attribute: "help-text" }) helpText = "";
 
   @property() placeholder = "";
@@ -211,21 +313,56 @@ export class KdInput extends LitElement {
 
   @property({ reflect: true }) appearance: InputAppearance = "outline";
 
+  @property({ type: Boolean, reflect: true }) pill = false;
+
   @property({ type: Boolean, reflect: true }) disabled = false;
 
   @property({ type: Boolean, reflect: true }) readonly = false;
 
   @property({ type: Boolean, reflect: true }) required = false;
 
+  /** Shows a button that clears the value once there is one. */
+  @property({ type: Boolean, reflect: true, attribute: "with-clear" }) withClear = false;
+
+  /** Older name for `with-clear`. */
   @property({ type: Boolean, reflect: true }) clearable = false;
 
-  @property({ type: Boolean, reflect: true }) invalid = false;
+  /** Shows a button that reveals a password field's text. */
+  @property({ type: Boolean, reflect: true, attribute: "password-toggle" }) passwordToggle = false;
+
+  /** Whether a password field's text is currently shown. */
+  @property({ type: Boolean, reflect: true, attribute: "password-visible" }) passwordVisible = false;
+
+  /** Reserves the label before the `label` slot is filled, e.g. when server-rendered. */
+  @property({ type: Boolean, attribute: "with-label" }) withLabel = false;
+
+  /** Reserves the hint before the `hint` slot is filled, e.g. when server-rendered. */
+  @property({ type: Boolean, attribute: "with-hint" }) withHint = false;
+
+  /** Hides the arrows on number fields. */
+  @property({ type: Boolean, reflect: true, attribute: "without-spin-buttons" }) withoutSpinButtons = false;
 
   @property() autocomplete?: string;
 
   @property() pattern?: string;
 
   @property() inputmode?: string;
+
+  @property() enterkeyhint?: string;
+
+  @property() autocapitalize = "";
+
+  @property() autocorrect?: string;
+
+  // Enumerated like the native attribute, not a Lit Boolean: spellcheck="false"
+  // must turn it off, where a Boolean treats any present attribute as true
+  @property({
+    converter: {
+      fromAttribute: (value: string | null) => value !== "false",
+      toAttribute: (value: boolean) => (value ? "true" : "false"),
+    },
+  })
+  spellcheck = true;
 
   @property({ attribute: "minlength", type: Number }) minLength?: number;
 
@@ -239,9 +376,54 @@ export class KdInput extends LitElement {
 
   @state() private hasFocus = false;
 
-  @state() private passwordVisible = false;
+  /** Set once the user commits a change or a validity check runs; gates the error styling. */
+  @state() private hasInteracted = false;
+
+  /** Disabled by an ancestor `<fieldset disabled>` (or our own attribute). */
+  @state() private formDisabled = false;
+
+  @state() private hasLabelSlot = false;
+
+  @state() private hasHintSlot = false;
+
+  @state() private hasStartSlot = false;
+
+  @state() private hasEndSlot = false;
 
   @query(".input") private inputEl!: HTMLInputElement;
+
+  private readonly internals = this.attachInternals();
+
+  /** null until a user or script sets the value; until then it follows `defaultValue`. */
+  private currentValue: string | null = null;
+
+  private customValidityMessage = "";
+
+  /** Whether the form value and validity have been synced at least once. */
+  private hasSynced = false;
+
+  /**
+   * Whether the field is showing an error: invalid after the user changed it
+   * or a submit was attempted. Reflected as the `invalid` attribute. Derived,
+   * so setting it has no effect (the setter only keeps older code from throwing).
+   */
+  get invalid(): boolean {
+    return this.hasAttribute("invalid");
+  }
+
+  set invalid(_value: boolean) {}
+
+  /** The current value. Setting it doesn't change what `form.reset()` restores. */
+  @property({ attribute: false })
+  get value(): string {
+    return this.currentValue ?? this.defaultValue;
+  }
+
+  set value(value: string) {
+    const oldValue = this.value;
+    this.currentValue = value;
+    this.requestUpdate("value", oldValue);
+  }
 
   private static readonly clearIcon = html`
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -272,24 +454,38 @@ export class KdInput extends LitElement {
     </svg>
   `;
 
-  render() {
-    const isPassword = this.type === "password";
-    const showClear =
-      this.clearable && !this.disabled && !this.readonly && this.value.length > 0;
+  constructor() {
+    super();
+    // Fired on the host by form submission, checkValidity() and reportValidity()
+    this.addEventListener("invalid", () => {
+      this.hasInteracted = true;
+      this.dispatchEvent(new CustomEvent("kd-invalid", { bubbles: true, composed: true }));
+    });
+  }
 
+  render() {
+    const disabled = this.disabled || this.formDisabled;
+    const isPassword = this.type === "password";
+    const withClear = this.withClear || this.clearable;
+    const showClear = withClear && !disabled && !this.readonly && this.value.length > 0;
+    const hintText = this.hint || this.helpText;
+    const showLabel = Boolean(this.label) || this.withLabel || this.hasLabelSlot;
+    const showHint = Boolean(hintText) || this.withHint || this.hasHintSlot;
+
+    // The label, hint, start and end wrappers always render (hidden when empty)
+    // so their slots exist and slotchange can report slotted content. The
+    // second slot in each pair accepts the older slot name
     return html`
       <div class="form-control" part="form-control">
-        ${this.label
-          ? html`<label class="label" part="label" for="input">
-              <slot name="label">${this.label}</slot>
-            </label>`
-          : null}
+        <label class="label" part="label" for="input" ?hidden=${!showLabel}>
+          <slot name="label" @slotchange=${this.handleLabelSlotChange}>${this.label}</slot>
+        </label>
 
-        <div
-          class=${classMap({ base: true, focused: this.hasFocus })}
-          part="base"
-        >
-          <span class="prefix" part="prefix"><slot name="prefix"></slot></span>
+        <div class=${classMap({ base: true, focused: this.hasFocus, disabled })} part="base">
+          <span class="start" part="start" ?hidden=${!this.hasStartSlot}>
+            <slot name="start" @slotchange=${this.handleStartSlotChange}></slot>
+            <slot name="prefix" @slotchange=${this.handleStartSlotChange}></slot>
+          </span>
 
           <input
             id="input"
@@ -301,18 +497,23 @@ export class KdInput extends LitElement {
             placeholder=${ifDefined(this.placeholder || undefined)}
             autocomplete=${ifDefined(this.autocomplete)}
             inputmode=${ifDefined(this.inputmode)}
+            enterkeyhint=${ifDefined(this.enterkeyhint)}
+            autocapitalize=${ifDefined(this.autocapitalize || undefined)}
+            autocorrect=${ifDefined(this.autocorrect)}
+            spellcheck=${this.spellcheck ? "true" : "false"}
             pattern=${ifDefined(this.pattern)}
             minlength=${ifDefined(this.minLength)}
             maxlength=${ifDefined(this.maxLength)}
             min=${ifDefined(this.min)}
             max=${ifDefined(this.max)}
             step=${ifDefined(this.step)}
-            ?disabled=${this.disabled}
+            ?disabled=${disabled}
             ?readonly=${this.readonly}
             ?required=${this.required}
-            aria-invalid=${this.invalid ? "true" : "false"}
+            aria-describedby=${ifDefined(showHint ? "hint" : undefined)}
             @input=${this.handleInput}
             @change=${this.handleChange}
+            @keydown=${this.handleKeyDown}
             @focus=${this.handleFocus}
             @blur=${this.handleBlur}
           />
@@ -329,107 +530,333 @@ export class KdInput extends LitElement {
                 ${KdInput.clearIcon}
               </button>`
             : null}
-          ${isPassword
+          ${isPassword && this.passwordToggle
             ? html`<button
                 class="icon-button password-toggle-button"
                 part="password-toggle-button"
                 type="button"
-                tabindex="-1"
                 aria-label=${this.passwordVisible ? "Hide password" : "Show password"}
+                aria-pressed=${this.passwordVisible ? "true" : "false"}
+                ?disabled=${disabled}
                 @click=${this.togglePasswordVisibility}
               >
                 ${this.passwordVisible ? KdInput.eyeSlashIcon : KdInput.eyeIcon}
               </button>`
             : null}
 
-          <span class="suffix" part="suffix"><slot name="suffix"></slot></span>
+          <span class="end" part="end" ?hidden=${!this.hasEndSlot}>
+            <slot name="end" @slotchange=${this.handleEndSlotChange}></slot>
+            <slot name="suffix" @slotchange=${this.handleEndSlotChange}></slot>
+          </span>
         </div>
 
-        ${this.helpText
-          ? html`<div class="help-text" part="help-text">
-              <slot name="help-text">${this.helpText}</slot>
-            </div>`
-          : null}
+        <div class="hint" part="hint" id="hint" ?hidden=${!showHint}>
+          <slot name="hint" @slotchange=${this.handleHintSlotChange}>${hintText}</slot>
+          <slot name="help-text" @slotchange=${this.handleHintSlotChange}></slot>
+        </div>
       </div>
     `;
   }
 
-  updated(changedProperties: PropertyValues<this>) {
-    if (changedProperties.has("value") && !this.hasFocus) {
-      this.updateValidity();
-    }
+  /** Properties that change the form value, a constraint, or whether errors show. */
+  private static readonly validityProps = new Set<PropertyKey>([
+    "value", "defaultValue", "type", "required", "readonly", "disabled", "formDisabled",
+    "pattern", "minLength", "maxLength", "min", "max", "step", "hasInteracted",
+  ]);
+
+  updated(changedProperties: PropertyValues) {
+    super.updated(changedProperties);
+    // Skip focus, hover and slot-only updates; nothing form-related changed
+    const relevant = [...changedProperties.keys()].some((key) => KdInput.validityProps.has(key));
+    if (this.hasSynced && !relevant) return;
+    this.hasSynced = true;
+    // The inner input now reflects every constraint, so mirror it to the form
+    this.internals.setFormValue(this.value);
+    this.syncValidity();
   }
 
-  focus(options?: FocusOptions) {
-    this.inputEl.focus(options);
+  // --- Form-associated callbacks ---
+
+  formResetCallback() {
+    const oldValue = this.value;
+    this.currentValue = null;
+    this.hasInteracted = false;
+    this.passwordVisible = false;
+    this.requestUpdate("value", oldValue);
   }
 
-  blur() {
-    this.inputEl.blur();
+  formDisabledCallback(disabled: boolean) {
+    this.formDisabled = disabled;
   }
 
-  select() {
-    this.inputEl.select();
+  formStateRestoreCallback(state: string | File | FormData | null) {
+    if (typeof state === "string") this.value = state;
+  }
+
+  // --- Public API, mirroring HTMLInputElement ---
+
+  get form(): HTMLFormElement | null {
+    return this.internals.form;
+  }
+
+  get labels(): NodeList {
+    return this.internals.labels;
   }
 
   get validity(): ValidityState {
-    return this.inputEl.validity;
+    return this.internals.validity;
   }
 
   get validationMessage(): string {
-    return this.inputEl.validationMessage;
+    return this.internals.validationMessage;
+  }
+
+  get willValidate(): boolean {
+    return this.internals.willValidate;
+  }
+
+  get valueAsNumber(): number {
+    return this.workingInput().valueAsNumber;
+  }
+
+  set valueAsNumber(number: number) {
+    const input = this.workingInput();
+    input.valueAsNumber = number;
+    this.value = input.value;
+  }
+
+  get valueAsDate(): Date | null {
+    return this.workingInput().valueAsDate;
+  }
+
+  set valueAsDate(date: Date | null) {
+    const input = this.workingInput();
+    input.valueAsDate = date;
+    this.value = input.value;
+  }
+
+  // Before the first render there's no inner input to focus or select, so
+  // these quietly do nothing then, like calling them on a detached input
+
+  focus(options?: FocusOptions) {
+    this.inputEl?.focus(options);
+  }
+
+  blur() {
+    this.inputEl?.blur();
+  }
+
+  select() {
+    this.inputEl?.select();
+  }
+
+  setSelectionRange(start: number | null, end: number | null, direction?: "forward" | "backward" | "none") {
+    this.inputEl?.setSelectionRange(start, end, direction);
+  }
+
+  setRangeText(replacement: string, start?: number, end?: number, selectMode?: SelectionMode) {
+    const input = this.workingInput();
+    if (start === undefined || end === undefined) {
+      input.setRangeText(replacement);
+    } else {
+      input.setRangeText(replacement, start, end, selectMode);
+    }
+    this.value = input.value;
+  }
+
+  stepUp(n?: number) {
+    const input = this.workingInput();
+    input.stepUp(n);
+    this.value = input.value;
+  }
+
+  stepDown(n?: number) {
+    const input = this.workingInput();
+    input.stepDown(n);
+    this.value = input.value;
+  }
+
+  /** Opens the browser's picker for date, time and similar types. Needs a rendered, focusable field. */
+  showPicker() {
+    this.inputEl?.showPicker();
   }
 
   checkValidity(): boolean {
-    return this.inputEl.checkValidity();
+    return this.internals.checkValidity();
   }
 
+  /** Like `checkValidity()`, but also shows the browser's message at the field. */
   reportValidity(): boolean {
-    const valid = this.inputEl.reportValidity();
-    this.updateValidity();
-    return valid;
+    return this.internals.reportValidity();
   }
 
   setCustomValidity(message: string) {
-    this.inputEl.setCustomValidity(message);
-    this.updateValidity();
+    this.customValidityMessage = message;
+    // Before the first render, updated() applies the stored message
+    if (this.inputEl) this.syncValidity();
   }
 
-  private updateValidity() {
-    this.invalid = !this.inputEl.checkValidity();
+  // --- Internals ---
+
+  /**
+   * The inner input, or before the first render a detached one set up with the
+   * same type, constraints and value, so value helpers work at any time.
+   */
+  private workingInput(): HTMLInputElement {
+    if (this.inputEl) return this.inputEl;
+    const input = document.createElement("input");
+    input.type = this.type;
+    if (this.min !== undefined) input.min = this.min;
+    if (this.max !== undefined) input.max = this.max;
+    if (this.step !== undefined) input.step = this.step;
+    input.value = this.value;
+    return input;
+  }
+
+  /** Mirrors the inner input's validity to the form, then updates the error styling to match. */
+  private syncValidity() {
+    if (!this.inputEl) return;
+    this.inputEl.setCustomValidity(this.customValidityMessage);
+    const { validity, validationMessage } = this.inputEl;
+    // A readonly input is barred from constraint validation, like a native one,
+    // so it never blocks submission with an error the user can't fix
+    if (validity.valid || this.readonly) {
+      this.internals.setValidity({});
+    } else {
+      // Anchor to the inner input so the browser's message points at the field
+      this.internals.setValidity(validity, validationMessage, this.inputEl);
+    }
+    this.syncUserValidity();
+  }
+
+  /**
+   * Applies the error state directly to the DOM rather than through render(),
+   * which runs before syncValidity() and so would always be one update behind.
+   */
+  private syncUserValidity() {
+    const userInvalid = this.hasInteracted && !this.internals.validity.valid;
+    const userValid = this.hasInteracted && !userInvalid;
+    this.toggleAttribute("invalid", userInvalid);
+    this.toggleAttribute("data-user-invalid", userInvalid);
+    this.toggleAttribute("data-user-valid", userValid);
+    this.inputEl?.setAttribute("aria-invalid", userInvalid ? "true" : "false");
+    // Custom states aren't in every browser yet; the attributes cover those
+    try {
+      // tsconfig's lib lacks DOM.Iterable, which types CustomStateSet's Set methods
+      const states = this.internals.states as unknown as Set<string>;
+      if (userInvalid) states.add("user-invalid");
+      else states.delete("user-invalid");
+      if (userValid) states.add("user-valid");
+      else states.delete("user-valid");
+    } catch {
+      // Unsupported, or an older browser that only accepts "--name" states
+    }
+  }
+
+  private emit(name: string) {
+    this.dispatchEvent(new CustomEvent(name, { bubbles: true, composed: true }));
   }
 
   private handleInput = () => {
+    // The native input event is composed, so it already reaches host listeners
     this.value = this.inputEl.value;
-    if (this.invalid) this.updateValidity();
-    this.dispatchEvent(new CustomEvent("kd-input", { bubbles: true, composed: true }));
+    this.emit("kd-input");
   };
 
   private handleChange = () => {
-    this.dispatchEvent(new CustomEvent("kd-change", { bubbles: true, composed: true }));
+    this.hasInteracted = true;
+    // Native change isn't composed, so re-dispatch it from the host
+    this.dispatchEvent(new Event("change", { bubbles: true, composed: true }));
+    this.emit("kd-change");
   };
+
+  private handleKeyDown = (event: KeyboardEvent) => {
+    // The inner input isn't in the form, so do implicit submission ourselves
+    const hasModifier = event.metaKey || event.ctrlKey || event.shiftKey || event.altKey;
+    if (event.key !== "Enter" || hasModifier || event.isComposing || event.defaultPrevented) return;
+    const form = this.internals.form;
+    if (!form) return;
+    // Let the keydown finish first, so listeners can still cancel it
+    setTimeout(() => {
+      if (!event.defaultPrevented) KdInput.implicitlySubmit(form);
+    });
+  };
+
+  /**
+   * Native implicit submission: click the form's default (first) submit button,
+   * so its click handlers and formaction run; or with no submit button, submit
+   * only when there's a single text-like field.
+   */
+  private static implicitlySubmit(form: HTMLFormElement) {
+    const elements = Array.from(form.elements);
+    const defaultButton = elements.find(
+      (el) =>
+        (el instanceof HTMLButtonElement && el.type === "submit") ||
+        (el instanceof HTMLInputElement && (el.type === "submit" || el.type === "image")) ||
+        (el.localName === "kd-button" && el.getAttribute("type") === "submit"),
+    ) as HTMLElement | undefined;
+
+    if (defaultButton) {
+      if (!defaultButton.matches(":disabled")) defaultButton.click();
+      return;
+    }
+
+    const blockingFields = elements.filter(
+      (el) =>
+        el.localName === "kd-input" ||
+        (el instanceof HTMLInputElement && IMPLICIT_SUBMIT_BLOCKING_TYPES.has(el.type)),
+    );
+    if (blockingFields.length <= 1) form.requestSubmit();
+  }
 
   private handleFocus = () => {
     this.hasFocus = true;
-    this.dispatchEvent(new CustomEvent("kd-focus", { bubbles: true, composed: true }));
+    this.emit("kd-focus");
   };
 
   private handleBlur = () => {
     this.hasFocus = false;
-    this.updateValidity();
-    this.dispatchEvent(new CustomEvent("kd-blur", { bubbles: true, composed: true }));
+    this.emit("kd-blur");
   };
 
   private handleClear = (event: MouseEvent) => {
     event.preventDefault();
     this.value = "";
+    this.hasInteracted = true;
     this.inputEl.focus();
-    this.dispatchEvent(new CustomEvent("kd-clear", { bubbles: true, composed: true }));
-    this.dispatchEvent(new CustomEvent("kd-input", { bubbles: true, composed: true }));
+    this.emit("kd-clear");
+    this.dispatchEvent(new InputEvent("input", { bubbles: true, composed: true }));
+    this.emit("kd-input");
+    this.dispatchEvent(new Event("change", { bubbles: true, composed: true }));
+    this.emit("kd-change");
   };
 
   private togglePasswordVisibility = () => {
     this.passwordVisible = !this.passwordVisible;
+  };
+
+  private handleLabelSlotChange = (event: Event) => {
+    this.hasLabelSlot = (event.target as HTMLSlotElement).assignedNodes({ flatten: true }).length > 0;
+  };
+
+  /** Whether any slot with one of these names has assigned content. */
+  private hasSlotted(...names: string[]): boolean {
+    return names.some((name) => {
+      const slot = this.renderRoot.querySelector<HTMLSlotElement>(`slot[name="${name}"]`);
+      return (slot?.assignedNodes({ flatten: true }).length ?? 0) > 0;
+    });
+  }
+
+  private handleHintSlotChange = () => {
+    this.hasHintSlot = this.hasSlotted("hint", "help-text");
+  };
+
+  private handleStartSlotChange = () => {
+    this.hasStartSlot = this.hasSlotted("start", "prefix");
+  };
+
+  private handleEndSlotChange = () => {
+    this.hasEndSlot = this.hasSlotted("end", "suffix");
   };
 }
 

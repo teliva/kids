@@ -11,20 +11,23 @@
   <link rel="stylesheet" href="css/spacing.css" />
 
   <style>
+    
     body {
       padding: 0;
       margin: 0;
       font-size: var(--kd-font-size-md);
+      --kd-color-background: #f4f3f0;
     }
 
     body {
+      
       margin: 0;
       min-height: 100vh;
       background-attachment: fixed;
       background-size: cover;
       font-family: var(--kd-font-family);
       font-size: 16px;
-      background-color: #f4f3f0;
+      background-color: var(--kd-color-background);
       height: 100%;
       width: 100%;
     }
@@ -66,7 +69,9 @@
       display: flex;
       flex-direction: column;
       flex-shrink: 0;
-      background-color: var(--kd-color-gray-05);
+      /* Same color as the page, but opaque: on narrow screens the drawer
+         floats over the viewer, which must not show through */
+      background-color: var(--kd-color-background);
       border-left: 1px solid var(--kd-color-gray-30);
     }
 
@@ -152,7 +157,18 @@
       flex-wrap: wrap;
       align-items: center;
       border-top: 1px solid var(--kd-color-gray-30);
-      background-color: var(--kd-color-gray-05);
+    }
+
+    .quote-form {
+      display: flex;
+      flex-direction: column;
+      gap: var(--kd-space-layout-gap-md);
+    }
+
+    .quote-intro {
+      margin: 0;
+      color: var(--kd-color-gray-60);
+      font-size: var(--kd-font-size-sm);
     }
 
     /* Fill the panel width: as many fixed-size columns as fit, with leftover
@@ -389,6 +405,24 @@
     </div>
   </div>
 
+  <kd-dialog id="quote-dialog" label="Request a quote">
+    <form id="quote-form" class="quote-form">
+      <p class="quote-intro">Tell us how to reach you and we'll send pricing for your configuration.</p>
+      <kd-input name="name" label="Name" autocomplete="name" required></kd-input>
+      <kd-input name="email" label="Email" type="email" autocomplete="email" placeholder="you@example.com"
+        required></kd-input>
+      <kd-input name="phone" label="Phone" type="tel" autocomplete="tel" hint="Optional"></kd-input>
+      <kd-input name="quantity" label="Quantity" type="number" inputmode="numeric" min="1" value="1"
+        required></kd-input>
+    </form>
+    <kd-button slot="footer" data-dialog="close" appearance="outline" variant="neutral" size="sm">
+      <span slot="label">Cancel</span>
+    </kd-button>
+    <kd-button slot="footer" type="submit" form="quote-form" variant="brand" size="sm">
+      <span slot="label">Request quote</span>
+    </kd-button>
+  </kd-dialog>
+
 
   <script>
     const sidePanel = document.querySelector('.drawer');
@@ -420,6 +454,42 @@
         `calc(${footer.offsetHeight}px + var(--kd-space-layout-gap-md))`,
       );
     }).observe(footer);
+
+    const quoteDialog = document.getElementById('quote-dialog');
+    const quoteForm = document.getElementById('quote-form');
+
+    document.getElementById('get-quote').addEventListener('click', () => (quoteDialog.open = true));
+
+    // Set on submit; the reset waits for the fade-out so the fields don't empty
+    // while visible. Cancel never sets it, so an unfinished request is kept
+    let resetPending = false;
+
+    function resetIfPending() {
+      if (!resetPending) return;
+      resetPending = false;
+      quoteForm.reset();
+    }
+
+    quoteDialog.addEventListener('kd-after-hide', resetIfPending);
+    // Reopened before the fade-out finished: that close never completes, so
+    // reset now rather than on some later, unrelated close
+    quoteDialog.addEventListener('kd-show', resetIfPending);
+
+    // The footer's type="submit" form="quote-form" button and Enter in a field
+    // both submit; this only fires once every field is valid
+    quoteForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const quote = Object.fromEntries(new FormData(quoteForm));
+      console.log('Quote requested', quote);
+
+      resetPending = true;
+      quoteDialog.hide();
+
+      customElements.get('kd-toast').toast('Quote requested', {
+        variant: 'success',
+        placement: 'bottom',
+      });
+    });
 
     panelToggleBtn.addEventListener('click', () => {
       setCollapsed(!sidePanel.classList.contains('collapsed'));
