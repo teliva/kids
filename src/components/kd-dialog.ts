@@ -17,21 +17,13 @@ function unlockScroll() {
   if (--scrollLocks === 0) document.documentElement.style.removeProperty("overflow");
 }
 
-// Any element with data-dialog="open <id>" opens that dialog when clicked
-document.addEventListener("click", (event) => {
-  const trigger = (event.target as Element | null)?.closest<HTMLElement>('[data-dialog^="open "]');
-  const id = trigger?.dataset.dialog?.slice("open ".length).trim();
-  const dialog = id ? document.getElementById(id) : null;
-  if (dialog instanceof KdDialog) dialog.show();
-});
-
 /**
  * A modal window that sits above the page and traps focus until closed.
  * Built on the native `<dialog>`, so Escape, focus return and the inert
  * background come from the browser.
  *
- * Any element inside with `data-dialog="close"` closes it, and any element
- * on the page with `data-dialog="open <id>"` opens it.
+ * Open it from script with `dialog.open = true` or `dialog.show()`. Any
+ * element inside with `data-dialog="close"` closes it.
  *
  * Customize with `--kd-dialog-width`, `--kd-dialog-spacing`,
  * `--kd-dialog-show-duration` and `--kd-dialog-hide-duration`.
@@ -43,7 +35,12 @@ document.addEventListener("click", (event) => {
  *     <span slot="label">Cancel</span>
  *   </kd-button>
  * </kd-dialog>
- * <kd-button data-dialog="open confirm"><span slot="label">Delete</span></kd-button>
+ * <kd-button id="delete-btn"><span slot="label">Delete</span></kd-button>
+ *
+ * <script>
+ *   const dialog = document.getElementById("confirm");
+ *   document.getElementById("delete-btn").addEventListener("click", () => (dialog.open = true));
+ * </script>
  * ```
  *
  * @fires kd-show - Before the dialog opens.

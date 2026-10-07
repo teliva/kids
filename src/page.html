@@ -105,10 +105,10 @@
 
   <h2>Dialogs</h2>
   <p style="display: flex; gap: 1rem; flex-wrap: wrap;">
-    <kd-button data-dialog="open demo-dialog" variant="brand">
+    <kd-button id="demo-dialog-btn" variant="brand">
       <span slot="label">Open dialog</span>
     </kd-button>
-    <kd-button data-dialog="open demo-dialog-light" appearance="outline" variant="neutral">
+    <kd-button id="demo-dialog-light-btn" appearance="outline" variant="neutral">
       <span slot="label">Light dismiss</span>
     </kd-button>
   </p>
@@ -144,6 +144,12 @@
     document.getElementById('toast-btn').addEventListener('click', () => {
       document.getElementById('demo-toast').show();
     });
+
+    const dialog = document.getElementById('demo-dialog');
+    document.getElementById('demo-dialog-btn').addEventListener('click', () => (dialog.open = true));
+
+    const lightDialog = document.getElementById('demo-dialog-light');
+    document.getElementById('demo-dialog-light-btn').addEventListener('click', () => (lightDialog.open = true));
   </script>
 </body>
 
