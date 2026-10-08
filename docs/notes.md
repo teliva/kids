@@ -108,3 +108,25 @@ disabled state
 ## WIP
 - colors are not finalized for example warning color badges do not have the appropriate amount of context with it's background
 - I am missing 2 button variants filled and outlined-filled and my color systems needs more depth for to handle contrast appropriately
+
+
+
+
+## Feedback from Claude on UX
+Fix first
+The "Incomplete" badge has white text on yellow, about 1.7:1 contrast. The WCAG minimum for text is 4.5:1. The contrast helper itself is correct. The problem is that kd-badge measures its background during the first render and gets the wrong colour. After the page loaded, I switched the badge's variant away and back to warning, and it re-measured and chose black. So any solid badge can end up with the wrong text colour on first load. kd-button measures its colour the same way, so it may be affected too; I only checked the badge. I haven't found the cause yet. A likely suspect is transition: all on the badge's inner element, but that's a guess.
+The status disagrees with the selection. Ballistic Blue is already selected under Fabric, yet the header says "Incomplete". Either the default selection or the status is wrong, and users will doubt both.
+The heading order is wrong. kd-accordion-item puts its header in an <h3>, and the panel then contains an <h2>Fabric</h2>. That repeats the accordion label in large type and puts a higher-level heading inside a lower-level one. Remove the <h2>, or make it a small label such as "Choose a fabric".
+Layout and hierarchy
+The selected option isn't named anywhere. Swatches are only images, so users can't see what "Ballistic Blue" is called. Show the current choice under the grid ("Ballistic Blue") and in the accordion header ("Fabric · Ballistic Blue"). That also lets a collapsed section show its state without a badge.
+The status markers are inconsistent. Fabric uses a text pill and Frame uses an icon-only check. Use one pattern for every section, either both icons or both short text. Icon-only status also needs hidden text so screen-reader users hear it.
+The footer gives every action the same weight, and the main button is in the wrong place. Five equal outlined icon buttons sit before "Get Quote", which is at the far left on desktop. On a phone it drops to its own line, still on the left. Put "Get Quote" on the right, below the options panel, as the end of the flow. Group the four secondary actions (image, PDF, AR, share) so they read as one cluster. On a phone, make "Get Quote" full width.
+The "+" button's meaning isn't visible. A brand-coloured outlined "+" next to the project folder only explains itself in a tooltip, and phones have no hover. Give it a label such as "Add to project", or merge it with the project button.
+The top-left menu icon has no label or purpose. It's an unlabeled icon-only button in a corner, and it doesn't line up with the drawer's header row. Give it an aria-label and a tooltip, or remove it if it's a placeholder.
+Visual polish
+--kd-color-brand is pure #0000ff. It's the strongest colour on the page and looks like a default value. If it's a placeholder, generate-color-scale.js can produce a proper brand scale.
+The viewer area is empty. Even in a test page, an outline of the product plus its name and price would show whether the layout balances against the drawer. Right now nothing on the left holds the eye.
+Small clean-ups in the page's CSS:
+Two body rules set conflicting font sizes (var(--kd-font-size-md) and 16px).
+<link rel="script" href="main.js"> isn't a valid link type, and the plugin already adds the real script tag, so delete it.
+The inline style="display:flex; width:100%" on the headers could be a class.

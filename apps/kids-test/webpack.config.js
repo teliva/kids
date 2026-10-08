@@ -51,6 +51,10 @@ module.exports = (env, argv) => {
         template: './page.html',
         filename: 'page.html',
       }),
+      new HtmlWebpackPlugin({
+        template: './login.html',
+        filename: 'login.html',
+      }),
       new CopyWebpackPlugin({
         patterns: [
           { from: path.join(kidsDir, fromSource ? 'src/css' : 'dist/css'), to: 'css' },

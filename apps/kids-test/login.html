@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/normalize.css" />
+  <link rel="stylesheet" href="css/design-tokens.css" />
+  <link rel="stylesheet" href="css/fonts.css" />
+  <link rel="stylesheet" href="css/spacing.css" />
+
+  <style>
+    /* Page palette: cool showroom floor, paper-white sample cards, spec blue
+       stays the only accent (from the kids brand tokens) */
+    :root {
+      --kd-color-background: #e6e8ec;
+      --login-ink: var(--kd-color-gray-90);
+      --login-muted: var(--kd-color-gray-60);
+      --login-card: var(--kd-color-gray-05);
+    }
+
+    html,
+    body {
+      height: 100%;
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--kd-font-family);
+      font-size: var(--kd-font-size-md);
+      line-height: var(--kd-line-height-normal);
+      color: var(--login-ink);
+      background-color: var(--kd-color-background);
+    }
+
+    /* Narrow (base): deck as a cropped strip on top, form below */
+    .login {
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+      overflow: hidden;
+    }
+
+    .sign-in {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      gap: var(--kd-space-layout-gap-lg);
+      width: 100%;
+      max-width: 26rem;
+      padding: var(--kd-grid-margin-narrow);
+      padding-block-end: var(--kd-space-12);
+    }
+
+    .sign-in h1 {
+      margin: 0;
+      font-size: var(--kd-font-size-4xl);
+      font-weight: 400;
+      line-height: var(--kd-line-height-tight);
+      letter-spacing: -0.02em;
+    }
+
+    .sign-in .lead {
+      margin: var(--kd-space-3) 0 0;
+      color: var(--login-muted);
+    }
+
+    .sign-in form {
+      display: flex;
+      flex-direction: column;
+      gap: var(--kd-space-layout-gap-md);
+    }
+
+    .form-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--kd-space-layout-gap-md);
+      margin-top: var(--kd-space-2);
+    }
+
+    .sign-in a {
+      color: var(--kd-color-brand);
+      text-underline-offset: 0.2em;
+    }
+
+    .sign-in a:focus-visible {
+      outline: 2px solid var(--kd-color-brand);
+      outline-offset: 2px;
+      border-radius: var(--kd-radius-sm);
+    }
+
+    .invite {
+      margin: 0;
+      font-size: var(--kd-font-size-sm);
+      color: var(--login-muted);
+    }
+
+    /* Sample deck: fabric cards fanned from a shared pivot below the deck,
+       the way a swatch book opens on a table. Purely decorative. */
+    .deck {
+      position: relative;
+      order: -1;
+      height: 16rem;
+      overflow: hidden;
+      --card-w: 8.5rem;
+    }
+
+    .card {
+      position: absolute;
+      left: 50%;
+      bottom: var(--kd-space-4);
+      width: var(--card-w);
+      margin: 0 0 0 calc(var(--card-w) / -2);
+      transform-origin: 50% 160%;
+      transform: rotate(var(--fan));
+      background: var(--login-card);
+      border-radius: var(--kd-radius-sm);
+      box-shadow: var(--kd-box-shadow-md);
+      transition: transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+      transition-delay: calc(var(--i) * 45ms);
+    }
+
+    /* Woven colour shows until (or instead of, if missing) the scan loads */
+    .chip {
+      aspect-ratio: 1;
+      border-radius: var(--kd-radius-sm) var(--kd-radius-sm) 0 0;
+      background-color: var(--chip);
+      background-image:
+        repeating-linear-gradient(0deg, rgb(255 255 255 / 0.06) 0 1px, transparent 1px 3px),
+        repeating-linear-gradient(90deg, rgb(0 0 0 / 0.08) 0 1px, transparent 1px 3px);
+      overflow: hidden;
+    }
+
+    .chip img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .card span {
+      display: block;
+      padding: var(--kd-space-2) var(--kd-space-3) var(--kd-space-4);
+      font-size: var(--kd-font-size-xs);
+      line-height: var(--kd-line-height-snug);
+    }
+
+    .card:nth-child(1) { --i: 0; --fan: -36deg; }
+    .card:nth-child(2) { --i: 1; --fan: -22deg; }
+    .card:nth-child(3) { --i: 2; --fan: -8deg; }
+    .card:nth-child(4) { --i: 3; --fan: 6deg; }
+    .card:nth-child(5) { --i: 4; --fan: 20deg; }
+
+    /* Before the fan-out: the deck sits closed */
+    .deck.closed .card {
+      transform: rotate(-4deg);
+      transition: none;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .card {
+        transition: none;
+      }
+    }
+
+    /* Mid: 768px+ (--kd-breakpoint-mid) - form left, deck cropped by the right edge */
+    @media (min-width: 48em) {
+      .login {
+        flex-direction: row;
+        align-items: center;
+      }
+
+      .sign-in {
+        flex-shrink: 0;
+        padding: var(--kd-grid-margin-mid);
+      }
+
+      .deck {
+        order: 0;
+        flex: 1;
+        align-self: stretch;
+        height: auto;
+        overflow: visible;
+        --card-w: 15rem;
+      }
+
+      .card {
+        left: 66%;
+        bottom: 30%;
+      }
+
+      .card span {
+        padding: var(--kd-space-3) var(--kd-space-4) var(--kd-space-6);
+        font-size: var(--kd-font-size-sm);
+      }
+    }
+
+    /* Wide: 1024px+ (--kd-breakpoint-wide) */
+    @media (min-width: 64em) {
+      .sign-in {
+        max-width: 30rem;
+        padding: var(--kd-grid-margin-wide);
+        padding-inline-start: calc(var(--kd-grid-margin-wide) * 2);
+      }
+
+      .deck {
+        --card-w: 18rem;
+      }
+    }
+  </style>
+  <title>Sign in</title>
+</head>
+
+<body>
+  <main class="login">
+    <section class="sign-in" aria-labelledby="sign-in-title">
+      <div>
+        <h1 id="sign-in-title">Sign in to your projects</h1>
+        <p class="lead">Your saved configurations and quote requests are here.</p>
+      </div>
+
+      <form id="sign-in-form">
+        <kd-input name="email" label="Email" type="email" autocomplete="username" required></kd-input>
+        <kd-input name="password" label="Password" type="password" autocomplete="current-password"
+          password-toggle required></kd-input>
+        <div class="form-actions">
+          <kd-button id="sign-in-btn" type="submit" form="sign-in-form" variant="brand">
+            <span slot="label">Sign in</span>
+          </kd-button>
+          <a href="#reset">Reset password</a>
+        </div>
+      </form>
+
+      <p class="invite">New here? Your dealer can send you an invite.</p>
+    </section>
+
+    <div class="deck closed" aria-hidden="true">
+      <figure class="card" style="--chip: #c8b79a"><div class="chip"><img alt="" src="https://kits.kisp.com/swatch/kfi_1504/SS(U)-sm.jpg" onerror="this.remove()"></div><span>Sandstone</span></figure>
+      <figure class="card" style="--chip: #3f3a36"><div class="chip"><img alt="" src="https://kits.kisp.com/swatch/kfi_1504/CH(U)-sm.jpg" onerror="this.remove()"></div><span>Charcoal</span></figure>
+      <figure class="card" style="--chip: #6f7b84"><div class="chip"><img alt="" src="https://kits.kisp.com/swatch/kfi_1504/SG(U)-sm.jpg" onerror="this.remove()"></div><span>Slate Gray</span></figure>
+      <figure class="card" style="--chip: #2f4a3a"><div class="chip"><img alt="" src="https://kits.kisp.com/swatch/kfi_1504/FG(U)-sm.jpg" onerror="this.remove()"></div><span>Forest Green</span></figure>
+      <figure class="card" style="--chip: #34505f"><div class="chip"><img alt="" src="https://kits.kisp.com/swatch/kfi_1504/BB(U)-sm.jpg" onerror="this.remove()"></div><span>Ballistic Blue</span></figure>
+    </div>
+  </main>
+
+  <script>
+    // One fan-out on load; reduced motion skips the transition in CSS
+    const deck = document.querySelector('.deck');
+    requestAnimationFrame(() => requestAnimationFrame(() => deck.classList.remove('closed')));
+
+    // Fires only once both fields are valid
+    const form = document.getElementById('sign-in-form');
+    const signInBtn = document.getElementById('sign-in-btn');
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      signInBtn.loading = true;
+      // Demo only: no auth backend, go straight to the configurator
+      setTimeout(() => (window.location.href = 'configurator.html'), 600);
+    });
+  </script>
+</body>
+
+</html>
