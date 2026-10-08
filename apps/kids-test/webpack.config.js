@@ -12,8 +12,12 @@ module.exports = (env, argv) => {
 
   return {
     context: __dirname,
-    // Registers every kd-* element
-    entry: 'kids',
+    entry: {
+      // Registers every kd-* element; loaded by every page
+      main: 'kids',
+      // Configurator-only script; only configurator.html lists this chunk
+      configurator: './configurator-main.js',
+    },
     devtool: argv.mode === 'production' ? false : 'source-map',
     module: {
       rules: fromSource
@@ -38,7 +42,7 @@ module.exports = (env, argv) => {
         }
       : {},
     output: {
-      filename: 'main.js',
+      filename: '[name].js',
       path: path.resolve(__dirname, 'dist'),
       clean: true,
     },
@@ -46,14 +50,17 @@ module.exports = (env, argv) => {
       new HtmlWebpackPlugin({
         template: './configurator.html',
         filename: 'configurator.html',
+        chunks: ['main', 'configurator'],
       }),
       new HtmlWebpackPlugin({
         template: './page.html',
         filename: 'page.html',
+        chunks: ['main'],
       }),
       new HtmlWebpackPlugin({
         template: './login.html',
         filename: 'login.html',
+        chunks: ['main'],
       }),
       new CopyWebpackPlugin({
         patterns: [
