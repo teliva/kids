@@ -1,0 +1,36 @@
+{
+  "name": "kids",
+  "version": "0.0.0",
+  "description": "Kids design system: Lit web components and CSS design tokens",
+  "type": "module",
+  "main": "./dist/main.js",
+  "types": "./dist/main.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/main.d.ts",
+      "default": "./dist/main.js"
+    },
+    "./components/*": {
+      "types": "./dist/components/*.d.ts",
+      "default": "./dist/components/*.js"
+    },
+    "./css/*": "./dist/css/*",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": true,
+  "scripts": {
+    "clean": "node -e \"require('fs').rmSync('dist', { recursive: true, force: true })\"",
+    "copy-css": "node -e \"require('fs').cpSync('src/css', 'dist/css', { recursive: true })\"",
+    "build": "npm run clean && tsc -p tsconfig.json && npm run copy-css",
+    "watch": "npm run copy-css && tsc -p tsconfig.json --watch"
+  },
+  "dependencies": {
+    "lit": "^3.2.1"
+  },
+  "devDependencies": {
+    "typescript": "~5.6.2"
+  }
+}

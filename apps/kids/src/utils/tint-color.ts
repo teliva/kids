@@ -1,4 +1,4 @@
-import { getRelativeLuminance } from "./color";
+import { getRelativeLuminance } from "./color.js";
 
 /**
  * Builds a hover-tint color-mix() expression for a base color CSS variable,

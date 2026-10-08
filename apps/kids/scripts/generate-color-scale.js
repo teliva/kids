@@ -16,7 +16,7 @@
  *   reproduced exactly at its nearest lightness rung, which becomes -key.
  *
  * --write[=path]: instead of printing the CSS block, patch it directly into
- *   the target file (default css/design-tokens.css) — updates the 11 tint
+ *   the target file (default src/css/design-tokens.css) — updates the 11 tint
  *   declarations, the -key line, and the --kd-color-{name}: reference line
  *   in place if a scale for that name already exists, or appends a new
  *   block (matching the existing indentation) if it doesn't.
@@ -261,7 +261,7 @@ function main() {
   if (writeArg) {
     const filePath = writeArg.includes("=")
       ? path.resolve(writeArg.split("=")[1])
-      : path.resolve(__dirname, "..", "css", "design-tokens.css");
+      : path.resolve(__dirname, "..", "src", "css", "design-tokens.css");
     writeToFile(name, scale, filePath);
   } else {
     printCss(name, scale);

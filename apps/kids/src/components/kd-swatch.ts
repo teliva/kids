@@ -2,7 +2,7 @@ import { LitElement, css, html, type PropertyValues } from "lit";
 import { customElement, property, query, state } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 import { classMap } from "lit/directives/class-map.js";
-import "./kd-spinner";
+import "./kd-spinner.js";
 
 export type SwatchStatus = "loading" | "loaded" | "error";
 

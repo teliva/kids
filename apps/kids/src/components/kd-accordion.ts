@@ -1,7 +1,7 @@
 import { LitElement, css, html, type PropertyValues } from "lit";
 import { customElement, property, queryAssignedElements } from "lit/decorators.js";
-import type { KdAccordionItem } from "./kd-accordion-item";
-import "./kd-accordion-item";
+import type { KdAccordionItem } from "./kd-accordion-item.js";
+import "./kd-accordion-item.js";
 
 /**
  * A stack of `<kd-accordion-item>` elements. By default only one item is

@@ -1,8 +1,8 @@
 import { LitElement, css, html, type PropertyValues } from "lit";
 import { customElement, property, query, state } from "lit/decorators.js";
 import { styleMap } from "lit/directives/style-map.js";
-import { getContrastTextColor } from "../utils/contrast-color";
-import "./kd-spinner";
+import { getContrastTextColor } from "../utils/contrast-color.js";
+import "./kd-spinner.js";
 
 @customElement("kd-button")
 export class KdButton extends LitElement {

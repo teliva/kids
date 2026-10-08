@@ -2,46 +2,68 @@ const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 
-module.exports = (env, argv) => ({
-  entry: './src/main.ts',
-  devtool: argv.mode === 'production' ? false : 'source-map',
-  module: {
-    rules: [
-      {
-        test: /\.tsx?$/,
-        use: 'ts-loader',
-        exclude: /node_modules/,
-      },
+const kidsDir = path.dirname(require.resolve('kids/package.json'))
+
+module.exports = (env, argv) => {
+  // Development compiles the kids TypeScript source in this process, so one
+  // `npm run dev` picks up component edits. Production uses the built package
+  // (apps/kids/dist), resolved the same way any consumer would.
+  const fromSource = argv.mode === 'development'
+
+  return {
+    context: __dirname,
+    // Registers every kd-* element
+    entry: 'kids',
+    devtool: argv.mode === 'production' ? false : 'source-map',
+    module: {
+      rules: fromSource
+        ? [
+            {
+              test: /\.ts$/,
+              include: path.join(kidsDir, 'src'),
+              loader: 'ts-loader',
+              options: {
+                configFile: path.join(kidsDir, 'tsconfig.json'),
+                compilerOptions: { declaration: false },
+              },
+            },
+          ]
+        : [],
+    },
+    resolve: fromSource
+      ? {
+          alias: { kids$: path.join(kidsDir, 'src/main.ts') },
+          // Source imports use the .js extension their compiled output needs
+          extensionAlias: { '.js': ['.ts', '.js'] },
+        }
+      : {},
+    output: {
+      filename: 'main.js',
+      path: path.resolve(__dirname, 'dist'),
+      clean: true,
+    },
+    plugins: [
+      new HtmlWebpackPlugin({
+        template: './configurator.html',
+        filename: 'configurator.html',
+      }),
+      new HtmlWebpackPlugin({
+        template: './page.html',
+        filename: 'page.html',
+      }),
+      new CopyWebpackPlugin({
+        patterns: [
+          { from: path.join(kidsDir, fromSource ? 'src/css' : 'dist/css'), to: 'css' },
+          { from: 'favicon.svg', to: 'favicon.svg' },
+          { from: 'data', to: 'data' },
+          { from: require.resolve('normalize.css/normalize.css'), to: 'css/normalize.css' },
+        ],
+      }),
     ],
-  },
-  resolve: {
-    extensions: ['.tsx', '.ts', '.js'],
-  },
-  output: {
-    filename: 'main.js',
-    path: path.resolve(__dirname, 'dist'),
-    clean: true,
-  },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: './src/configurator.html',
-      filename: 'configurator.html',
-    }),
-    new HtmlWebpackPlugin({
-      template: './src/page.html',
-      filename: 'page.html',
-    }),
-    new CopyWebpackPlugin({
-      patterns: [
-        { from: 'css', to: 'css' },
-        { from: 'src/favicon.svg', to: 'favicon.svg' },
-        { from: 'node_modules/normalize.css/normalize.css', to: 'css/normalize.css' },
-      ],
-    }),
-  ],
-  devServer: {
-    static: './dist',
-    port: 5173,
-    open: true,
-  },
-})
+    devServer: {
+      static: path.resolve(__dirname, 'dist'),
+      port: 5173,
+      open: true,
+    },
+  }
+}

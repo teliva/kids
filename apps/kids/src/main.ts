@@ -1,0 +1,14 @@
+import './components/kd-badge.js';
+import './components/kd-button.js';
+import './components/kd-dialog.js';
+import './components/kd-divider.js';
+import './components/kd-loader.js';
+import './components/kd-tooltip.js';
+import './components/kd-spinner.js';
+import './components/kd-toast.js';
+import './components/kd-input.js';
+import './components/kd-switch.js';
+import './components/kd-swatch.js';
+import './components/kd-tab.js';
+import './components/kd-accordion-item.js';
+import './components/kd-accordion.js';  

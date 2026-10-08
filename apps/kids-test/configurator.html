@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="css/design-tokens.css" />
   <link rel="stylesheet" href="css/fonts.css" />
   <link rel="stylesheet" href="css/spacing.css" />
+  <link rel="script" href="main.js" />
 
   <style>
     
@@ -480,7 +481,6 @@
     quoteForm.addEventListener('submit', (event) => {
       event.preventDefault();
       const quote = Object.fromEntries(new FormData(quoteForm));
-      console.log('Quote requested', quote);
 
       resetPending = true;
       quoteDialog.hide();

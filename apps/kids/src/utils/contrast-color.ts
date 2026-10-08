@@ -1,4 +1,4 @@
-import { getRelativeLuminance } from "./color";
+import { getRelativeLuminance } from "./color.js";
 
 function contrastRatio(luminanceA: number, luminanceB: number): number {
   const lighter = Math.max(luminanceA, luminanceB);

@@ -1,7 +1,7 @@
 import { LitElement, css, html, type PropertyValues } from "lit";
 import { customElement, property, query, state } from "lit/decorators.js";
 import { styleMap } from "lit/directives/style-map.js";
-import { getContrastTextColor } from "../utils/contrast-color";
+import { getContrastTextColor } from "../utils/contrast-color.js";
 
 /**
  * A small status/count label. Shares kd-button's `variant` and

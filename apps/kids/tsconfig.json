@@ -7,6 +7,12 @@
 
     "moduleResolution": "bundler",
 
+    /* Package output: ES modules plus type declarations */
+    "rootDir": "src",
+    "outDir": "dist",
+    "declaration": true,
+    "sourceMap": true,
+
     /* Lit decorators */
     "experimentalDecorators": true,
     "useDefineForClassFields": false,

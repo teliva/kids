@@ -1,0 +1,16 @@
+[
+  {
+    "ProductId": 186000056,
+    "groupId": 186002433,
+    "descriptionId": 186000011,
+    "Description": "Seat Upholstery",
+    "EnhancedDescription": "Seat Upholstery"
+  },
+  {
+    "ProductId": 186000056,
+    "groupId": 186002485,
+    "descriptionId": 186000837,
+    "Description": "Frame",
+    "EnhancedDescription": "Frame"
+  }
+]
